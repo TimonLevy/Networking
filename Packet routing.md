@@ -38,7 +38,7 @@ But what happens when a packet needs to be sent to a MAC address that isn't reco
 
 If a packet arrives to the switch with a MAC address that is registered it will translate that MAC address using the MAC address table and **Forward** that packet to the designated port.
 
-===
+-------------------------------------------------------------------------------------------------------------------
 
 Let's take the network shown above and demonstrate, `HOST A` wants to send a packet to `HOST B`. `HOST A` 
 ```
