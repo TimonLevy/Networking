@@ -135,12 +135,12 @@ There is just one more special MAC address we need to get familiar with before w
 ### THE WAY IT WORKS
 
 ```
-MACHINE   |    HOST A                                                      HOST B
-.         |    __   _                      .------.                        __   _
-.         |   [Ll] |=| ________________ P1 | ---> | P2 __________________ [Ll] |=|
-.         |   ====                         | <--- |                       ====
-IP ADDR   |   10.1.1.22                    '------'                       10.1.1.37
-MAC ADD   |   a2a2                                                        ?
+ HOST A                                                      HOST B
+ __   _                      .------.                        __   _
+[Ll] |=| ________________ P1 | ---> | P2 __________________ [Ll] |=|
+====                         | <--- |                       ====
+10.1.1.22                    '------'                       10.1.1.37
+a2a2                                                        ?
 ```
 
 Let's say I am `HOST A` and I want to send some information to `HOST B`, a ping for demonstration.
@@ -164,13 +164,12 @@ The computer knows what the IP of the other machine is but not the MAC so it wil
 | DST MAC         ffffff:ffffff | // MAC Address "ffffff:ffffff" stands for broadcast, this means
 '-------------------------------' // that the message will reach all machines in the lan.
 
-MACHINE   |    HOST A                                                      HOST B
-.         |    __   _    --ARP-REQ->       .------.                        __   _
-.         |   [Ll] |=| ________________ P1 | ---> | P2 __________________ [Ll] |=|
-.         |   ====                         | <--- |                       ====
-IP ADDR   |   10.1.1.22                    '------'                       10.1.1.37
-MAC ADD   |   a2a2                                                        ?
-
+ HOST A                                                      HOST B
+ __   _    --ARP-REQ->       .------.                        __   _
+[Ll] |=| ________________ P1 | ---> | P2 __________________ [Ll] |=|
+====                         | <--- |                       ====
+10.1.1.22                    '------'                       10.1.1.37
+a2a2                                                        ?
 ```
 
 This is what the arp header looks like, if you look carefuly you might notice that the DST MAC is ffffff:ffffff which is the broadcasting address. So we can start to put an image together of what will happen.
@@ -199,7 +198,6 @@ The switch will take the packet, duplicate it and send it on all ports except `P
 ====                         | <--- |                       ====
 10.1.1.22                    '------'                       10.1.1.37
 a2a2                                                        b3b3
-
 ```
 
 And that is how devices find out mac addresses in a LAN network.
