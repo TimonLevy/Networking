@@ -217,7 +217,7 @@ The router is a layer 3 network component used to move data between different ne
 
 This basically means that **a host would drop a packet that is not intended for it**, but a **router** will try to **route ir forward**.
 
-Since routers are connected to multiple networks at once and must maintain the ability to interact with all of them (to route packets), **they must have an IP + MAC address on all networks they participate in AND must maintain a map of all of those networks.** This map is called a `Routing Table`.
+Since routers are connected to multiple networks at once and must maintain the ability to interact with all of them (to route packets), **they must have an IP + MAC address on all networks they participate in AND must maintain a map of all of those networks.** This map is called a `Routing Table`. When a router gets a packet destined to a network it doesn't know how to route to, i.e it doesn't exist in it's routing table, it will drop it, otherwise it will send it to the next node in the chain to the target address. 
 
 ```
 +--------------10.0.55.x/24-------------+              +--------------10.0.44.x/24-------------+                +--10.0.66.x/24--+
@@ -228,8 +228,8 @@ Since routers are connected to multiple networks at once and must maintain the a
 |            __   _          \ +----+   |    +----+    |   +----+ /          __   _            |      +----+    |                |
 |       .4  [Ll] |=| _________\| S1 |------> | R1 | <------| S2 |/_________ [Ll] |=|  .20      |  .-> | R2 | <----      ...      |
 |     e1e1  ==== '-'          /+----+   | .1 +----+ .1 |   +----+\          ==== '-' b3b3      |  |.2 +----+ .1 |                |
-|                            /          | c444    fff2 |    eth1  \                            |  |dd22    ee34 |                |
-|            __   _         /           |  ^        ^  |     ^     \         __   _            |  |             |                |
+|                            /          | c444    fff2 |     |    \                            |  |dd22    ee34 |                |
+|            __   _         /           |  ^        ^  |     |     \         __   _            |  |             |                |
 |       .2  [Ll] |=| ______/            |  |        |  |     |      \______ [Ll] |=|   .2      |  |             |                |
 |     22ec  ==== '-'                    |  '        '  |     |              ==== '-' d4d4      |  |             |                |
 |                                       |   \      /   |     |                                 |  |             |                |
@@ -244,10 +244,21 @@ Now, there are three types of routing paths that can be written into a routing t
 
 First, the `Directly Connected`, the networks that interface directly into the router are written into the **Routing Table** when configured on the router. For example Router 1 (R1) will have two directly connected networks, 10.0.55.0 and 10.0.44.0 and they will be written like that:
 
-                      
-
 | **R1 ROUTING TABLE** | TYPE  | NETWORK       | INTERFACE   |   |   | **R2 ROUTING TABLE** | TYPE  | NETWORK       | INTERFACE   |
 | -------------------- | ----- | ------------- | ----------- | - | - | -------------------- | ----- | ------------- | ----------- |
 | 1                    | DC    | 10.0.44.0     | Eth0        |   |   | 1                    | DC    | 10.0.66.0     | Eth0        |
 | 2                    | DC    | 10.0.55.0     | Eth1        |   |   | 2                    | DC    | 10.0.44.0     | Eth1        |
+
+Second, the `Static Routing`. If Router 1 (R1) was to get a packet destined to 10.0.66.50 it would start searching the Routing Table and won't find the netwrok since it's not directly connected, meaning it would drop it. That is what static routing is for, basically static routes are manually entered networking routes. Supposedly, if I want to get a packet from the network 10.0.55.0 to the network 10.0.66.0 which is connected to Router 2 (R2), I would have to go through it. To get to Router 2 I need to have some sort of known interface with it, which in this case is network 10.0.44.0, where the router R2 posesses the address of 10.0.44.2. So if I want to put that in the Routing Table I would do:
+
+| **R1 ROUTING TABLE** | TYPE     | NETWORK       | INTERFACE   |   |   | **R2 ROUTING TABLE** | TYPE     | NETWORK       | INTERFACE   |
+| -------------------- | -------- | ------------- | ----------- | - | - | -------------------- | -------- | ------------- | ----------- |
+| 1                    | DC       | 10.0.44.0     | Eth0        |   |   | 1                    | DC       | 10.0.66.0     | Eth0        |
+| 2                    | DC       | 10.0.55.0     | Eth1        |   |   | 2                    | DC       | 10.0.44.0     | Eth1        |
+| 3                    | Static   | 10.0.66.0     | 10.0.44.2   |   |   | 3                    | Static   | 10.0.55.0     | 10.0.44.1   |
+*I also added 10.0.44.0 to R2's routing table*
+
+Then when the packet reaches Router 2 the other router (R2) will route it to it's DC (Directly connected) network.
+
+
 
