@@ -138,7 +138,7 @@ There is just one more special MAC address we need to get familiar with before w
  HOST A                                                      HOST B
  __   _                      .------.                        __   _
 [Ll] |=| ________________ P1 | ---> | P2 __________________ [Ll] |=|
-====                         | <--- |                       ====
+==== '-'                     | <--- |                       ==== '-'
 10.1.1.22                    '------'                       10.1.1.37
 a2a2                                                        ?
 ```
@@ -167,7 +167,7 @@ The computer knows what the IP of the other machine is but not the MAC so it wil
  HOST A                                                      HOST B
  __   _    --ARP-REQ->       .------.                        __   _
 [Ll] |=| ________________ P1 | ---> | P2 __________________ [Ll] |=|
-====                         | <--- |                       ====
+==== '-'                     | <--- |                       ==== '-'
 10.1.1.22                    '------'                       10.1.1.37
 a2a2                                                        ?
 ```
@@ -195,7 +195,7 @@ The switch will take the packet, duplicate it and send it on all ports except `P
  HOST A                                                      HOST B
  __   _                      .------.      <-ARP-RESP--      __   _
 [Ll] |=| ________________ P1 | ---> | P2 __________________ [Ll] |=|
-====                         | <--- |                       ====
+==== '-'                     | <--- |                       ==== '-'
 10.1.1.22                    '------'                       10.1.1.37
 a2a2                                                        b3b3
 ```
@@ -206,4 +206,48 @@ And that is how devices find out mac addresses in a LAN network.
 
 ## Router
 
-The router is a layer 3 network component used to move data between different networks, this process is called **routing** (The process of moving informationg inside of a network is called **switching**).
+The router is a layer 3 network component used to move data between different networks, this process is called **routing** (The process of moving informationg inside of a network is called **switching**). To better explain what exactly constitues a router and how it is different than a host, here is the [RC 2460](https://www.rfc-editor.org/rfc/rfc2460) definition of a router (The RFC is about IPv6 but the definition of a router applies to IPv4 as well):
+
+>   node        - a device that implements IPv6.
+>
+>   router      - a node that forwards IPv6 packets not explicitly
+>                 addressed to itself.
+>
+>   host        - any node that is not a router.
+
+This basically means that **a host would drop a packet that is not intended for it**, but a **router** will try to **route ir forward**.
+
+Since routers are connected to multiple networks at once and must maintain the ability to interact with all of them (to route packets), **they must have an IP + MAC address on all networks they participate in AND must maintain a map of all of those networks.** This map is called a `Routing Table`.
+
+```
++--------------10.0.55.x/24-------------+              +--------------10.0.44.x/24-------------+                +--10.0.66.x/24--+
+|            __   _                     |              |                     __   _            |                |                |
+|       .3  [Ll] |=| ______             |              |             ______ [Ll] |=|   .6      |                |                |
+|     f5f5  ==== '-'       \            |              |            /       ==== '-' a2a2      |                |                |
+|                           \           | eth1    eth0 |           /                           |   eth1    eth0 |                |
+|            __   _          \ +----+   |    +----+    |   +----+ /          __   _            |      +----+    |                |
+|       .4  [Ll] |=| _________\| S1 |------> | R1 | <------| S2 |/_________ [Ll] |=|  .20      |  .-> | R2 | <----      ...      |
+|     e1e1  ==== '-'          /+----+   | .1 +----+ .1 |   +----+\          ==== '-' b3b3      |  |.2 +----+ .1 |                |
+|                            /          | c444    fff2 |    eth1  \                            |  |dd22    ee34 |                |
+|            __   _         /           |  ^        ^  |     ^     \         __   _            |  |             |                |
+|       .2  [Ll] |=| ______/            |  |        |  |     |      \______ [Ll] |=|   .2      |  |             |                |
+|     22ec  ==== '-'                    |  '        '  |     |              ==== '-' d4d4      |  |             |                |
+|                                       |   \      /   |     |                                 |  |             |                |
++---------------------------------------+    \    /    +-----|---------------------------------+  |             +----------------+
+.                                             \  /           |____________________________________|
+.                                              \/
+.                                   Router interfaces IP address
+.                                   And MAC.
+```
+
+Now, there are three types of routing paths that can be written into a routing tables. 
+
+First, the `Directly Connected`, the networks that interface directly into the router are written into the **Routing Table** when configured on the router. For example Router 1 (R1) will have two directly connected networks, 10.0.55.0 and 10.0.44.0 and they will be written like that:
+
+                      
+
+| **R1 ROUTING TABLE** | TYPE  | NETWORK       | INTERFACE   |   |   | **R2 ROUTING TABLE** | TYPE  | NETWORK       | INTERFACE   |
+| -------------------- | ----- | ------------- | ----------- | - | - | -------------------- | ----- | ------------- | ----------- |
+| 1                    | DC    | 10.0.44.0     | Eth0        |   |   | 1                    | DC    | 10.0.66.0     | Eth0        |
+| 2                    | DC    | 10.0.55.0     | Eth1        |   |   | 2                    | DC    | 10.0.44.0     | Eth1        |
+
