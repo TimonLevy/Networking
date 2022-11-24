@@ -226,15 +226,15 @@ Since routers are connected to multiple networks at once and must maintain the a
 |     f5f5  ==== '-'       \            |              |            /       ==== '-' a2a2      |                |                |
 |                           \           | eth1    eth0 |           /                           |   eth1    eth0 |                |
 |            __   _          \ +----+   |    +----+    |   +----+ /          __   _            |      +----+    |                |
-|       .4  [Ll] |=| _________\| S1 |------> | R1 | <------| S2 |/_________ [Ll] |=|  .20      |  .-> | R2 | <----      ...      |
-|     e1e1  ==== '-'          /+----+   | .1 +----+ .1 |   +----+\          ==== '-' b3b3      |  |.2 +----+ .1 |                |
-|                            /          | c444    fff2 |     |    \                            |  |dd22    ee34 |                |
-|            __   _         /           |  ^        ^  |     |     \         __   _            |  |             |                |
-|       .2  [Ll] |=| ______/            |  |        |  |     |      \______ [Ll] |=|   .2      |  |             |                |
-|     22ec  ==== '-'                    |  '        '  |     |              ==== '-' d4d4      |  |             |                |
-|                                       |   \      /   |     |                                 |  |             |                |
-+---------------------------------------+    \    /    +-----|---------------------------------+  |             +----------------+
-.                                             \  /           |____________________________________|
+|       .4  [Ll] |=| _________\| S1 |------> | R1 | <------| S2 |/_________ [Ll] |=|  .20      | .--> | R2 | <----      ...      |
+|     e1e1  ==== '-'          /+----+   | .1 +----+ .1 |   +----+\          ==== '-' b3b3      | | .2 +----+ .1 |                |
+|                            /          | c444    fff2 |     |    \                            | | dd22    ee34 |                |
+|            __   _         /           |  ^        ^  |     |     \         __   _            | |              |                |
+|       .2  [Ll] |=| ______/            |  |        |  |     |      \______ [Ll] |=|   .2      | |              |                |
+|     22ec  ==== '-'                    |  '        '  |     |              ==== '-' d4d4      | |              |                |
+|                                       |   \      /   |     |                                 | |              |                |
++---------------------------------------+    \    /    +-----|---------------------------------+ |              +----------------+
+.                                             \  /           |___________________________________|
 .                                              \/
 .                                   Router interfaces IP address
 .                                   And MAC.
@@ -260,5 +260,30 @@ Second, the `Static Routing`. If Router 1 (R1) was to get a packet destined to 1
 
 Then when the packet reaches Router 2 the other router (R2) will route it to it's DC (Directly connected) network.
 
+Lastly, `Dynamic Routing`. When setting a Router to `Dynamic Routing` it will occasionally share it's known networks to other routers connected to it, Meaning that if we take the Routing tables from the first routing option (The ones without static routes) and enable Dynamic Routing on both rouers they would share their routing tables. When a router shares their routing table information it will add all the network it is not familiar with. So if we take the routing tables from example 1 and enable `Dynamic Routing` this is what will happen:
 
+1. The routers' routing tables before sharing their networks. 
+   
+| **R1 ROUTING TABLE** | TYPE      | NETWORK       | INTERFACE   |   |   | **R2 ROUTING TABLE** | TYPE      | NETWORK       | INTERFACE   |
+| -------------------- | --------- | ------------- | ----------- | - | - | -------------------- | -----     | ------------- | ----------- |
+| 1                    | DC        | 10.0.44.0     | Eth0        |   |   | 1                    | DC        | 10.0.66.0     | Eth0        |
+| 2                    | DC        | 10.0.55.0     | Eth1        |   |   | 2                    | DC        | 10.0.44.0     | Eth1        |
+| -                    | -         | -             | -           |   |   | -                    | -         | -             | -           |
 
+2. R1 shares t's known networks, R2 recognizes 10.0.44.0 so it dismisses it but does not recognize 10.0.55.0 so it adds it to it's routing table from the addess it got it from.
+
+| **R1 ROUTING TABLE** | TYPE      | NETWORK       | INTERFACE   |   |   | **R2 ROUTING TABLE** | TYPE      | NETWORK       | INTERFACE   |
+| -------------------- | --------- | ------------- | ----------- | - | - | -------------------- | -----     | ------------- | ----------- |
+| 1                    | DC        | 10.0.44.0     | Eth0        |   |   | 1                    | DC        | 10.0.66.0     | Eth0        |
+| 2                    | DC        | 10.0.55.0     | Eth1        |   |   | 2                    | DC        | 10.0.44.0     | Eth1        |
+| -                    | -         | -             | -           |   |   | 3                    | Dynamic   | 10.0.55.0     | 10.0.44.1   |
+
+3. R2 shares t's known networks, R1 recognizes 10.0.44.0 so it dismisses it but does not recognize 10.0.66.0 so it adds it to it's routing table from the addess it got it from.
+
+| **R1 ROUTING TABLE** | TYPE      | NETWORK       | INTERFACE   |   |   | **R2 ROUTING TABLE** | TYPE      | NETWORK       | INTERFACE   |
+| -------------------- | --------- | ------------- | ----------- | - | - | -------------------- | -----     | ------------- | ----------- |
+| 1                    | DC        | 10.0.44.0     | Eth0        |   |   | 1                    | DC        | 10.0.66.0     | Eth0        |
+| 2                    | DC        | 10.0.55.0     | Eth1        |   |   | 2                    | DC        | 10.0.44.0     | Eth1        |
+| Dynamic              | Dynamic   | 10.0.66.0     | 10.0.44.2   |   |   | 3                    | Dynamic   | 10.0.55.0     | 10.0.44.1   |
+
+Hooray, now, without any intervention, networks 10.0.55.0 and 10.0.66.0 can communicate!
