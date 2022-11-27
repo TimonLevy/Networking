@@ -118,3 +118,5 @@ ICMP Field:
 > | 1 | fragment reassembly time exceeded   |
 >
 > Code 0 can be sent from a waypoint, code 1 can be sent from a host.
+>
+> ---------------------
