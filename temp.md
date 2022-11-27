@@ -13,3 +13,32 @@ An ICMP packet is used to instruct a device in the routing path of a packet (inc
 
 #### ICMP Type Specifications
 [0 & 8] Echo & Echo Reply
+
+An ICMP Echo is used to check the connectivity from one endpoint to another, and ICMP Echo Reply is used to reply to Echo requests. Endpoints can send an `ICMP Echo Request` to another endpoint which will get routed to them and if the destination machine recieves the request it will send back an `ICMP Echo Reply`.
+
+Fields:
+> **Address**
+> 
+> The destination address in an Echo request will be the destination of the Echo Reply message. 
+
+> **Type**
+> 
+> 8 Echo Request
+> 
+> 0 Echo Reply
+
+> **Code**
+>
+> 0 (Default value)
+
+> **Checksum**
+>
+> The checksum is the 16-bit ones's complement of the one's complement sum of the ICMP message starting with the ICMP Type.
+
+> **Identifier**
+>
+> An identifier to aid in matching echos and replies (for example port number for control messages relating to a service), may be zero.
+
+> **Sequence Number**
+>
+> A sequence number to aid in matching echos and replies (May be an incremental value for control messages sent in the same stream), may be zero.
