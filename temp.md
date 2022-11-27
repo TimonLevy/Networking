@@ -52,10 +52,10 @@ IP Fields:
 
 ICMP Fields:
 > **Type**
-> 
-> 8 Echo Request
-> 
-> 0 Echo Reply
+> |   |                                     |
+> |---|-------------------------------------|
+> | 8 | Echo Request                        |
+> | 1 | Echo Reply                          |
 
 > **Code**
 >
@@ -79,11 +79,11 @@ IP Fields:
 > The address of the original packet sender.
 
 ICMP Field:
-> Type
+> **Type**
 >
 > 3
 
-> Code
+> **Code**
 >
 > |   |                                     |
 > |---|-------------------------------------|
@@ -95,3 +95,26 @@ ICMP Field:
 > | 6 | Source route failed                 |
 >
 > Codes 0, 1, 4 and 5 can be recieved from a gateway. Codes 2 and 3 can be recieved from a host.
+
+**[11] Time Exceeded**
+
+An ICMP `Time Exceeded` if a packet's TTL reaches 0 while traveling to it's destination, the final waypoint it encoutered may send a Time Exceeded message to the sender host, or, if the desination host cannot reassemble a fragmented packet in the time limit it may send a Time Exceeded to the sender host.
+
+IP Fields:
+> **Destination Address**
+>
+> The address of the original packet sender.
+
+ICMP Field:
+> **Type**
+>
+> 11
+
+> **Code**
+>
+> |   |                                     |
+> |---|-------------------------------------|
+> | 0 | ttl exceeded in transit             |
+> | 1 | fragment reassembly time exceeded   |
+>
+> Code 0 can be sent from a waypoint, code 1 can be sent from a host.
