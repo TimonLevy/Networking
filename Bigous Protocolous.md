@@ -50,26 +50,26 @@ ICMP Data
 An ICMP Echo is used to check the connectivity from one endpoint to another, and ICMP Echo Reply is used to reply to Echo requests. Endpoints can send an `ICMP Echo Request` to another endpoint which will get routed to them and if the destination machine recieves the request it will send back an `ICMP Echo Reply`.
 
 IP Fields:
-> ### `Address`
+> #### `Address`
 > 
 > The destination address in an Echo request will be the destination of the Echo Reply message. 
 
 ICMP Fields:
-> ### `Type`
+> #### `Type`
 > |   |                                     |
 > |---|-------------------------------------|
 > | 8 | Echo Request                        |
 > | 1 | Echo Reply                          |
 
-> ### `Code`
+> #### `Code`
 >
 > 0 (Default value)
 
-> ### `Identifier`
+> #### `Identifier`
 >
 > An identifier to aid in matching echos and replies (for example port number for control messages relating to a service), may be zero.
 
-> ### `Sequence Number`
+> #### `Sequence Number`
 >
 > A sequence number to aid in matching echos and replies (May be an incremental value for control messages sent in the same stream), may be zero.
 
@@ -78,16 +78,16 @@ ICMP Fields:
 An ICMP `Destination Unreachable` message will be recieved when a packet can't be delievered because a waypoint couldn't route it, the destination host service could not accept the packet (IP protocol or port isn't active), the gateway determined that the destination is unreachable or a DF (Dont Fragment) interuppted a fragmented packet and it was dropped due to it.
 
 IP Fields:
-> ### `Destination Address`
+> #### `Destination Address`
 >
 > The address of the original packet sender.
 
 ICMP Field:
-> ### `Type`
+> #### `Type`
 >
 > 3
 
-> ### `Code`
+> #### `Code`
 >
 > |   |                                     |
 > |---|-------------------------------------|
@@ -105,16 +105,16 @@ ICMP Field:
 An ICMP `Time Exceeded` if a packet's TTL reaches 0 while traveling to it's destination, the final waypoint it encoutered may send a Time Exceeded message to the sender host, or, if the desination host cannot reassemble a fragmented packet in the time limit it may send a Time Exceeded to the sender host.
 
 IP Fields:
-> ### `Destination Address`
+> #### `Destination Address`
 >
 > The address of the original packet sender.
 
 ICMP Field:
-> ### `Type`
+> #### `Type`
 >
 > 11
 
-> ### `Code`
+> #### `Code`
 >
 > |   |                                     |
 > |---|-------------------------------------|
@@ -130,19 +130,19 @@ ICMP Field:
 ## Domain Name System A.K.A DNS
 The DNS protocol is used for "translating" between IP addresses and Domain Names, thus the name Domain Name System. The protocol itself operates at the 7th OSI level which is the application layer and ontop of `UDP/53`. DNS went under a lot of transformation over the year since it was first introduced at 1983, today it exists in many variants that each serve a different purpose or build on previous implementation of the protocol. Some of these are:
 
-> ### `DNS over TCP/53`
+> #### `DNS over TCP/53`
 >
 > Provides more stability, longer answers and re-use of long-lived connections between clients and servers.
 
-> ### `DNS over TLS` (TCP/853)
+> #### `DNS over TLS` (TCP/853)
 >
 > Provides encryption to the entire DNS session, requires a dedicated DoT server.
 
-> ### `DNS over HTTPS` (TCP/443)
+> #### `DNS over HTTPS` (TCP/443)
 >
 > Tunnels DNS over HTTPS.
 
-> ### `DNS over QUIC` (UDP/853)
+> #### `DNS over QUIC` (UDP/853)
 >
 > Uses the transport protocol QUIC to transport messages, provides a lot of benefits that TCP does with encryption and speed.
 
@@ -164,15 +164,15 @@ A `DNS Table` is a long list of **DNS records**, basically a list of the Domain 
 #### DNS Query Types
 There are multiple types of querys that the host can ask of the server to perform in order to resolve the address.
 
-> ### `Recursive Query`
+> #### `Recursive Query`
 >
 > In a recursive query the DNS server tries to find the **authoratative** DNS server of the address (The DNS server containing the resolution), through a recursive process starting at the Root DNS server. The server *must* return a response, either the resolution or an error.
 
-> ### `Non-Recursive Query`
+> #### `Non-Recursive Query`
 >
 > In this query either the DNS server has to have the dns resolution or it queries the authoratative server for that hostname (which it must be familiar with through an NS type record).
 
-> ### `Iterative Query`
+> #### `Iterative Query`
 >
 > The iterative query will try to return the best answer from it's cache and if it cant it will redirect the client to the DNS Root Server or the Authoratative server for that resolution where the client will have to repeat the query.
 
@@ -199,25 +199,25 @@ DHCP Servers offer up IP addresses based on a configured `DHCP Scope` on the DHC
 Machines on the subnet may also reserve addresses on the DHCP Server in order to always recieve the same address, the reservation is made using the MAC address.
 
 ### IP Assignment Process
-> ### `DHCPDISCOVER`
+> #### `DHCPDISCOVER`
 >
 > When a client detects that it has no IP (And DHCP is enabled on it) it will look for a DHCP server on the network using a broadcast message. The DHCPDISCOVER message MAY include options that suggest values for the network address and lease duration.
 
-> ### `DHCPOFFER`
+> #### `DHCPOFFER`
 >
 > Each DHCP Server that the message gets to may reespond with an available IP address to the client in DHCPOffer message.
 
-> ### `DHCPREQUEST` 
+> #### `DHCPREQUEST` 
 >
 > The client can send a DHCPREQUEST message to a server in order to:
 > * Accept/Decline a DHCPOFFER, a client will accept one offer and deny all other.
 > * Request a extension to an existing lease.
 
-> ### `DHCPACK`
+> #### `DHCPACK`
 > 
 > Server sends network configuration parameters, including committed network address.
 
 at the end, when a computer wants to disconnect from the network it can send.
-> ### `DHCPRELEASE`
+> #### `DHCPRELEASE`
 > 
 > Client to server relinquishing network address and cancelling remaining lease.
