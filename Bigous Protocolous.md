@@ -1,5 +1,8 @@
 # BIGOUS PROTOCOLOUS
----------------------
+
+The big protocol wikipedia.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## Internet Control Message Protocol A.K.A ICMP
 
@@ -121,7 +124,7 @@ ICMP Field:
 > Code 0 can be sent from a waypoint, code 1 can be sent from a host.
 
 
----------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 ## Domain Name System A.K.A DNS
@@ -177,7 +180,7 @@ There are multiple types of querys that the host can ask of the server to perfor
 Finally, the server will return a reponse to the client which it will use. Either the server gives the client the resolution IP or it will error, in case the server does resolve the address the Client will `keep that resolution in it's own DNS Cache` to make future resolution of that name instantaneous.
 
 
----------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 ## Dynamic Host Configuration Protocol A.K.A DHCP
