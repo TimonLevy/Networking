@@ -5,13 +5,13 @@
 
 ICMP, or **I**nternet **C**ontrol **M**essage **P**rotocol is a 3rd (OSI Model) layer protocol used to send control messages relating to the Internet protocol (IP).
 
-### Why Was It Invented?
+### WHY WAS IT INVENTED?
 Since the implementation of IP is not meant to be absolutely reliable and it can sometimes mess up, The ICMP protocol be used to return send feedback about problems that can arise when communicatinf with a host. However the ICMP protocl does not act to make the IP more reliable and does not guarantee 100% reliablility itself incase IP fails to deliver. ICMP will usually report on delivery errors of packets and no ICMP packet will be sent about a lost ICMP packet.
 
-### How Does It Work?
+### HOW DOES IT WORK?
 An ICMP packet is used to instruct a device in the routing path of a packet (including the source and destination) of a failure or change in the delivery of the packet (Except for `ICMP Type`s 0 and 8). The type and structure of the packet is determined by the `ICMP Type` parameter in the header. Each type also has an `ICMP Code` that determines the subject of the packet.
 
-**ICMP Packet Format**
+### PACKET FORMAT
 
 ```
 IP Header
@@ -40,50 +40,51 @@ ICMP Data
 ```
 
 
-#### ICMP Type Specifications
-**[0 & 8] Echo & Echo Reply**
+### ICMP TYPE SPECIFICATIONS
+
+#### `[0 & 8] Echo & Echo Reply`
 
 An ICMP Echo is used to check the connectivity from one endpoint to another, and ICMP Echo Reply is used to reply to Echo requests. Endpoints can send an `ICMP Echo Request` to another endpoint which will get routed to them and if the destination machine recieves the request it will send back an `ICMP Echo Reply`.
 
 IP Fields:
-> **Address**
+> `Address`
 > 
 > The destination address in an Echo request will be the destination of the Echo Reply message. 
 
 ICMP Fields:
-> **Type**
+> `Type`
 > |   |                                     |
 > |---|-------------------------------------|
 > | 8 | Echo Request                        |
 > | 1 | Echo Reply                          |
 
-> **Code**
+> `Code`
 >
 > 0 (Default value)
 
-> **Identifier**
+> `Identifier`
 >
 > An identifier to aid in matching echos and replies (for example port number for control messages relating to a service), may be zero.
 
-> **Sequence Number**
+> `Sequence Number`
 >
 > A sequence number to aid in matching echos and replies (May be an incremental value for control messages sent in the same stream), may be zero.
 
-**[3] Destination Unreachable**
+#### [3] Destination Unreachable
 
 An ICMP `Destination Unreachable` message will be recieved when a packet can't be delievered because a waypoint couldn't route it, the destination host service could not accept the packet (IP protocol or port isn't active), the gateway determined that the destination is unreachable or a DF (Dont Fragment) interuppted a fragmented packet and it was dropped due to it.
 
 IP Fields:
-> **Destination Address**
+> `Destination Address`
 >
 > The address of the original packet sender.
 
 ICMP Field:
-> **Type**
+> `Type`
 >
 > 3
 
-> **Code**
+> `Code`
 >
 > |   |                                     |
 > |---|-------------------------------------|
@@ -96,21 +97,21 @@ ICMP Field:
 >
 > Codes 0, 1, 4 and 5 can be recieved from a gateway. Codes 2 and 3 can be recieved from a host.
 
-**[11] Time Exceeded**
+#### [11] Time Exceeded
 
 An ICMP `Time Exceeded` if a packet's TTL reaches 0 while traveling to it's destination, the final waypoint it encoutered may send a Time Exceeded message to the sender host, or, if the desination host cannot reassemble a fragmented packet in the time limit it may send a Time Exceeded to the sender host.
 
 IP Fields:
-> **Destination Address**
+> `Destination Address`
 >
 > The address of the original packet sender.
 
 ICMP Field:
-> **Type**
+> `Type`
 >
 > 11
 
-> **Code**
+> `Code`
 >
 > |   |                                     |
 > |---|-------------------------------------|
@@ -119,24 +120,26 @@ ICMP Field:
 >
 > Code 0 can be sent from a waypoint, code 1 can be sent from a host.
 
+
 ---------------------
+
 
 ## Domain Name System A.K.A DNS
 The DNS protocol is used for "translating" between IP addresses and Domain Names, thus the name Domain Name System. The protocol itself operates at the 7th OSI level which is the application layer and ontop of `UDP/53`. DNS went under a lot of transformation over the year since it was first introduced at 1983, today it exists in many variants that each serve a different purpose or build on previous implementation of the protocol. Some of these are:
 
-> DNS over TCP/53
+> `DNS over TCP/53`
 >
 > Provides more stability, longer answers and re-use of long-lived connections between clients and servers.
 
-> DNS over TLS (TCP/853)
+> `DNS over TLS` (TCP/853)
 >
 > Provides encryption to the entire DNS session, requires a dedicated DoT server.
 
-> DNS over HTTPS (TCP/443)
+> `DNS over HTTPS` (TCP/443)
 >
 > Tunnels DNS over HTTPS.
 
-> DNS over QUIC (UDP/853)
+> `DNS over QUIC` (UDP/853)
 >
 > Uses the transport protocol QUIC to transport messages, provides a lot of benefits that TCP does with encryption and speed.
 
@@ -172,3 +175,46 @@ There are multiple types of querys that the host can ask of the server to perfor
 
 #### Getting a response
 Finally, the server will return a reponse to the client which it will use. Either the server gives the client the resolution IP or it will error, in case the server does resolve the address the Client will `keep that resolution in it's own DNS Cache` to make future resolution of that name instantaneous.
+
+
+---------------------
+
+
+## Dynamic Host Configuration Protocol A.K.A DHCP
+
+DHCP is used to assigned unique IP addresses to hosts in the network automatically, it can also assign other network configuration like subnet mask, DNS server and Default gateway. DHCP can provide a client with all the parameters it needs in order to operate in the network.
+
+### Why Was It Invented?
+Originally, when setting up a new netowrk or adding a new computer to an existing network the IP address, Subnet Mask, Default Gateway and DNS Server Address needed to be put manually into the new machine's network configuration (ncpa.cpl). This kind of IP assignment is known as `Static IP`. However that is uncomfortable, messy and hard to manage. DHCP solves this issue by assigning machine `Dynamic IP Leases` and configuring all the essentials automatically.
+
+### How Does It Work?
+DHCP works on Server-Client framework, dhcp server services can be run on host machines but also on routers.
+The DHCP addresses that are given to the machines are merely `leased`, meaning they will expire after a given time and the client will have to renew their lease. That is done in order to retrieve IP addresses of disconnected machines since the server cannot know when or if they were disconnected and no longer occupy the address.
+
+DHCP Servers offer up IP addresses based on a configured `DHCP Scope` on the DHCP Server. A DHCP Scope is a range dictated by a **Start and End Address and subnet mask**. It will look into the subnet that the client is located at and at the available IP addresses and offer one of those. DHCP Scopes have to be manually configured.
+
+Machines on the subnet may also reserve addresses on the DHCP Server in order to always recieve the same address, the reservation is made using the MAC address.
+
+### IP Assignment Process
+> `DHCPDISCOVER`
+>
+> When a client detects that it has no IP (And DHCP is enabled on it) it will look for a DHCP server on the network using a broadcast message. The DHCPDISCOVER message MAY include options that suggest values for the network address and lease duration.
+
+> `DHCPOFFER`
+>
+> Each DHCP Server that the message gets to may reespond with an available IP address to the client in DHCPOffer message.
+
+> `DHCPREQUEST` 
+>
+> The client can send a DHCPREQUEST message to a server in order to:
+> * Accept/Decline a DHCPOFFER, a client will accept one offer and deny all other.
+> * Request a extension to an existing lease.
+
+> `DHCPACK`
+> 
+> Server sends network configuration parameters, including committed network address.
+
+at the end, when a computer wants to disconnect from the network it can send.
+> `DHCPRELEASE`
+> 
+> Client to server relinquishing network address and cancelling remaining lease.
