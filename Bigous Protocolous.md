@@ -8,10 +8,10 @@ The big protocol wikipedia.
 
 ICMP, or **I**nternet **C**ontrol **M**essage **P**rotocol is a 3rd (OSI Model) layer protocol used to send control messages relating to the Internet protocol (IP).
 
-### WHY WAS IT INVENTED?
+### WHY WAS IT INVENTED
 Since the implementation of IP is not meant to be absolutely reliable and it can sometimes mess up, The ICMP protocol be used to return send feedback about problems that can arise when communicatinf with a host. However the ICMP protocl does not act to make the IP more reliable and does not guarantee 100% reliablility itself incase IP fails to deliver. ICMP will usually report on delivery errors of packets and no ICMP packet will be sent about a lost ICMP packet.
 
-### HOW DOES IT WORK?
+### HOW DOES IT WORK
 An ICMP packet is used to instruct a device in the routing path of a packet (including the source and destination) of a failure or change in the delivery of the packet (Except for `ICMP Type`s 0 and 8). The type and structure of the packet is determined by the `ICMP Type` parameter in the header. Each type also has an `ICMP Code` that determines the subject of the packet.
 
 ### PACKET FORMAT
@@ -149,15 +149,15 @@ The DNS protocol is used for "translating" between IP addresses and Domain Names
 And there are more. 
 
 
-### Why Was It Invented?
+### WHY WAS IT INVENTED
 Computers can not communicate with domain names alone, computers needs Ip addresses to be able to do that. But humans can't remember IP addresses very well, unlike Domain names. Imagine that if you wanted to visit the youtube homepage on your browser you'd have to type youtube's raw ip, It would be annoying and hard to remember, additionaly you'd have to do the same for every other site you want to visit which is practically impossible and absolutely uncomfortable for the end user.
 
 One of the most common use case of DNS is resolving URLs to ip addresses, But not only. DNS doesn't only deal with URLs, it can actually translate the name of any computer that is registered into a `DNS server` but we will get to that later. And DNS can also resolve ip addresses into Domain Names the other way around.
 
-### How does it work?
+### HOW DOES IT WORK
 
 #### DNS Tables and Cache
-The first step of the translation actually happens on the host, the host will try to resolve the domain name by looking in their DNS cache. If they can't find the site name in there then they will send a DNS request to their **assigned DNS Server**. DNS works on a request response basis, meaning I can **send a server a request (DNS Query)** and **it will give me a response (DNS Response)**. When the server recieves the request with the ip it will look into it's own `DNS Table` to try to resolve the address.
+The first step of the translation actually happens on the host, the host will try to resolve the domain name by looking in their DNS cache and Hosts file. If they can't find the site name in there then they will send a DNS request to their **assigned DNS Server**. DNS works on a request response basis, meaning I can **send a server a request (DNS Query)** and **it will give me a response (DNS Response)**. When the server recieves the request with the ip it will look into it's own `DNS Table` to try to resolve the address.
 
 A `DNS Table` is a long list of **DNS records**, basically a list of the Domain name to IP solution **it knows**. A DNS record can be of several types but we will focus on the main ones, '`A`' and '`PRT`'. 'A' is the type that defines Domain Name to Address resolution, this record will be used to translate a given domain name to it's corresponding ip ('A' for IPv4, 'AAAA' for IPv6). A 'PTR' type record will do the opposite and resolve the address into a domain name. DNS can also resolve email addresses to route outgoing emails to an SMTP email server using the `MX` type and for other services using the `SRV` type.
 
@@ -183,14 +183,39 @@ Finally, the server will return a reponse to the client which it will use. Eithe
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+## Link-Local Multicast Name Resolution A.K.A LLMNR
+
+LLMNR is used to **enable name resolutions** in places **where dns fails** to do so. LLMNR supports all DNS formats, types, and classes, while operating on a separate port from DNS (listening to queries on UDP/5355), and with a separate cache. LLMNR only operates on the local subnet, making it unviable as a DNS substitute.
+
+### WHY WAS IT INVENTED
+LLMNR provides name resolution ability inside the local-link (physical network) when dns is unavialable/unreliable or when it fails to return an answer. It was introduced as an IPv6 work around to NBT-NS which only supports IPv4.
+
+### HOW DOES IT WORK
+
+> #### `LLMNR Query`
+>
+> A host will look in it's LLMNR cache, if it doesn't find the address it will send an LLMNR Query for it with a specified type (Like DNS) to the Multicast address matching the underlying Layer 3 protocol.
+
+> #### `LLMNR Responders recieve the request`
+>
+> Any host configured as an LLMNR responder in the local link gets the query and checks their LLMNR records, they return a response only if they are the **authorative responder** to the address queried. The response is sent as a **unicast to the query source address**. 
+
+> #### `Sending Host Processes The Response`
+>
+> The host that send the query processes the response and adds the resolution to their LLMNR cache.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 ## Dynamic Host Configuration Protocol A.K.A DHCP
 
 DHCP is used to assigned unique IP addresses to hosts in the network automatically, it can also assign other network configuration like subnet mask, DNS server and Default gateway. DHCP can provide a client with all the parameters it needs in order to operate in the network.
 
-### Why Was It Invented?
+### WHY WAS IT INVENTED
 Originally, when setting up a new netowrk or adding a new computer to an existing network the IP address, Subnet Mask, Default Gateway and DNS Server Address needed to be put manually into the new machine's network configuration (ncpa.cpl). This kind of IP assignment is known as `Static IP`. However that is uncomfortable, messy and hard to manage. DHCP solves this issue by assigning machine `Dynamic IP Leases` and configuring all the essentials automatically.
 
-### How Does It Work?
+### HOW DOES IT WORK
 DHCP works on Server-Client framework, dhcp server services can be run on host machines but also on routers.
 The DHCP addresses that are given to the machines are merely `leased`, meaning they will expire after a given time and the client will have to renew their lease. That is done in order to retrieve IP addresses of disconnected machines since the server cannot know when or if they were disconnected and no longer occupy the address.
 
@@ -221,3 +246,8 @@ at the end, when a computer wants to disconnect from the network it can send.
 > #### `DHCPRELEASE`
 > 
 > Client to server relinquishing network address and cancelling remaining lease.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
