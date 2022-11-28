@@ -70,7 +70,7 @@ ICMP Fields:
 >
 > A sequence number to aid in matching echos and replies (May be an incremental value for control messages sent in the same stream), may be zero.
 
-#### [3] Destination Unreachable
+#### `[3] Destination Unreachable`
 
 An ICMP `Destination Unreachable` message will be recieved when a packet can't be delievered because a waypoint couldn't route it, the destination host service could not accept the packet (IP protocol or port isn't active), the gateway determined that the destination is unreachable or a DF (Dont Fragment) interuppted a fragmented packet and it was dropped due to it.
 
@@ -97,7 +97,7 @@ ICMP Field:
 >
 > Codes 0, 1, 4 and 5 can be recieved from a gateway. Codes 2 and 3 can be recieved from a host.
 
-#### [11] Time Exceeded
+#### `[11] Time Exceeded`
 
 An ICMP `Time Exceeded` if a packet's TTL reaches 0 while traveling to it's destination, the final waypoint it encoutered may send a Time Exceeded message to the sender host, or, if the desination host cannot reassemble a fragmented packet in the time limit it may send a Time Exceeded to the sender host.
 
