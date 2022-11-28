@@ -1,7 +1,7 @@
 # BIGOUS PROTOCOLOUS
 ---------------------
 
-## ICMP
+## Internet Control Message Protocol A.K.A ICMP
 
 ICMP, or **I**nternet **C**ontrol **M**essage **P**rotocol is a 3rd (OSI Model) layer protocol used to send control messages relating to the Internet protocol (IP).
 
@@ -118,5 +118,57 @@ ICMP Field:
 > | 1 | fragment reassembly time exceeded   |
 >
 > Code 0 can be sent from a waypoint, code 1 can be sent from a host.
+
+---------------------
+
+## Domain Name System A.K.A DNS
+The DNS protocol is used for "translating" between IP addresses and Domain Names, thus the name Domain Name System. The protocol itself operates at the 7th OSI level which is the application layer and ontop of `UDP/53`. DNS went under a lot of transformation over the year since it was first introduced at 1983, today it exists in many variants that each serve a different purpose or build on previous implementation of the protocol. Some of these are:
+
+> DNS over TCP/53
 >
-> ---------------------
+> Provides more stability, longer answers and re-use of long-lived connections between clients and servers.
+
+> DNS over TLS (TCP/853)
+>
+> Provides encryption to the entire DNS session, requires a dedicated DoT server.
+
+> DNS over HTTPS (TCP/443)
+>
+> Tunnels DNS over HTTPS.
+
+> DNS over QUIC (UDP/853)
+>
+> Uses the transport protocol QUIC to transport messages, provides a lot of benefits that TCP does with encryption and speed.
+
+And there are more. 
+
+
+### Why Was It Invented?
+Computers can not communicate with domain names alone, computers needs Ip addresses to be able to do that. But humans can't remember IP addresses very well, unlike Domain names. Imagine that if you wanted to visit the youtube homepage on your browser you'd have to type youtube's raw ip, It would be annoying and hard to remember, additionaly you'd have to do the same for every other site you want to visit which is practically impossible and absolutely uncomfortable for the end user.
+
+One of the most common use case of DNS is resolving URLs to ip addresses, But not only. DNS doesn't only deal with URLs, it can actually translate the name of any computer that is registered into a `DNS server` but we will get to that later. And DNS can also resolve ip addresses into Domain Names the other way around.
+
+### How does it work?
+
+#### DNS Tables and Cache
+The first step of the translation actually happens on the host, the host will try to resolve the domain name by looking in their DNS cache. If they can't find the site name in there then they will send a DNS request to their **assigned DNS Server**. DNS works on a request response basis, meaning I can **send a server a request (DNS Query)** and **it will give me a response (DNS Response)**. When the server recieves the request with the ip it will look into it's own `DNS Table` to try to resolve the address.
+
+A `DNS Table` is a long list of **DNS records**, basically a list of the Domain name to IP solution **it knows**. A DNS record can be of several types but we will focus on the main ones, '`A`' and '`PRT`'. 'A' is the type that defines Domain Name to Address resolution, this record will be used to translate a given domain name to it's corresponding ip ('A' for IPv4, 'AAAA' for IPv6). A 'PTR' type record will do the opposite and resolve the address into a domain name. DNS can also resolve email addresses to route outgoing emails to an SMTP email server using the `MX` type and for other services using the `SRV` type.
+
+#### DNS Query Types
+There are multiple types of querys that the host can ask of the server to perform in order to resolve the address.
+
+> `Recursive Query`
+>
+> In a recursive query the DNS server tries to find the **authoratative** DNS server of the address (The DNS server containing the resolution), through a recursive process starting at the Root DNS server. The server *must* return a response, either the resolution or an error.
+
+> `Non-Recursive Query`
+>
+> In this query either the DNS server has to have the dns resolution or it queries the authoratative server for that hostname (which it must be familiar with through an NS type record).
+
+> `Iterative Query`
+>
+> The iterative query will try to return the best answer from it's cache and if it cant it will redirect the client to the DNS Root Server or the Authoratative server for that resolution where the client will have to repeat the query.
+
+#### Getting a response
+Finally, the server will return a reponse to the client which it will use. Either the server gives the client the resolution IP or it will error, in case the server does resolve the address the Client will `keep that resolution in it's own DNS Cache` to make future resolution of that name instantaneous.
