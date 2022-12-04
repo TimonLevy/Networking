@@ -8,6 +8,7 @@ The big protocol wikipedia.
 | [DNS](#domain-name-system-aka-dns) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Domain name System               |
 | [LLMNR](#link-local-multicast-name-resolution-aka-llmnr) . . . . . . . . . . . . . . . . . . . Link-Local Multicast name Resolution       |
 | [DHCP](#dynamic-host-configuration-protocol-aka-dhcp) . . . . . . . . . . . . . . . . . . . . Dynamic Host Configuration Protocol         |
+| [NetBIOS](#network-basic-inputoutput-system-aka-netbios) . . . . . . . . . . . . . . . . . . . .Network Basic Input Output System         |
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
