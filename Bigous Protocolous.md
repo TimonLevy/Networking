@@ -288,7 +288,7 @@ NetBIOS lets application that rely on it to send messages over the **local area 
 
 To falicitate those network functions NetBIOS seperates to 3 services:
 
-> #### NetBIOS Name Service
+> #### `NetBIOS Name Service`
 > *[\#UDP/137]*
 > 
 > NetBIOS provides it's own type of network architechture where each computer is represented by a 16 byte `name`, 15 ASCII characters to represent the computer and the last as a bit-field that represents what type of services the machine provides. The name will then be registered to an ip address (Only IPv4), will will enable name resolution.
@@ -297,12 +297,12 @@ To falicitate those network functions NetBIOS seperates to 3 services:
 > 
 > NOTICE: NBT Names are apply only to the link-local network, they are not to be confused with domain names.
 
-> #### NetBIOS Session Service
+> #### `NetBIOS Session Service`
 > *[\#TCP139]*
 > 
 > Applications using NetBIOS can establish an NetBIOS over TCP (NBT) session with a "call" command, then communicate with "send" and "recieve" commands. Since NBSS uses TCP as it's base it allows for bigger messages, transmission control and loss recovery.
 
-> #### NetBIOS Datagram Service
+> #### `NetBIOS Datagram Service`
 > *[\#UDP138]*
 > 
 > Applications may also communicate over NetBIOS connectionless, using individual datagrams over the NetBIOS Datagram Service. The datgram services allows unicast, multicast and broadcast datagram messaging, using "group ips", an application can listen on a designated group ip to recieve a satagram sent to that group's members.
