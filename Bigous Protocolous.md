@@ -9,11 +9,12 @@ The big protocol wikipedia.
 | [LLMNR](#link-local-multicast-name-resolution-aka-llmnr) . . . . . . . . . . . . . . . . . . . Link-Local Multicast name Resolution       |
 | [DHCP](#dynamic-host-configuration-protocol-aka-dhcp) . . . . . . . . . . . . . . . . . . . . Dynamic Host Configuration Protocol         |
 | [NetBIOS](#network-basic-inputoutput-system-aka-netbios) . . . . . . . . . . . . . . . . . . . .Network Basic Input Output System         |
+| [Telnet](#teletype-network-aka-telnet) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Teletype Network       |
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## Internet Control Message Protocol A.K.A ICMP
-*[\#Layer3] [\#Portless]*
+*[\#Layer 3] [\#Portless]*
 
 ICMP, or **I**nternet **C**ontrol **M**essage **P**rotocol is a 3rd (OSI Model) layer protocol used to send control messages relating to the Internet protocol (IP).
 
@@ -139,7 +140,7 @@ ICMP Field:
 
 
 ## Domain Name System A.K.A DNS
-*[\#Layer7] [\#TCP/53] [\#UDP/53]*
+*[\#Layer 7] [\#TCP/53] [\#UDP/53]*
 
 The DNS protocol is used for "translating" between IP addresses and Domain Names, thus the name Domain Name System. The protocol itself operates at the 7th OSI level which is the application layer and ontop of `UDP/53`. DNS went under a lot of transformation over the year since it was first introduced at 1983, today it exists in many variants that each serve a different purpose or build on previous implementation of the protocol. Some of these are:
 
@@ -198,7 +199,7 @@ Finally, the server will return a reponse to the client which it will use. Eithe
 
 
 ## Link-Local Multicast Name Resolution A.K.A LLMNR
-*[\#Layer7] [\#UDP/5355]*
+*[\#Layer 7] [\#UDP/5355]*
 
 LLMNR is used to **enable name resolutions** in places **where dns fails** to do so. LLMNR supports all DNS formats, types, and classes, while operating on a separate port from DNS (listening to queries on UDP/5355), and with a separate cache. LLMNR only operates on the local subnet, making it unviable as a DNS substitute.
 
@@ -229,7 +230,7 @@ Do note that **LLMNR should be disabled** in your local link network through GPO
 
 
 ## Dynamic Host Configuration Protocol A.K.A DHCP
-*[\#Layer3] [\#Portless]*
+*[\#Layer 3] [\#Portless]*
 
 DHCP is used to assigned unique IP addresses to hosts in the network automatically, it can also assign other network configuration like subnet mask, DNS server and Default gateway. DHCP can provide a client with all the parameters it needs in order to operate in the network.
 
@@ -274,7 +275,7 @@ at the end, when a computer wants to disconnect from the network it can send.
 
 
 ## Network Basic Input/Output System A.K.A NetBIOS
-*[\#Layer5]*
+*[\#Layer 5]*
 
 The Network BIOS Protocol is a protocols that was used as a standard for communicating messages between two endpoints in the Link-Local Network. It provides `basic functionality for communication`. 
 
@@ -311,3 +312,27 @@ To falicitate those network functions NetBIOS seperates to 3 services:
 ###### [Back to top](#bigous-protocolous)
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+## Teletype Network A.K.A Telnet
+*[\#Layer 5] [\#TCP/23]*
+
+Telnet is a session layer protocol that enables terminal access to an application on another host. Allowing the user to send commands to another endpoint rmotely.
+
+### WHY WAS IT INVENTED?
+
+The idea for a terminal that can interface with the network was proposed on [rfc 15](https://www.rfc-editor.org/rfc/rfc15.html "Network Subsystem for Time Sharing Hosts") back in 1969. The documents discusses the idea of remotely accessing another machines terminal abstractly and even having the ability to transfer files over the network. The host machine would just send each chacrater input to the remote machine, and the host machien would have a special format to ented basic commands.
+
+### HOW DOES IT WORK?
+
+The telnet protocol is mostly used by the telnet subsystem in your machine, using that system you may connect to another machine with the protocol and send information (namely commands or their outputs) bi-directionaly using the command line interface. Telnet is strictly characterial, and work over platform as the subsystem can decode characters to match the system requirement.
+
+Since at the time of the protocol's manifestation the cyber threat wasn't as potent, all communication over TelNet is sent as cleartext (Not encrypted). Given that, telnet has to be manually enabled with the newer systems nowadays and they are frowned upon.
+
+However, telnet still has uses like:
+* Old Systems that don't support newer protocols like SSH.
+* Configuring routers and network devices.
+* Checking if ports are open.
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
