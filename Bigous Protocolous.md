@@ -7,11 +7,12 @@ The big protocol wikipedia.
 | [ICMP](#internet-control-message-protocol-aka-icmp) . . . . . . . . . . . . . . . . . . . . . . .Internet Control Message protocol        |
 | [DNS](#domain-name-system-aka-dns) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Domain name System               |
 | [LLMNR](#link-local-multicast-name-resolution-aka-llmnr) . . . . . . . . . . . . . . . . . . . Link-Local Multicast name Resolution       |
-| [DHCP](#dynamic-host-configuration-protocol-aka-dhcp) . . . . . . . . . . . . . . . . . . . . .Dynamic Host Configuration Protocol        |
+| [DHCP](#dynamic-host-configuration-protocol-aka-dhcp) . . . . . . . . . . . . . . . . . . . . Dynamic Host Configuration Protocol         |
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## Internet Control Message Protocol A.K.A ICMP
+*[\#Layer3] [\#Portless]*
 
 ICMP, or **I**nternet **C**ontrol **M**essage **P**rotocol is a 3rd (OSI Model) layer protocol used to send control messages relating to the Internet protocol (IP).
 
@@ -137,9 +138,11 @@ ICMP Field:
 
 
 ## Domain Name System A.K.A DNS
+*[\#Layer7] [\#TCP/53] [\#UDP/53]*
+
 The DNS protocol is used for "translating" between IP addresses and Domain Names, thus the name Domain Name System. The protocol itself operates at the 7th OSI level which is the application layer and ontop of `UDP/53`. DNS went under a lot of transformation over the year since it was first introduced at 1983, today it exists in many variants that each serve a different purpose or build on previous implementation of the protocol. Some of these are:
 
-> #### `DNS over TCP/53`
+> #### `DNS over TCP` (TCP/53)
 >
 > Provides more stability, longer answers and re-use of long-lived connections between clients and servers.
 
@@ -194,6 +197,7 @@ Finally, the server will return a reponse to the client which it will use. Eithe
 
 
 ## Link-Local Multicast Name Resolution A.K.A LLMNR
+*[\#Layer7] [\#UDP/5355]*
 
 LLMNR is used to **enable name resolutions** in places **where dns fails** to do so. LLMNR supports all DNS formats, types, and classes, while operating on a separate port from DNS (listening to queries on UDP/5355), and with a separate cache. LLMNR only operates on the local subnet, making it unviable as a DNS substitute.
 
@@ -224,6 +228,7 @@ Do note that **LLMNR should be disabled** in your local link network through GPO
 
 
 ## Dynamic Host Configuration Protocol A.K.A DHCP
+*[\#Layer3] [\#Portless]*
 
 DHCP is used to assigned unique IP addresses to hosts in the network automatically, it can also assign other network configuration like subnet mask, DNS server and Default gateway. DHCP can provide a client with all the parameters it needs in order to operate in the network.
 
@@ -267,3 +272,36 @@ at the end, when a computer wants to disconnect from the network it can send.
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+## Network Basic Input/Output System A.K.A NetBIOS
+*[\#Layer5]*
+
+The Network BIOS Protocol is a protocols that was used as a standard for communicating messages between two endpoints in the Link-Local Network. It provides `basic functionality for communication`. 
+
+### WHY WAS IT INVENTED?
+
+NetBIOS was created in order to free application from the need to understand their network and implement a lot of networking specific features that would let them run as needed. Basically it was a `standard to lay groundwork for communication` that would be easy and independant.
+
+### HOW DOES IT WORK?
+
+NetBIOS lets application that rely on it to send messages over the **local area network**. It is **not** a networking protocol, as it does not have a datagram format of it's own. Over NETBIOS, application can form sessions with eachother, communicate connectionless and even resolve NetBIOS names.
+
+To falicitate those network functions NetBIOS seperates to 3 services:
+
+> #### NetBIOS Name Service
+> *[\#UDP/137]*
+> 
+> NetBIOS provides it's own type of network architechture where each computer is represented by a 16 byte `name`, 15 ASCII characters to represent the computer and the last as a bit-field that represents what type of services the machine provides. The name will then be registered to an ip address (Only IPv4), will will enable name resolution.
+> 
+> NBNS (NetBios Name Service) also acts as an "Alternative" method of name resolution incase DNS and LLMNR both fail, The names are resolved by WINS (Windows Internet Naming Service) Servers. Where, instead of Domain names the server resolves NB names to IP addresses. The Servers are used to balance networking loads and to avoid flooding the network with broadcasts.
+> 
+> NOTICE: NBT Names are apply only to the link-local network, they are not to be confused with domain names.
+
+> #### NetBIOS Session Service
+> *[\#TCP139]*
+> 
+> Applications using NetBIOS can establish an NetBIOS over TCP (NBT) session with a "call" command, then communicate with "send" and "recieve" commands. Since NBSS uses TCP as it's base it allows for bigger messages, transmission control and loss recovery.
+
+> #### NetBIOS Datagram Service
+> *[\#UDP138]*
+> 
+> Applications may also communicate over NetBIOS connectionless, using individual datagrams over the NetBIOS Datagram Service. The datgram services allows unicast, multicast and broadcast datagram messaging, using "group ips", an application can listen on a designated group ip to recieve a satagram sent to that group's members. 
