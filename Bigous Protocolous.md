@@ -285,23 +285,23 @@ NetBIOS was created in order to free application from the need to understand the
 
 ### HOW DOES IT WORK?
 
-NetBIOS lets application that rely on it to send messages over the **local area network**. It is **not** a networking protocol, as it does not have a datagram format of it's own. Over NETBIOS, application can form sessions with eachother, communicate connectionless and even resolve NetBIOS names.
-
-To falicitate those network functions NetBIOS seperates to 3 services:
-
-> #### `NetBIOS Name Service`
-> *[\#UDP/137]*
+> NetBIOS lets application that rely on it to send messages over the **local area network**. It is **not** a networking protocol, as it does not have a datagram format of it's own. Over NETBIOS, application can form sessions with eachother, communicate connectionless and even resolve NetBIOS names.
 > 
-> NetBIOS provides it's own type of network architechture where each computer is represented by a 16 byte `name`, 15 ASCII characters to represent the computer and the last as a bit-field that represents what type of services the machine provides. The name will then be registered to an ip address (Only IPv4), will will enable name resolution.
+> To falicitate those network functions NetBIOS seperates to 3 services:
 > 
-> NBNS (NetBios Name Service) also acts as an "Alternative" method of name resolution incase DNS and LLMNR both fail, The names are resolved by WINS (Windows Internet Naming Service) Servers. Where, instead of Domain names the server resolves NB names to IP addresses. The Servers are used to balance networking loads and to avoid flooding the network with broadcasts.
+> > #### `NetBIOS Name Service`
+> > *[\#UDP/137]*
+> > 
+> > NetBIOS provides it's own type of network architechture where each computer is represented by a 16 byte `name`, 15 ASCII characters to represent the computer and the last as a bit-field that represents what type of services the machine provides. The name will then be registered to an ip address (Only IPv4), will will enable name resolution.
+> > 
+> > NBNS (NetBios Name Service) also acts as an "Alternative" method of name resolution incase DNS and LLMNR both fail, The names are resolved by WINS (Windows Internet Naming Service) Servers. Where, instead of Domain names the server resolves NB names to IP addresses. The Servers are used to balance networking loads and to avoid flooding the network with broadcasts.
+> > 
+> > NOTICE: NBT Names are apply only to the link-local network, they are not to be confused with domain names.
 > 
-> NOTICE: NBT Names are apply only to the link-local network, they are not to be confused with domain names.
-
-> #### `NetBIOS Session Service`
-> *[\#TCP/139]*
-> 
-> Applications using NetBIOS can establish an NetBIOS over TCP (NBT) session with a "call" command, then communicate with "send" and "recieve" commands. Since NBSS uses TCP as it's base it allows for bigger messages, transmission control and loss recovery.
+> > #### `NetBIOS Session Service`
+> > *[\#TCP/139]*
+> > 
+> > Applications using NetBIOS can establish an NetBIOS over TCP (NBT) session with a "call" command, then communicate with "send" and "recieve" commands. Since NBSS uses TCP as it's base it allows for bigger messages, transmission control and loss recovery.
 
 > #### `NetBIOS Datagram Service`
 > *[\#UDP/138]*
