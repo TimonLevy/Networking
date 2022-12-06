@@ -302,7 +302,7 @@ NetBIOS was created in order to free application from the need to understand the
 > > *[\#TCP/139]*
 > > 
 > > Applications using NetBIOS can establish an NetBIOS over TCP (NBT) session with a "call" command, then communicate with "send" and "recieve" commands. Since NBSS uses TCP as it's base it allows for bigger messages, transmission control and loss recovery.
-
+> 
 > #### `NetBIOS Datagram Service`
 > *[\#UDP/138]*
 > 
