@@ -275,12 +275,12 @@ at the end, when a computer wants to disconnect from the network it can send.
 
 
 ## Network Basic Input/Output System A.K.A NetBIOS
-*[\#Layer 5]*
-
-The Network BIOS Protocol is a protocols that was used as a standard for communicating messages between two endpoints in the Link-Local Network. It provides `basic functionality for communication`. 
-
-### WHY WAS IT INVENTED?
-
+> *[\#Layer 5]*
+> 
+> The Network BIOS Protocol is a protocols that was used as a standard for communicating messages between two endpoints in the Link-Local Network. It provides `basic functionality for communication`. 
+> 
+> ### WHY WAS IT INVENTED?
+> 
 > NetBIOS was created in order to free application from the need to understand their network and implement a lot of networking specific features that would let them run as needed. Basically it was a `standard to lay groundwork for communication` that would be easy and independant.
 > 
 > ### HOW DOES IT WORK?
