@@ -4,12 +4,12 @@ The big protocol wikipedia.
 
 |                                                                                                                                           |
 | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| [ICMP](#internet-control-message-protocol-aka-icmp) . . . . . . . . . . . . . . . . . . . . . . .Internet Control Message protocol        |
-| [DNS](#domain-name-system-aka-dns) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Domain name System               |
-| [LLMNR](#link-local-multicast-name-resolution-aka-llmnr) . . . . . . . . . . . . . . . . . . . Link-Local Multicast name Resolution       |
-| [DHCP](#dynamic-host-configuration-protocol-aka-dhcp) . . . . . . . . . . . . . . . . . . . . Dynamic Host Configuration Protocol         |
-| [NetBIOS](#network-basic-inputoutput-system-aka-netbios) . . . . . . . . . . . . . . . . . . . .Network Basic Input Output System         |
-| [Telnet](#teletype-network-aka-telnet) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Teletype Network       |
+| [ICMP](#internet-control-message-protocol-aka-icmp). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Internet Control Message protocol        ||
+[DNS](#domain-name-system-aka-dns) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Domain name System               ||
+[LLMNR](#link-local-multicast-name-resolution-aka-llmnr). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Link-Local Multicast name Resolution       ||
+[DHCP](#dynamic-host-configuration-protocol-aka-dhcp). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Dynamic Host Configuration Protocol         ||
+[NetBIOS](#network-basic-inputoutput-system-aka-netbios) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Network Basic Input Output System         ||
+[Telnet](#teletype-network-aka-telnet). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Teletype Network       |
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -275,8 +275,8 @@ at the end, when a computer wants to disconnect from the network it can send.
 
 
 ## Network Basic Input/Output System A.K.A NetBIOS
-> *[\#Layer 5]*
-> 
+*[\#Layer 5]*
+ 
 > The Network BIOS Protocol is a protocols that was used as a standard for communicating messages between two endpoints in the Link-Local Network. It provides `basic functionality for communication`. 
 > 
 > ### WHY WAS IT INVENTED?
