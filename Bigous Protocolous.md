@@ -281,10 +281,10 @@ The Network BIOS Protocol is a protocols that was used as a standard for communi
 
 ### WHY WAS IT INVENTED?
 
-NetBIOS was created in order to free application from the need to understand their network and implement a lot of networking specific features that would let them run as needed. Basically it was a `standard to lay groundwork for communication` that would be easy and independant.
-
-### HOW DOES IT WORK?
-
+> NetBIOS was created in order to free application from the need to understand their network and implement a lot of networking specific features that would let them run as needed. Basically it was a `standard to lay groundwork for communication` that would be easy and independant.
+> 
+> ### HOW DOES IT WORK?
+> 
 > NetBIOS lets application that rely on it to send messages over the **local area network**. It is **not** a networking protocol, as it does not have a datagram format of it's own. Over NETBIOS, application can form sessions with eachother, communicate connectionless and even resolve NetBIOS names.
 > 
 > To falicitate those network functions NetBIOS seperates to 3 services:
@@ -303,10 +303,10 @@ NetBIOS was created in order to free application from the need to understand the
 > > 
 > > Applications using NetBIOS can establish an NetBIOS over TCP (NBT) session with a "call" command, then communicate with "send" and "recieve" commands. Since NBSS uses TCP as it's base it allows for bigger messages, transmission control and loss recovery.
 > 
-> #### `NetBIOS Datagram Service`
-> *[\#UDP/138]*
-> 
-> Applications may also communicate over NetBIOS connectionless, using individual datagrams over the NetBIOS Datagram Service. The datgram services allows unicast, multicast and broadcast datagram messaging, using "group ips", an application can listen on a designated group ip to recieve a satagram sent to that group's members.
+> > #### `NetBIOS Datagram Service`
+> > *[\#UDP/138]*
+> > 
+> > Applications may also communicate over NetBIOS connectionless, using individual datagrams over the NetBIOS Datagram Service. The datgram services allows unicast, multicast and broadcast datagram messaging, using "group ips", an application can listen on a designated group ip to recieve a satagram sent to that group's members.
 
 
 ###### [Back to top](#bigous-protocolous)
