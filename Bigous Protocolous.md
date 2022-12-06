@@ -52,7 +52,6 @@ ICMP Data
 '- Original IP message content                  Original IP Header + Datagram data (Up to 576 bytes)
 ```
 
-
 ### ICMP TYPE SPECIFICATIONS
 
 #### `[0 & 8] Echo & Echo Reply`
@@ -107,25 +106,25 @@ ICMP Field:
 > | 3 | port unreachable                    |
 > | 4 | Fragmantation needed and DF was set |
 > | 6 | Source route failed                 |
->
+> 
 > Codes 0, 1, 4 and 5 can be recieved from a gateway. Codes 2 and 3 can be recieved from a host.
 
 #### `[11] Time Exceeded`
 
-An ICMP `Time Exceeded` if a packet's TTL reaches 0 while traveling to it's destination, the final waypoint it encoutered may send a Time Exceeded message to the sender host, or, if the desination host cannot reassemble a fragmented packet in the time limit it may send a Time Exceeded to the sender host.
+> An ICMP `Time Exceeded` if a packet's TTL reaches 0 while traveling to it's destination, the final waypoint it encoutered may send a Time Exceeded message to the sender host, or, if the desination host cannot reassemble a fragmented packet in the time limit it may send a Time Exceeded to the sender host.
 
 IP Fields:
 > #### `Destination Address`
->
+> 
 > The address of the original packet sender.
 
-ICMP Field:
+ICMP Fields:
 > #### `Type`
->
+> 
 > 11
 
 > #### `Code`
->
+> 
 > |   |                                     |
 > |---|-------------------------------------|
 > | 0 | ttl exceeded in transit             |
@@ -247,15 +246,15 @@ Machines on the subnet may also reserve addresses on the DHCP Server in order to
 
 ### IP Assignment Process
 > #### `DHCPDISCOVER`
->
+> 
 > When a client detects that it has no IP (And DHCP is enabled on it) it will look for a DHCP server on the network using a broadcast message. The DHCPDISCOVER message MAY include options that suggest values for the network address and lease duration.
 
 > #### `DHCPOFFER`
->
+> 
 > Each DHCP Server that the message gets to may reespond with an available IP address to the client in DHCPOffer message.
 
 > #### `DHCPREQUEST` 
->
+> 
 > The client can send a DHCPREQUEST message to a server in order to:
 > * Accept/Decline a DHCPOFFER, a client will accept one offer and deny all other.
 > * Request a extension to an existing lease.
@@ -277,36 +276,36 @@ at the end, when a computer wants to disconnect from the network it can send.
 ## Network Basic Input/Output System A.K.A NetBIOS
 *[\#Layer 5]*
  
-> The Network BIOS Protocol is a protocols that was used as a standard for communicating messages between two endpoints in the Link-Local Network. It provides `basic functionality for communication`. 
+The Network BIOS Protocol is a protocols that was used as a standard for communicating messages between two endpoints in the Link-Local Network. It provides `basic functionality for communication`. 
+
+### WHY WAS IT INVENTED?
+
+NetBIOS was created in order to free application from the need to understand their network and implement a lot of networking specific features that would let them run as needed. Basically it was a `standard to lay groundwork for communication` that would be easy and independant.
+
+### HOW DOES IT WORK?
+
+NetBIOS lets application that rely on it to send messages over the **local area network**. It is **not** a networking protocol, as it does not have a datagram format of it's own. Over NETBIOS, application can form sessions with eachother, communicate connectionless and even resolve NetBIOS names.
+
+To falicitate those network functions NetBIOS seperates to 3 services:
+
+> #### `NetBIOS Name Service`
+> *[\#UDP/137]*
 > 
-> ### WHY WAS IT INVENTED?
+> NetBIOS provides it's own type of network architechture where each computer is represented by a 16 byte `name`, 15 ASCII characters to represent the computer and the last as a bit-field that represents what type of services the machine provides. The name will then be registered to an ip address (Only IPv4), will will enable name resolution.
 > 
-> NetBIOS was created in order to free application from the need to understand their network and implement a lot of networking specific features that would let them run as needed. Basically it was a `standard to lay groundwork for communication` that would be easy and independant.
+> NBNS (NetBios Name Service) also acts as an "Alternative" method of name resolution incase DNS and LLMNR both fail, The names are resolved by WINS (Windows Internet Naming Service) Servers. Where, instead of Domain names the server resolves NB names to IP addresses. The Servers are used to balance networking loads and to avoid flooding the network with broadcasts.
 > 
-> ### HOW DOES IT WORK?
+> NOTICE: NBT Names are apply only to the link-local network, they are not to be confused with domain names.
+
+> #### `NetBIOS Session Service`
+> *[\#TCP/139]*
 > 
-> NetBIOS lets application that rely on it to send messages over the **local area network**. It is **not** a networking protocol, as it does not have a datagram format of it's own. Over NETBIOS, application can form sessions with eachother, communicate connectionless and even resolve NetBIOS names.
+> Applications using NetBIOS can establish an NetBIOS over TCP (NBT) session with a "call" command, then communicate with "send" and "recieve" commands. Since NBSS uses TCP as it's base it allows for bigger messages, transmission control and loss recovery.
+
+> #### `NetBIOS Datagram Service`
+> *[\#UDP/138]*
 > 
-> To falicitate those network functions NetBIOS seperates to 3 services:
-> 
-> > #### `NetBIOS Name Service`
-> > *[\#UDP/137]*
-> > 
-> > NetBIOS provides it's own type of network architechture where each computer is represented by a 16 byte `name`, 15 ASCII characters to represent the computer and the last as a bit-field that represents what type of services the machine provides. The name will then be registered to an ip address (Only IPv4), will will enable name resolution.
-> > 
-> > NBNS (NetBios Name Service) also acts as an "Alternative" method of name resolution incase DNS and LLMNR both fail, The names are resolved by WINS (Windows Internet Naming Service) Servers. Where, instead of Domain names the server resolves NB names to IP addresses. The Servers are used to balance networking loads and to avoid flooding the network with broadcasts.
-> > 
-> > NOTICE: NBT Names are apply only to the link-local network, they are not to be confused with domain names.
-> 
-> > #### `NetBIOS Session Service`
-> > *[\#TCP/139]*
-> > 
-> > Applications using NetBIOS can establish an NetBIOS over TCP (NBT) session with a "call" command, then communicate with "send" and "recieve" commands. Since NBSS uses TCP as it's base it allows for bigger messages, transmission control and loss recovery.
-> 
-> > #### `NetBIOS Datagram Service`
-> > *[\#UDP/138]*
-> > 
-> > Applications may also communicate over NetBIOS connectionless, using individual datagrams over the NetBIOS Datagram Service. The datgram services allows unicast, multicast and broadcast datagram messaging, using "group ips", an application can listen on a designated group ip to recieve a satagram sent to that group's members.
+> Applications may also communicate over NetBIOS connectionless, using individual datagrams over the NetBIOS Datagram Service. The datgram services allows unicast, multicast and broadcast datagram messaging, using "group ips", an application can listen on a designated group ip to recieve a satagram sent to that group's members.
 
 
 ###### [Back to top](#bigous-protocolous)
@@ -316,22 +315,22 @@ at the end, when a computer wants to disconnect from the network it can send.
 ## Teletype Network A.K.A Telnet
 *[\#Layer 5] [\#TCP/23]*
 
-> Telnet is a session layer protocol that enables terminal access to an application on another host. Allowing the user to send commands to another endpoint rmotely.
-> 
-> ### WHY WAS IT INVENTED?
-> 
-> The idea for a terminal that can interface with the network was proposed on [rfc 15](https://www.rfc-editor.org/rfc/rfc15.html "Network Subsystem for Time Sharing Hosts") back in 1969. The documents discusses the idea of remotely accessing another machines terminal abstractly and even having the ability to transfer files over the network. The host machine would just send each chacrater input to the remote machine, and the host machien would have a special format to ented basic commands.
-> 
-> ### HOW DOES IT WORK?
-> 
-> The telnet protocol is mostly used by the telnet subsystem in your machine, using that system you may connect to another machine with the protocol and send information (namely commands or their outputs) bi-directionaly using the command line interface. Telnet is strictly characterial, and work over platform as the subsystem can decode characters to match the system requirement.
-> 
-> Since at the time of the protocol's manifestation the cyber threat wasn't as potent, all communication over TelNet is sent as cleartext (Not encrypted). Given that, telnet has to be manually enabled with the newer systems nowadays and they are frowned upon.
-> 
-> However, telnet still has uses like:
-> * Old Systems that don't support newer protocols like SSH.
-> * Configuring routers and network devices.
-> * Checking if ports are open.
+Telnet is a session layer protocol that enables terminal access to an application on another host. Allowing the user to send commands to another endpoint rmotely.
+
+### WHY WAS IT INVENTED?
+
+The idea for a terminal that can interface with the network was proposed on [rfc 15](https://www.rfc-editor.org/rfc/rfc15.html "Network Subsystem for Time Sharing Hosts") back in 1969. The documents discusses the idea of remotely accessing another machines terminal abstractly and even having the ability to transfer files over the network. The host machine would just send each chacrater input to the remote machine, and the host machien would have a special format to ented basic commands.
+
+### HOW DOES IT WORK?
+
+The telnet protocol is mostly used by the telnet subsystem in your machine, using that system you may connect to another machine with the protocol and send information (namely commands or their outputs) bi-directionaly using the command line interface. Telnet is strictly characterial, and work over platform as the subsystem can decode characters to match the system requirement.
+
+Since at the time of the protocol's manifestation the cyber threat wasn't as potent, all communication over TelNet is sent as cleartext (Not encrypted). Given that, telnet has to be manually enabled with the newer systems nowadays and they are frowned upon.
+
+However, telnet still has uses like:
+* Old Systems that don't support newer protocols like SSH.
+* Configuring routers and network devices.
+* Checking if ports are open.
 
 
 ###### [Back to top](#bigous-protocolous)
