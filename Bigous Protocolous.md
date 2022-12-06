@@ -316,23 +316,35 @@ To falicitate those network functions NetBIOS seperates to 3 services:
 ## Teletype Network A.K.A Telnet
 *[\#Layer 5] [\#TCP/23]*
 
-Telnet is a session layer protocol that enables terminal access to an application on another host. Allowing the user to send commands to another endpoint rmotely.
-
-### WHY WAS IT INVENTED?
-
-The idea for a terminal that can interface with the network was proposed on [rfc 15](https://www.rfc-editor.org/rfc/rfc15.html "Network Subsystem for Time Sharing Hosts") back in 1969. The documents discusses the idea of remotely accessing another machines terminal abstractly and even having the ability to transfer files over the network. The host machine would just send each chacrater input to the remote machine, and the host machien would have a special format to ented basic commands.
-
-### HOW DOES IT WORK?
-
-The telnet protocol is mostly used by the telnet subsystem in your machine, using that system you may connect to another machine with the protocol and send information (namely commands or their outputs) bi-directionaly using the command line interface. Telnet is strictly characterial, and work over platform as the subsystem can decode characters to match the system requirement.
-
-Since at the time of the protocol's manifestation the cyber threat wasn't as potent, all communication over TelNet is sent as cleartext (Not encrypted). Given that, telnet has to be manually enabled with the newer systems nowadays and they are frowned upon.
-
-However, telnet still has uses like:
-* Old Systems that don't support newer protocols like SSH.
-* Configuring routers and network devices.
-* Checking if ports are open.
+> Telnet is a session layer protocol that enables terminal access to an application on another host. Allowing the user to send commands to another endpoint rmotely.
+> 
+> ### WHY WAS IT INVENTED?
+> 
+> The idea for a terminal that can interface with the network was proposed on [rfc 15](https://www.rfc-editor.org/rfc/rfc15.html "Network Subsystem for Time Sharing Hosts") back in 1969. The documents discusses the idea of remotely accessing another machines terminal abstractly and even having the ability to transfer files over the network. The host machine would just send each chacrater input to the remote machine, and the host machien would have a special format to ented basic commands.
+> 
+> ### HOW DOES IT WORK?
+> 
+> The telnet protocol is mostly used by the telnet subsystem in your machine, using that system you may connect to another machine with the protocol and send information (namely commands or their outputs) bi-directionaly using the command line interface. Telnet is strictly characterial, and work over platform as the subsystem can decode characters to match the system requirement.
+> 
+> Since at the time of the protocol's manifestation the cyber threat wasn't as potent, all communication over TelNet is sent as cleartext (Not encrypted). Given that, telnet has to be manually enabled with the newer systems nowadays and they are frowned upon.
+> 
+> However, telnet still has uses like:
+> * Old Systems that don't support newer protocols like SSH.
+> * Configuring routers and network devices.
+> * Checking if ports are open.
 
 
 ###### [Back to top](#bigous-protocolous)
 ---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## File Transfer Protocol A.K.A FTP
+*[\#Layer7] [TCP/21]*
+
+The file transfer protocol is used to *transfer files* from one host to another on the wide net.
+
+### WHY WAS IT INVENTED?
+The protocol to transfer files over the net was first prposed in 1971 on [rfc 114](https://www.rfc-editor.org/rfc/rfc114), the document discusses the usability of a protocol to act as an abstraction layer when a user from one machine wants to retrieve a file from another machine to his own while not being familiar with the other machine's file system and interactive commands (unlike Telnet). Basically, the protocol is supposed to act as a middle man between one host and another that knows both host's languages and provides it's own commands.
+
+
+### HOW DOES IT WORK?
