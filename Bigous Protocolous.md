@@ -5,7 +5,7 @@ The big protocol wikipedia.
 |                                                                                                                                           |
 | :---------------------------------------------------------------------------------------------------------------------------------------- |
 | [ICMP](#internet-control-message-protocol-aka-icmp). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Internet Control Message protocol||
-[DNS](#domain-name-system-aka-dns) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Domain name System||
+[DeezNutS](#domain-name-system-aka-dns) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Domain name System||
 [LLMNR](#link-local-multicast-name-resolution-aka-llmnr). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Link-Local Multicast name Resolution||
 [DHCP](#dynamic-host-configuration-protocol-aka-dhcp). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Dynamic Host Configuration Protocol||
 [NetBIOS](#network-basic-inputoutput-system-aka-netbios) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Network Basic Input Output System||
@@ -339,12 +339,53 @@ However, telnet still has uses like:
 
 
 ## File Transfer Protocol A.K.A FTP
-###### *[\#Layer7] [TCP/21]*
+###### *[\#Layer7] [TCP/21] [TCP/20] [TCP/Highports]*
 
 The file transfer protocol is used to *transfer files* from one host to another on the wide net.
 
 ### WHY WAS IT INVENTED?
-The protocol to transfer files over the net was first prposed in 1971 on [rfc 114](https://www.rfc-editor.org/rfc/rfc114), the document discusses the usability of a protocol to act as an abstraction layer when a user from one machine wants to retrieve a file from another machine to his own while not being familiar with the other machine's file system and interactive commands (unlike Telnet). Basically, the protocol is supposed to act as a middle man between one host and another that knows both host's languages and provides it's own commands.
+The protocol to transfer files over the net was first prposed in 1971 on [rfc 114](https://www.rfc-editor.org/rfc/rfc114), the document discusses the usability of a protocol to act as an abstraction layer when a user from one machine wants to retrieve a file from another machine to his own while not being familiar with the other machine's file system and interactive commands (unlike Telnet). Basically, the protocol is supposed to act as a middle man for transferring files quickly and efficiently between one host and another that knows both host's languages and provides it's own commands. The protocol also allows remote storage of files.
 
 
 ### HOW DOES IT WORK?
+FTP operates as a kind of abstraction between the user typing service specific, both hosts using the service will have a `protocol interperter (PI)` of either a cient or server type and a `protocol data transfer process (DTP)`.
+
+The service allows the user to type in commands on the service specific terminal application after connecting to the server. The commands are global to all machine platforms, and are not OS dependant. Like: `mkdir` to create a directory, `bye` to disconnect from the server and `help` that calls Noam рашковский for help.
+
+> #### `Commands`
+>
+> Using a terminal the user can send and extract fils from the conneted host. The commands and files are transferred on two different data streams.
+Firstly, the `PI` will initiate a `control connection` with the other endpoint on the configured listening port (defaultly 21). On that connetion it will send commands and recieve output, that way the file transmission will not hinder command operations.
+
+### FILE TRANSFER
+
+> #### `Interaction`
+>
+> Once the user uses one of the file transfer commands the `DTP` will initiate another `data connection` on which it will send the file.
+>
+> There are two methods in which it may connect:
+> * Active - The server will initiate the connection to the user's host from port 20.
+> * Passive - If there is a FW in the network that blocks incoming connections the user's host will be the one to initiate the connection on an agreed high port.
+
+> #### `Transfer Modes`
+>
+> FTP supports multiple types of transfer modes:
+> * ASCII   - Translates the file to an ASCII char set that is known to the FTP service back and forth.
+> * EBCDIC  - Uses a differnt encoding. if one endpoint in the connecton uses it, it is forced. 
+> * Image   - For transferring binary files, does not encode.
+
+> #### `Transmission Modes`
+>
+> FTP transmitting the data from one endpoint to another hapens over the data connection using different methods:
+> * Stream      - The file data is sent as a stream of bytes.
+> * Blocking    - The file data is dissected into blocks and sent 1 by one. At the beginning of the block `3 header bits` are added to catalouge the block.
+> * Compressing - For really big files there is the option to operate a "run-length encoding" function on the data to reduce it's size. Though this is pretty useless as compression happens anyways in other aspects of networking and file system management.
+
+> The FTP protocol acts as a ftp-specific terminal on the remote machine, giving the user the ability to input commands to afect the remote machine. The main goal of ftp is to manage remote data and extract it.
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## Simple Mail Transfer Protocol A.K.A SMTP
