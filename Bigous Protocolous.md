@@ -350,12 +350,18 @@ The protocol to transfer files over the net was first prposed in 1971 on [rfc 11
 ### HOW DOES IT WORK?
 FTP operates as a kind of abstraction between the user typing service specific, both hosts using the service will have a `protocol interperter (PI)` of either a cient or server type and a `protocol data transfer process (DTP)`.
 
-The service allows the user to type in commands on the service specific terminal application after connecting to the server. The commands are global to all machine platforms, and are not OS dependant. Like: `mkdir` to create a directory, `bye` to disconnect from the server and `help` that calls Noam рашковский for help.
+The service allows the user to type in commands on the service specific terminal application after connecting to the server. The commands are global to all machine platforms, and are not OS dependant. Like: `mkdir` to create a directory, `bye` to disconnect from the server ,`help` that calls small Noam for help, USER to send username and PASS to send password.
 
 > #### `Commands`
 >
 > Using a terminal the user can send and extract fils from the conneted host. The commands and files are transferred on two different data streams.
 Firstly, the `PI` will initiate a `control connection` with the other endpoint on the configured listening port (defaultly 21). On that connetion it will send commands and recieve output, that way the file transmission will not hinder command operations.
+> 
+> BIG DISCLAIMER
+> 
+> Just like the TelNet, at the time of this protocol's creation the cyber threat wasn't as prevalent. Due to this, commands and file data are sent over as **cleartext**!!!
+> 
+> So like, don't use it :D use FTPS instead ;) xoxo.
 
 ### FILE TRANSFER
 
