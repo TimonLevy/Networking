@@ -10,12 +10,13 @@ The big protocol wikipedia.
 [DHCP](#dynamic-host-configuration-protocol-aka-dhcp). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Dynamic Host Configuration Protocol||
 [NetBIOS](#network-basic-inputoutput-system-aka-netbios) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Network Basic Input Output System||
 [Telnet](#teletype-network-aka-telnet). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Teletype Network||
-[FTP](#file-transfer-protocol-aka-ftp). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . File Tranfer Protocol|
+[FTP](#file-transfer-protocol-aka-ftp). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . File Tranfer Protocol||
+[TFTP](#trivial-file-transfer-protocol-aka-tftp). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Trivial File Tranfer Protocol|
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## Internet Control Message Protocol A.K.A ICMP
-###### *[\#Layer 3] [\#Portless]*
+###### *[#Layer3] [#Portless]*
 
 ICMP, or **I**nternet **C**ontrol **M**essage **P**rotocol is a 3rd (OSI Model) layer protocol used to send control messages relating to the Internet protocol (IP).
 
@@ -140,7 +141,7 @@ ICMP Fields:
 
 
 ## Domain Name System A.K.A DNS
-###### *[\#Layer 7] [\#TCP/53] [\#UDP/53]*
+###### *[#Layer7] [#TCP/53] [#UDP/53]*
 
 The DNS protocol is used for "translating" between IP addresses and Domain Names, thus the name Domain Name System. The protocol itself operates at the 7th OSI level which is the application layer and ontop of `UDP/53`. DNS went under a lot of transformation over the year since it was first introduced at 1983, today it exists in many variants that each serve a different purpose or build on previous implementation of the protocol. Some of these are:
 
@@ -199,7 +200,7 @@ Finally, the server will return a reponse to the client which it will use. Eithe
 
 
 ## Link-Local Multicast Name Resolution A.K.A LLMNR
-###### *[\#Layer 7] [\#UDP/5355]*
+###### *[#Layer7] [#UDP/5355]*
 
 LLMNR is used to **enable name resolutions** in places **where dns fails** to do so. LLMNR supports all DNS formats, types, and classes, while operating on a separate port from DNS (listening to queries on UDP/5355), and with a separate cache. LLMNR only operates on the local subnet, making it unviable as a DNS substitute.
 
@@ -230,7 +231,7 @@ Do note that **LLMNR should be disabled** in your local link network through GPO
 
 
 ## Dynamic Host Configuration Protocol A.K.A DHCP
-###### *[\#Layer 3] [\#Portless]*
+###### *[#Layer3] [#Portless]*
 
 DHCP is used to assigned unique IP addresses to hosts in the network automatically, it can also assign other network configuration like subnet mask, DNS server and Default gateway. DHCP can provide a client with all the parameters it needs in order to operate in the network.
 
@@ -290,7 +291,7 @@ NetBIOS lets application that rely on it to send messages over the **local area 
 To falicitate those network functions NetBIOS seperates to 3 services:
 
 > #### `NetBIOS Name Service`
-> *[\#UDP/137]*
+> ######*[#UDP/137]*
 > 
 > NetBIOS provides it's own type of network architechture where each computer is represented by a 16 byte `name`, 15 ASCII characters to represent the computer and the last as a bit-field that represents what type of services the machine provides. The name will then be registered to an ip address (Only IPv4), will will enable name resolution.
 > 
@@ -299,12 +300,12 @@ To falicitate those network functions NetBIOS seperates to 3 services:
 > NOTICE: NBT Names are apply only to the link-local network, they are not to be confused with domain names.
 
 > #### `NetBIOS Session Service`
-> *[\#TCP/139]*
+> #####*[\#TCP/139]*
 > 
 > Applications using NetBIOS can establish an NetBIOS over TCP (NBT) session with a "call" command, then communicate with "send" and "recieve" commands. Since NBSS uses TCP as it's base it allows for bigger messages, transmission control and loss recovery.
 
 > #### `NetBIOS Datagram Service`
-> *[\#UDP/138]*
+> ######*[\#UDP/138]*
 > 
 > Applications may also communicate over NetBIOS connectionless, using individual datagrams over the NetBIOS Datagram Service. The datgram services allows unicast, multicast and broadcast datagram messaging, using "group ips", an application can listen on a designated group ip to recieve a satagram sent to that group's members.
 
@@ -314,7 +315,7 @@ To falicitate those network functions NetBIOS seperates to 3 services:
 
 
 ## Teletype Network A.K.A Telnet
-###### *[\#Layer 5] [\#TCP/23]*
+###### *[#Layer5] [#TCP/23]*
 
 Telnet is a session layer protocol that enables terminal access to an application on another host. Allowing the user to send commands to another endpoint rmotely.
 
@@ -339,7 +340,7 @@ However, telnet still has uses like:
 
 
 ## File Transfer Protocol A.K.A FTP
-###### *[\#Layer7] [TCP/21] [TCP/20] [TCP/Highports]*
+###### *[\#Layer7] [\#TCP/21] [\#TCP/20] [\#TCP/Highports]*
 
 The file transfer protocol is used to *transfer files* from one host to another on the wide net.
 
@@ -350,7 +351,7 @@ The protocol to transfer files over the net was first prposed in 1971 on [rfc 11
 ### HOW DOES IT WORK?
 FTP operates as a kind of abstraction between the user typing service specific, both hosts using the service will have a `protocol interperter (PI)` of either a cient or server type and a `protocol data transfer process (DTP)`.
 
-The service allows the user to type in commands on the service specific terminal application after connecting to the server. The commands are global to all machine platforms, and are not OS dependant. Like: `mkdir` to create a directory, `bye` to disconnect from the server ,`help` that calls small Noam for help, USER to send username and PASS to send password.
+The service allows the user to type in commands on the service specific terminal application after connecting to the server. The commands are global to all machine platforms, and are not OS dependant. Like: `mkdir` to create a directory, `bye` to disconnect from the server ,`help` that calls small Noam for help, `USER` to send username and `PASS` to send password in order to authenticate.
 
 > #### `Commands`
 >
@@ -388,6 +389,47 @@ Firstly, the `PI` will initiate a `control connection` with the other endpoint o
 > * Compressing - For really big files there is the option to operate a "run-length encoding" function on the data to reduce it's size. Though this is pretty useless as compression happens anyways in other aspects of networking and file system management.
 
 > The FTP protocol acts as a ftp-specific terminal on the remote machine, giving the user the ability to input commands to afect the remote machine. The main goal of ftp is to manage remote data and extract it.
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Trivial File Transfer Protocol A.K.A TFTP
+###### *[\#Layer7] [\#UDP/69]*
+
+Trivial File Transfer Protocol is a fork of ftp that provides it's services on the **local-link network**. It was designed as a **lighweight** ftp version to transfer configuration files to network devices in the link-local network.
+
+There are several differences between `FTP` and `TFTP`:
+
+> #### `Authentication`
+>
+> Ftp requires authentiation while tftp doesn't.
+>
+> Big danger!!! >:D
+
+> #### `Transportation`
+>
+> Ftp uses tcp as it's transportation protocol, tftp uses udp.
+
+> #### `Use`
+>
+> Ftp is used to transfer files and run commands over connected endpoints, tftp is mainly used to transfer configuration files on the LAN.
+
+### HOW DOES IT WORK?
+
+This protocol too works on a `Client/Server` basis, note that some concepts and terms carry over from the FTP section.
+
+> #### `DOWNLOAD`
+>
+> The way that the client sends commands to the server stays the same. The server listens for connections on UDP/69 (haha :D) and the client can  initiate a connection on it from a high port and transmits commands over it. Then once recieving a command to download a file, the server will open up another tftp process and connects back to the client high port.
+>
+> The way file transmission works is the server `breaks the needed file` into a `series of blocks` and send them to the client one by one `on UDP`. The server will then listen for an `acknowledgment` that the file block was recieved and send the next block in the series.
+
+> #### `UPLOAD`
+>
+> When the server recieves a commands to upload a file from the client it will `open a new tftp process` and `bind it to a random high port`. The new data transfer process will connect to the command sending port from the client and send an `Aknowledgment` to notify of the open port.
+>
+> From then on it's like uploading a file. The `client will slice the file` into a series of blocks, and send them one by one on UDP to the new server port. After sending each block it will `wait for an acknowledgment` before sending the next block.
 
 
 ###### [Back to top](#bigous-protocolous)
