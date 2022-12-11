@@ -2,21 +2,24 @@
 
 The big protocol wikipedia.
 
-|                                                                                                                                           |
-| :---------------------------------------------------------------------------------------------------------------------------------------- |
-| [ICMP](#internet-control-message-protocol-aka-icmp). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Internet Control Message protocol||
-[DeezNutS](#domain-name-system-aka-dns) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Domain name System||
-[LLMNR](#link-local-multicast-name-resolution-aka-llmnr). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Link-Local Multicast name Resolution||
-[DHCP](#dynamic-host-configuration-protocol-aka-dhcp). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Dynamic Host Configuration Protocol||
-[NetBIOS](#network-basic-inputoutput-system-aka-netbios) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Network Basic Input Output System||
-[Telnet](#teletype-network-aka-telnet). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Teletype Network||
-[FTP](#file-transfer-protocol-aka-ftp). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . File Tranfer Protocol||
-[TFTP](#trivial-file-transfer-protocol-aka-tftp). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Trivial File Tranfer Protocol|
+|                   |                                                                                                                   |
+| :---------------- | ----------------------------------------------------------------------------------------------------------------: |
+| TABLE OF CONTENTS | _________________________________________________________________________________________________________________ |
+| [ICMP](#internet-control-message-protocol-aka-icmp)                   | Internet Control Message protocol                             |
+| [DeezNutS](#domain-name-system-aka-dns)                               | Domain Name System                                            |
+| [LLMNR](#link-local-multicast-name-resolution-aka-llmnr)              | Link-Local Multicast Name Resolution                          |
+| [DHCP](#dynamic-host-configuration-protocol-aka-dhcp)                 | Dynamic Host Configuration Protocol                           |
+| [NetBIOS](#network-basic-inputoutput-system-aka-netbios)              | Network Basic Input Output System                             |
+| [Telnet](#teletype-network-aka-telnet)                                | Teletype Network                                              |
+| [FTP](#file-transfer-protocol-aka-ftp)                                | File Tranfer Protocol                                         |
+| [TFTP](#trivial-file-transfer-protocol-aka-tftp)                      | Trivial File Tranfer Protocol                                 |
+| [HTTP](#hypertext-transfer-protocol-aka-http)                         | Hypertext Tranfer Protocol                                    |
+| [SMTP](#simple-mail-transfer-protocol-aka-smtp)                       | Simple Mail Tranfer Protocol                                  |
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## Internet Control Message Protocol A.K.A ICMP
-###### *[#Layer3] [#Portless]*
+###### *[#Layer-3] [#Portless]*
 
 ICMP, or **I**nternet **C**ontrol **M**essage **P**rotocol is a 3rd (OSI Model) layer protocol used to send control messages relating to the Internet protocol (IP).
 
@@ -141,7 +144,7 @@ ICMP Fields:
 
 
 ## Domain Name System A.K.A DNS
-###### *[#Layer7] [#TCP/53] [#UDP/53]*
+###### *[#Layer-7] [#TCP/53] [#UDP/53]*
 
 The DNS protocol is used for "translating" between IP addresses and Domain Names, thus the name Domain Name System. The protocol itself operates at the 7th OSI level which is the application layer and ontop of `UDP/53`. DNS went under a lot of transformation over the year since it was first introduced at 1983, today it exists in many variants that each serve a different purpose or build on previous implementation of the protocol. Some of these are:
 
@@ -200,7 +203,7 @@ Finally, the server will return a reponse to the client which it will use. Eithe
 
 
 ## Link-Local Multicast Name Resolution A.K.A LLMNR
-###### *[#Layer7] [#UDP/5355]*
+###### *[#Layer-7] [#UDP/5355]*
 
 LLMNR is used to **enable name resolutions** in places **where dns fails** to do so. LLMNR supports all DNS formats, types, and classes, while operating on a separate port from DNS (listening to queries on UDP/5355), and with a separate cache. LLMNR only operates on the local subnet, making it unviable as a DNS substitute.
 
@@ -231,7 +234,7 @@ Do note that **LLMNR should be disabled** in your local link network through GPO
 
 
 ## Dynamic Host Configuration Protocol A.K.A DHCP
-###### *[#Layer3] [#Portless]*
+###### *[#Layer-3] [#Portless]*
 
 DHCP is used to assigned unique IP addresses to hosts in the network automatically, it can also assign other network configuration like subnet mask, DNS server and Default gateway. DHCP can provide a client with all the parameters it needs in order to operate in the network.
 
@@ -276,7 +279,7 @@ at the end, when a computer wants to disconnect from the network it can send.
 
 
 ## Network Basic Input/Output System A.K.A NetBIOS
-###### *[\#Layer 5]*
+###### *[\#Layer-5]*
  
 The Network BIOS Protocol is a protocols that was used as a standard for communicating messages between two endpoints in the Link-Local Network. It provides `basic functionality for communication`. 
 
@@ -302,7 +305,7 @@ To falicitate those network functions NetBIOS seperates to 3 services:
 > #### `NetBIOS Session Service`
 > #####*[\#TCP/139]*
 > 
-> Applications using NetBIOS can establish an NetBIOS over TCP (NBT) session with a "call" command, then communicate with "send" and "recieve" commands. Since NBSS uses TCP as it's base it allows for bigger messages, transmission control and loss recovery.
+> Applications using NetBIOS can establish a NetBIOS over TCP (NBT) session with a "call" command, then communicate with "send" and "recieve" commands. Since NBSS uses TCP as it's base it allows for bigger messages, transmission control and loss recovery.
 
 > #### `NetBIOS Datagram Service`
 > ######*[\#UDP/138]*
@@ -315,7 +318,7 @@ To falicitate those network functions NetBIOS seperates to 3 services:
 
 
 ## Teletype Network A.K.A Telnet
-###### *[#Layer5] [#TCP/23]*
+###### *[#Layer-5] [#TCP/23]*
 
 Telnet is a session layer protocol that enables terminal access to an application on another host. Allowing the user to send commands to another endpoint rmotely.
 
@@ -340,7 +343,7 @@ However, telnet still has uses like:
 
 
 ## File Transfer Protocol A.K.A FTP
-###### *[\#Layer7] [\#TCP/21] [\#TCP/20] [\#TCP/Highports]*
+###### *[\#Layer-7] [\#TCP/21] [\#TCP/20] [\#TCP/Highports]*
 
 The file transfer protocol is used to *transfer files* from one host to another on the wide net.
 
@@ -395,7 +398,7 @@ Firstly, the `PI` will initiate a `control connection` with the other endpoint o
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## Trivial File Transfer Protocol A.K.A TFTP
-###### *[\#Layer7] [\#UDP/69]*
+###### *[\#Layer-7] [\#UDP/69]*
 
 Trivial File Transfer Protocol is a fork of ftp that provides it's services on the **local-link network**. It was designed as a **lighweight** ftp version to transfer configuration files to network devices in the link-local network.
 
@@ -436,4 +439,83 @@ This protocol too works on a `Client/Server` basis, note that some concepts and 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+## HyperText Transfer Protocol A.K.A HTTP
+###### *[#Layer7] [#TCP/80]*
+
+HTTP is the protocol used to send web pages over the internet. This is a very broad definition of the protocol but we will get into it later (Like I did to your mom).
+
+### OVERVIEW
+
+Http evolved so much over the years so I'll ty to summarize it to as little as possible.
+
+Overall, HTTP works as a request response type protocol, just like dns and dhcp. The whole point of it is to get the hosted webpage from the server, like "www.google.com" where I research this stuff or "jokes.moomoo.co.il" where I get my your mom jokes.
+
+[In the beninging](https://www.youtube.com/watch?v=fWKB8zdVM-U) the internet was in it's diapers, all you could find are super simple webpages like blogs. There was no need for a complicated protocol to transfer this data and that's where HTTP came in.
+![The Original Spacejam Website](https://www.themarysue.com/wp-content/uploads/2010/12/SpaceJam_Home.png)
+###### pretty simple right?
+
+
+> #### `HTTP/0.9`
+> 
+> It was used to send the HTML code that built the site as plaintext to the client visiting the site. **Emphasis on cleartext**.
+> On this protocol you only used mentioned a method (GET) and a resource in your request.
+
+> #### `HTTP/1.0`
+>
+> This version of HTTP added a `header`, in the header was a lot of information regarding the session and request. Most importantly the method and resource.
+> 
+> It added two more methods, POST and HEAD that allowed the user to send data to the site, and Head that returns the header information (metadata).
+>
+> It added content types, so that from now on you could send more types of content and not only HTML. Like your mother, except the fact she wont fit on the bandwith :(
+
+> #### `HTTP/1.1`
+>
+> This version was introduced only a year after the last one and it built upon it. We're talking:
+> * **Host header** - to identify servers that have multiple Domain Names.
+> * **Persistent connections** - HTTP now keeps it's connection alive after sending a request and doesn't open a new session for each request (Which has an RTT of 3 thanks to the TCP handshake).
+> * **6 New methods** that were really helpful in the usage of the protocol. (PUT, PATCH, DELETE, CONNECT, TRACE, OPTIONS)
+>
+> Though the protocol **still communicated over cleartext**, which wasn't very cool.
+
+> #### `HTTP/2.0`
+>
+> This protocol ought to make things a whole lot better:
+> * **Multiplexing** - Now you can send multiple requests on multiple concurrent connections that represent a single session.
+> * **Prioritizing** - Sending more that one request? Tell what you want first!
+> * **Automatic Compression** - Automatic [Gzip](https://10web.io/site-speed-glossary/gzip-compression/) compression.
+> * **Connection reset** - The optino to terminate and reestablish a connection with the server, if for some reason you need it.
+> * **Server Push** - Let the server give you all the commonly requested data before you even ask for it, this let's it load balance.
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 ## Simple Mail Transfer Protocol A.K.A SMTP
+###### *[#Layer-7] [#TCP/25]*
+
+The Simple mail ransfer Protocol's job is to **mail and/or send** data to another `smtp server` on the network, similar to [Telnet](#teletype-network-aka-telnet). Smtp is used only for message forwarding, not retrieving.
+
+### HOW DOES IT WORK?
+SMTP is used to relay mail messages over the network from the local network's smtp server to the recipient local network's smtp server. More accurately the stmp protocol is used as a guideline to transfer mails from a **client MTA** (**M**essage **T**ransfer **A**gent) to a **server MTA**. Please do notice that the smtp protocol usually acts as a background service for e-mail applications on a user's computer like Office 356.
+
+> #### `Initializing a connection`
+>
+> An smtp session is initialized when a client establishes a connection with the server. A server will usually listen on the well-known port TCP/25.
+> 
+> 1. The server then send an `opening message`, something like "Yo, you wanna talk?".
+> 2. The client send back an EHLO or HELO response, EHLO is like "Hello I am <client> and I support more calls" and HELO is like "Hello I am <client>".
+>
+> After this the connection is established and the client can begin sending commands to the server.
+
+> #### `SENDING`
+>
+> Before we can begin sending e-mails we need to set some things straight. Like, **who are we?**, **Who do we want to send to?** and **what am I sending?**. To answer the first question is the `MAIL command`, the MAIL command tells the server where the mail came from, specifically a mailbox. Then comes the questin of who am I sending to? and that is answered with the `RCPT command` which tells the server what the mailbox I am aiming for is. The server may error or one of these commands, but if not it will return a `250 OKAY` reply to both of them.
+>
+> After configure sender and recipient we need to input the mail contents, we will use the `DATA command`. We will them input the lines of ASCII text we want to send and end it with a "." line, everything between the line containing the dot and the DATA command will be seen as a part of the e-mail.
+>
+> If the DATA command processes correctly, the server will return a `250 OKAY` response and send the email to the **recipient's network's Server MTA**.
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
