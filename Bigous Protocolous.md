@@ -2,9 +2,8 @@
 
 The big protocol wikipedia.
 
-|                   |                                                                                                                   |
-| :---------------- | ----------------------------------------------------------------------------------------------------------------: |
 | TABLE OF CONTENTS | _________________________________________________________________________________________________________________ |
+| :---------------- | ----------------------------------------------------------------------------------------------------------------: |
 | [ICMP](#internet-control-message-protocol-aka-icmp)                   | Internet Control Message protocol                             |
 | [DeezNutS](#domain-name-system-aka-dns)                               | Domain Name System                                            |
 | [LLMNR](#link-local-multicast-name-resolution-aka-llmnr)              | Link-Local Multicast Name Resolution                          |
