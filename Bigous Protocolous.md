@@ -14,6 +14,8 @@ The big protocol wikipedia.
 | [TFTP](#trivial-file-transfer-protocol-aka-tftp)                      | Trivial File Tranfer Protocol                                 |
 | [HTTP](#hypertext-transfer-protocol-aka-http)                         | Hypertext Tranfer Protocol                                    |
 | [SMTP](#simple-mail-transfer-protocol-aka-smtp)                       | Simple Mail Tranfer Protocol                                  |
+| [POP](#post-office-protocol-3-aka-pop3)                               | Post Office Protocol                                          |
+| [IMAP](#internet-message-access-protocol-aka-imap)                    | Internet Message Access Protocol                              |
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -495,6 +497,9 @@ Overall, HTTP works as a request response type protocol, just like dns and dhcp.
 
 The Simple mail ransfer Protocol's job is to **mail and/or send** data to another `smtp server` on the network, similar to [Telnet](#teletype-network-aka-telnet). Smtp is used only for message forwarding, not retrieving.
 
+### WHY WAS IT INVENTED?
+The smtp protocol was invented in order to provide the ability to send mail over the network.
+
 ### HOW DOES IT WORK?
 SMTP is used to relay mail messages over the network from the local network's smtp server to the recipient local network's smtp server. More accurately the stmp protocol is used as a guideline to transfer mails from a **client MTA** (**M**essage **T**ransfer **A**gent) to a **server MTA**. Please do notice that the smtp protocol usually acts as a background service for e-mail applications on a user's computer like Office 356.
 
@@ -518,3 +523,64 @@ SMTP is used to relay mail messages over the network from the local network's sm
 
 ###### [Back to top](#bigous-protocolous)
 ---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## Post Office Protocol 3 A.K.A POP3
+###### *[#Layer7] [TCP/110]*
+
+POP is used to let the user access their mails online, since smtp is only able to push emails to a destination mailbox.
+
+### WHY WAS IT INVENTED?
+Smtp is the protocol used to send and forward mails to a mailbow on the mail server, but to view those emails interfacing with the server directly is required. No only do you need to go on the server but you also need both yout machine and the server to be connected. POP solves that issue by downloading you emails from the mail server for you, so you can access them from your machine and view them offline.
+
+POP3 is the latest version of the protocol with POP 1 being the first, over the years more features have been added to the protocol to make it more useful.
+
+### HOW DOES IT WORK?
+
+> #### `INITIATING A SESSION`
+> 
+> The server will listen to on a port, once the client connects and preforms a tcp-handshake it will send a greeting message and wait for commands, at this moment a session is established. During it's lifetime a session goes through multiple states..
+
+> #### `AUTHENTICATION`
+>
+> The client has to authenticate to the server using USER and PASS commands to pass their credentials. After authenticating correctly the server opens the client's mailbox and locks any access to it's content so that they don't change in the midst of a session.
+> 
+> **NOTICE** communication in POP is not secure and transmitted as cleartext. Special applications of this protocol do provide encryption though.
+
+> #### `[POP 1] TRANSACTION + UPDATE`
+>
+> Now the user can extract the information from the server to their local machines in one of two ways:
+>
+>   * Download all e-mails and delete them from server. (`RDEL`)
+>   * Download all e-mails but keep them on the server. (`RETR`)
+>
+> After choosing an option the client can command to be sent all the read information (`RCEV`) and after recieving all the mails they send a confirmation that they recieved them (`RCVD`)
+
+> #### `[POP 3] TRANSACTION`
+>
+> Now the user can interact with their mailbox and it's content, the user can:
+>
+>   * `LIST`    all mails.
+>   * `STAT`    get information about the amilbox in the server.
+>   * `RETR n`  retrieve the `n`th mail from the mailbox.
+>   * `DELE n`  mark the `n`th mail in the mailbox as deleted.
+>   * `QUIT`    enter the UPDATE state.
+>
+> Using these commands the user can interface with their mailbox from their local machine, of-course applications that use POP3 can represent those commands in super awesome ways. Like list all the emails in a stylized list on the gui.
+
+> #### `[POP 3] UPDATE`
+>
+> In the UPDATE state the server deletes every mail marked as deleted by the user, then it releases the access lock it has put in the AUTHENTICATION state and disconnects the TCP connection.
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## Internet Message Access Protocol A.K.A IMAP
+###### *[#Layer7]*
+
+IMAP also dabbles in reading mail messages from a server, but it is way more efficient than POP. It was conceptualized becayse POP had many problems and IMAP was meant to address them.
+
+### WHAT DOES IT DO?
+
