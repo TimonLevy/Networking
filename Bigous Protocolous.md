@@ -625,39 +625,39 @@ IMAP allows the remote managment of folders called mailboxes on the mail server.
 Here is a flow-chart of how moving between states works.
 
 ```
-                   +----------------------+                     LEGEND
+                   .----------------------.                     LEGEND
                    |connection established|                     (1) connection without pre-authentication
-                   +----------------------+                     (2) pre-authenticated connection
-                              ||                                (3) rejected connection
-                              \/                                (4) successful authentication via command
-            +--------------------------------------+            (5) successful SELECT or EXAMINE command
+                   '----------------------'                     (2) pre-authenticated connection
+                              |                                 (3) rejected connection
+                              V                                 (4) successful authentication via command
+            .--------------------------------------.            (5) successful SELECT or EXAMINE command
             |          server greeting             |            (6) CLOSE or UNSELECT command, unsolicited CLOSED response code, or failed SELECT or EXAMINE command
-            +--------------------------------------+            (7) LOGOUT command, server shutdown, or connection closed
-                      || (1)       || (2)        || (3)
-                      \/           ||            ||
-            +-----------------+    ||            ||
-            |Not Authenticated|    ||            ||
-            +-----------------+    ||            ||
-             || (7)   || (4)       ||            ||
-             ||       \/           \/            ||
-             ||     +----------------+           ||
-             ||     | Authenticated  |<=++       ||
-             ||     +----------------+  ||       ||
-             ||       || (7)   || (5)   || (6)   ||
-             ||       ||       \/       ||       ||
-             ||       ||    +--------+  ||       ||
-             ||       ||    |Selected|==++       ||
-             ||       ||    +--------+           ||
-             ||       ||       || (7)            ||
-             \/       \/       \/                \/
-            +--------------------------------------+
+            '--------------------------------------'            (7) LOGOUT command, server shutdown, or connection closed
+                      |  (1)       |  (2)        |  (3)
+                      V            |             | 
+            .-----------------.    |             | 
+            |Not Authenticated|    |             | 
+            '-----------------'    |             | 
+             |  (7)   |  (4)       |             | 
+             |        V            V             | 
+             |      .----------------.           | 
+             |      | Authenticated  |<-.        | 
+             |      '----------------'  |        | 
+             |        |  (7)   |  (5)   |  (6)   | 
+             |        |        V        |        | 
+             |        |     .--------.  |        | 
+             |        |     |Selected|--'        | 
+             |        |     '--------'           | 
+             |        |        |  (7)            | 
+             V        V        V                 V 
+            .--------------------------------------.
             |               Logout                 |
-            +--------------------------------------+
-                              ||
-                              \/
-                +-------------------------------+
+            '--------------------------------------'
+                              | 
+                              V 
+                .-------------------------------.
                 |both sides close the connection|
-                +-------------------------------+
+                '-------------------------------'
 
 Flowchart taken from official [IMAP version 4 revision 2] rfc 9051.
 ```
@@ -671,3 +671,10 @@ A message may be flagged as one of these:
   *  `\Flagged`, The message is urgent/special. (For example: Important mails in Gmail)
   *  `\Deleted`, The message will be deleted when an `EXPUNGE` command will be executed.
   *  `\Draft`, The message in not complete.
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## 
