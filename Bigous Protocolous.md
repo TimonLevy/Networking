@@ -578,9 +578,96 @@ POP3 is the latest version of the protocol with POP 1 being the first, over the 
 
 
 ## Internet Message Access Protocol A.K.A IMAP
-###### *[#Layer7]*
+###### *[#Layer7] [#TCP/143] [#TCP/993]*
 
 IMAP also dabbles in reading mail messages from a server, but it is way more efficient than POP. It was conceptualized becayse POP had many problems and IMAP was meant to address them.
 
 ### WHAT DOES IT DO?
 
+IMAP allows the remote managment of folders called mailboxes on the mail server. IMAP allows more delicate control and syncronization between devices, it also allows to connect more than one client to the same mailbox at a time and more. The model of the protocol is also Server and Client to retrieve mail from the server and manage it remotely.
+
+### HOW DOES IT WORK?
+
+ > #### `Initializing a session`
+ > 
+ > The server will listen on both ports 143 for cleartext communication and 993 to implicitly initiate a session over tls. Once connecting to one of those the server will send a greeting response and wait for commands, at this point a session was created. A session can inhibit one of four states, a session may begin as one of the next three states.
+
+> #### `STATE 1: Not Authenticated`
+>
+> In this state the client will have to preform a login operation in order to enter their mailbox.
+>
+> If the session is initialized on a cleartext port a client may send the `STARTTLS` command to begin session encryption.
+
+> #### `STATE 2: Authorized Connection`
+>
+> If the session was opened pre-authenticated, meaning that the client gave valid credentials in the session initialization.
+> * A client can choose the mailbox they wish to interacrt with, with the `SELECT` command.
+> * A client may open a mailbox identically to the SELECT command but in read-only mode, with the `EXAMINE` command. 
+>
+> A client can perform more operations in this mode like create, delete or remane a mailbox.
+> 
+> but I will not go over it.
+
+> #### `STATE 4: Logout State`
+>
+> If the session initialization failed or the user input a `LOGOUT` command the server and client will terminate their connection.
+
+> #### `STATE 3: Selected State`
+>
+> In this state the user has selected a mailbox and may interact with their mail messages.
+>
+> A client may:
+> * `UNSELECT` the mailbox.
+> * `SEARCH` for a message with given information.
+> * `MOVE` or `COPY` a message from their mailbox to another.
+> * `EXPUNGE`, meaning delete all messages flagged with `/delete` 
+
+Here is a flow-chart of how moving between states works.
+
+```
+                   +----------------------+                     LEGEND
+                   |connection established|                     (1) connection without pre-authentication
+                   +----------------------+                     (2) pre-authenticated connection
+                              ||                                (3) rejected connection
+                              \/                                (4) successful authentication via command
+            +--------------------------------------+            (5) successful SELECT or EXAMINE command
+            |          server greeting             |            (6) CLOSE or UNSELECT command, unsolicited CLOSED response code, or failed SELECT or EXAMINE command
+            +--------------------------------------+            (7) LOGOUT command, server shutdown, or connection closed
+                      || (1)       || (2)        || (3)
+                      \/           ||            ||
+            +-----------------+    ||            ||
+            |Not Authenticated|    ||            ||
+            +-----------------+    ||            ||
+             || (7)   || (4)       ||            ||
+             ||       \/           \/            ||
+             ||     +----------------+           ||
+             ||     | Authenticated  |<=++       ||
+             ||     +----------------+  ||       ||
+             ||       || (7)   || (5)   || (6)   ||
+             ||       ||       \/       ||       ||
+             ||       ||    +--------+  ||       ||
+             ||       ||    |Selected|==++       ||
+             ||       ||    +--------+           ||
+             ||       ||       || (7)            ||
+             \/       \/       \/                \/
+            +--------------------------------------+
+            |               Logout                 |
+            +--------------------------------------+
+                              ||
+                              \/
+                +-------------------------------+
+                |both sides close the connection|
+                +-------------------------------+
+
+Flowchart taken from official [IMAP version 4 revision 2] rfc 9051.
+```
+
+### MESSAGES
+
+A message is an item inside a mailbox that was sent from another mailbox, unltimately the point of the protocol is to let the client read these messages remotely.
+A message may be flagged as one of these:
+  *  `\Seen`, Message has been read. (For example: Marked as read in Gmail)
+  *  `\Answered`, The message has been sent a reply.
+  *  `\Flagged`, The message is urgent/special. (For example: Important mails in Gmail)
+  *  `\Deleted`, The message will be deleted when an `EXPUNGE` command will be executed.
+  *  `\Draft`, The message in not complete.
