@@ -16,6 +16,7 @@ The big protocol wikipedia.
 | [SMTP](#simple-mail-transfer-protocol-aka-smtp)                       | Simple Mail Tranfer Protocol                                  |
 | [POP](#post-office-protocol-3-aka-pop3)                               | Post Office Protocol                                          |
 | [IMAP](#internet-message-access-protocol-aka-imap)                    | Internet Message Access Protocol                              |
+| [SMB](#server-message-blocking-protocol-aka-smb)                      | Server Message Blocking                                       |
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -677,4 +678,29 @@ A message may be flagged as one of these:
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-## 
+## Server Message Blocking Protocol A.K.A SMB
+
+SMB is a protocol meant for file sharing, not to be confused with file transfer. This protocol allows a user on a Windows machine to share a folder over the network and let other user iteract with it on their local machine without downloading it. It works on a client/server model and uses commands to make the other endpoint operate.
+
+### WHY WAS IT INVENTED?
+The protocol was invented on 1983 by Barry A. Feigenbaum at IBM in order to provide Hosts, printers and other network nodes `shared access` to files on the network. The protocol was then picked up by Microsoft and even since then it was buit upon with the 4th version of the protocol being the current standard. The protocl was also imitated and ported over to Linux to provide Unix based systems access to file sharing and interfacing abilities with Windows machines.
+
+Over the years the protocl has been devided into dialects (or versions), with each of them building ontop of the one prior to it or changing something. Here are just a few:
+
+> #### `SMB V1.0`
+>
+> This was the first SMB protocol, it wasn't very efficient or secure. It is widely known that you should not use this protocol.
+
+> #### `SMB V2.0`
+>
+> This was the second verision of the protocol, created 20 years after the 1st one. Released with Windows Vista this protocol solves a lot of issues that the last version had like:
+> * Wayyy less commands.
+> * Better performance.
+> * Better security.
+
+> #### `SMB V3.0`
+>
+> This version was introduced with Windows 8 and Windows Server 2012, it provides a lot more facilitation abilities and security solutions. For example message signing and better, strong encryption.
+
+### HOW DOES IT WORK?
+Communication with the protocol starts when the client send a request and the server returns a reponse, initiating a connection. Then a session is created with a set of keys, one for encryption and one for signing messages, known to both sides.
