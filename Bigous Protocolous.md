@@ -17,6 +17,7 @@ The big protocol wikipedia.
 | [POP](#post-office-protocol-3-aka-pop3)                               | Post Office Protocol                                          |
 | [IMAP](#internet-message-access-protocol-aka-imap)                    | Internet Message Access Protocol                              |
 | [SMB](#server-message-blocking-protocol-aka-smb)                      | Server Message Blocking                                       |
+| [SNMP](#simple-network-management-protocol-aka-snmp)                  | Simple Network Management Protocol                            |
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -679,13 +680,14 @@ A message may be flagged as one of these:
 
 
 ## Server Message Blocking Protocol A.K.A SMB
+###### *[#Layer7] [#TCP/445] [#TCP/139]*
 
 SMB is a protocol meant for file sharing, not to be confused with file transfer. This protocol allows a user on a Windows machine to share a folder over the network and let other user iteract with it on their local machine without downloading it. It works on a client/server model and uses commands to make the other endpoint operate.
 
 ### WHY WAS IT INVENTED?
 The protocol was invented on 1983 by Barry A. Feigenbaum at IBM in order to provide Hosts, printers and other network nodes `shared access` to files on the network. The protocol was then picked up by Microsoft and even since then it was buit upon with the 4th version of the protocol being the current standard. The protocl was also imitated and ported over to Linux to provide Unix based systems access to file sharing and interfacing abilities with Windows machines.
 
-Over the years the protocl has been devided into dialects (or versions), with each of them building ontop of the one prior to it or changing something. Here are just a few:
+Over the years the protocol has been divided into dialects (or versions), with each of them building ontop of the one prior to it or changing something. Here are just a few:
 
 > #### `SMB V1.0`
 >
@@ -704,3 +706,52 @@ Over the years the protocl has been devided into dialects (or versions), with ea
 
 ### HOW DOES IT WORK?
 Communication with the protocol starts when the client send a request and the server returns a reponse, initiating a connection. Then a session is created with a set of keys, one for encryption and one for signing messages, known to both sides.
+
+As it's transport layer used can be either TCP (on port 445) or NetBIOS over TCP (nbss on port 139), The protocol also requires authentication. Either using NTLM or Kerberos (for domain purposes), the first one being vulnurable to attacks. After the authentication and checking permission for the shared folder the server will open a connection to the folder where thec leint can perform various operations, like read and write information from/to it, rename it, delete it, create a new file, copy and save it and more. All of these operations are done on the server side using commands sent by the client.
+
+At the end the client will send a command to close the connection and session and the server will follow through, the affect of the operations that the cleint made are saved real-time. Also high versio of SMB allow file handles that can persist though unexpected disconnections.
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## Simple Network Management Protocol A.K.A SNMP
+###### *[#Layer7] [#UDP/161]*
+
+The Simple Network Management Protocol is used to collect device information, like cpu usage, up status and bandwith from all the devices over the network to allow simple network managment from one machine very easily.
+
+### WHY WAS IT INVENTED?
+The protocol was invented back in 1988, back then networks weren't as big as they are today but they were getting bigger. This is why there was a need for a way to manage IP networks easily, a need which was fullfilled by this protocol.
+
+### HOW DOES IT WORK?
+
+> #### `MODEL`
+> 
+> This protocl uses a Controller-Agent model, and it operates on the UDP transport protocol. As to how it get's the information is pretty simple, every device on the network has a table called a `MIB` (Management Information Base). In the MIB will be a list of `Object identifiers`, `Objects` are like properties of the network device, an Object can be the name of the device or a routing table of a router.
+
+> #### `Server & Requests`
+>
+> The controlling server, called `NMS` (Network Management System) can then fetch the information from the MIBs using `GET requests` (Yes, like http you nerd). The NMS may also change the values of the objects on the agent's machine using `SET requests`.
+
+> #### `TRAP/INFORM messages`
+>
+> If an interface goes offline on a specific device containing an snmp agent, the agent will send either a `TRAP` or `INFORM` alert to the NMS to notify it. Both alerts server the same purpose but are still a little different, that is in the way that they are communicated. An `INFORM alert` will wait for acknowledgment from the server and will resend if it didn't get a message back saying it was acknowledged, a `TRAP alert` will send a forget.
+
+So basically using these operations and with a MIB table on all devices a network administrator can display all the information about their network's devices, and get notified when a device doesn't work as needed.
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## Network Time Protocl A.K.A NTP
+###### *[#Layer7] [#UDP/123]*
+
+The protocol is used to synchronize time over all the machines in the network, time synchronization is crucial when it comes to many things in a network like logging events. in order to do that an NTP server will dictate the time for all the machines in the network. 
+
+### HOW DOES IT WORK?
+
+The way time synchronization works over the internet is by devices syncing their internal clocks with eachother, the reliability of the device's clock sncronization is called `stratum`. `Stratum` is measured from 0 - 15, devices that classify as `stratum 0` are usually professional grade time measurement devices like `Atom clocks` and such, those will connect to `Time servers` which will become `stratum 1` since they syn off of a `stratum 0` device.
+
+NTP Servers on small networks will usually syncronize using stratum 1,2 or 3 servers off the internet and then the other devices on te network will syncronize off of that NTP server.
