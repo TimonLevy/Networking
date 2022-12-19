@@ -809,7 +809,38 @@ Alright, let's look at the handshake's structure and the differences between SSL
 
 > #### `STEP 2.2: SERVER CERTIFICATE`
 >
-> If the server needs to (which it most probably will nowadays), the server sends it's [signed public key certificate](https://github.com/TimonLevy/Networking/blob/main/Extras.md#what-are-ssltls-certificates).
+> If the server needs to (which it most probably will nowadays), the server sends it's [certificate](https://github.com/TimonLevy/Networking/blob/main/Extras.md#what-are-ssltls-certificates) that validates it's authenticity and give the server it's public key.
+
+> #### `STEP 2.3: SERVER HELLO DONE`
+>
+> This is just an empty message that says "I am done, it's your turn again.". The server may add more messages inbetween the `SERVER CERTIFICATE` message and the `SERVER HELLO DONE` one for special purposes, but sending the `SERVER HELLO DONE` message means that the server is done and not to expect for more.
+
+> #### `STEP 3: CLIENT KEY EXCHANGE`
+>
+> After the server is done, the client will begin by **initiating a key exchange** that they will later use to **create session keys**. The exchange algorithm is defined by the cipher suite that the server chose in their `SERVER HELLO` message.
+>
+> We will not go into the different ways to exchange keys, but it is important to note that the keys can not be calculated by anyone else other than the client and server since at least one parameter in the formula will be a secret.
+
+> #### `STEP 4: FINISHED -SSL-`
+>
+> The client will send a `FINISHED` message that is already encrypted in the negotiated encryption algorithm and uses the exhcnaged keys for encrypting. this message will usually be the last before the encrypted conversation starts between the both but a server can send a `FINISHED` message as well.
+
+```
+CLIENT                            SERVER
+  |           CLIENT HELLO          |
+  | ------------------------------> |
+  |           SERVER HELLO          |
+  |        SERVER CERTIFICATE       |
+  |        SERVER HELLO DONE        |
+  | <------------------------------ |
+  | <------------------------------ |
+  | <------------------------------ |
+  |             FINISHED            |
+  | ------------------------------> |
+  |                                 |
+  V                                 V
+``` 
+A basic diagram showing the flow of a handshake. there may be more messages then this, but this is the bare-necessity.
 
 
 
