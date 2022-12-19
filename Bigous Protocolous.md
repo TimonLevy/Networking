@@ -28,7 +28,7 @@ The big protocol wikipedia.
 ## Internet Control Message Protocol A.K.A [ICUP](https://www.urbandictionary.com/define.php?term=Spell%20iCup)
 ###### *[#Layer-3] [#Portless]*
 
-ICMP, or **I**nternet **C**ontrol **M**essage **P**rotocol is a 3rd (OSI Model) layer protocol used to send control messages relating to the Internet protocol (IP).
+ICMP, or **I**nternet **C**ontrol **M**essage **P**rotocol is a protocol used to send control messages relating to the Internet protocol (IP).
 
 ### WHY WAS IT INVENTED
 Since the implementation of IP is not meant to be absolutely reliable and it can sometimes mess up, The ICMP protocol be used to return send feedback about problems that can arise when communicatinf with a host. However the ICMP protocol does not act to make the IP more reliable and does not guarantee 100% reliablility itself incase IP fails to deliver. ICMP will usually report on delivery errors of packets and no ICMP packet will be sent about a lost ICMP packet.
@@ -841,18 +841,6 @@ CLIENT                            SERVER
   V                                 V
 ``` 
 A basic diagram showing the flow of a handshake. there may be more messages then this, but this is the bare-necessity.
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ###### [Back to top](#bigous-protocolous)
