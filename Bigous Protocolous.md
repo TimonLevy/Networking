@@ -809,7 +809,7 @@ Alright, let's look at the handshake's structure and the differences between SSL
 
 > #### `STEP 2.2: SERVER CERTIFICATE`
 >
-> If the server needs to (which it most probably will nowadays), the server sends it's [signed public key certificate]().
+> If the server needs to (which it most probably will nowadays), the server sends it's [signed public key certificate](https://github.com/TimonLevy/Networking/blob/main/Extras.md#what-are-ssltls-certificates).
 
 
 
