@@ -5,7 +5,7 @@ The big protocol wikipedia.
 | TABLE OF CONTENTS | _________________________________________________________________________________________________________________ |
 | :---------------- | ----------------------------------------------------------------------------------------------------------------: |
 | [ICUP](#internet-control-message-protocol-aka-icup)                   | Internet Control Message protocol                             |
-| [DeezNutS](#domain-name-system-aka-deeznuts)                          | Domain Name System                                            |
+| [DNS](#domain-name-system-aka-dns)                                    | Domain Name System                                            |
 | [LLMNR](#link-local-multicast-name-resolution-aka-llmnr)              | Link-Local Multicast Name Resolution                          |
 | [DHCP](#dynamic-host-configuration-protocol-aka-dhcp)                 | Dynamic Host Configuration Protocol                           |
 | [NetBIOS](#network-basic-inputoutput-system-aka-netbios)              | Network Basic Input Output System                             |
@@ -148,7 +148,7 @@ ICMP Fields:
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-## Domain Name System A.K.A [DeezNutS](https://youtu.be/CjgXx6QyZRg?t=10)
+## Domain Name System A.K.A DNS
 ###### *[#Layer-7] [#TCP/53] [#UDP/53]*
 
 The DNS protocol is used for "translating" between IP addresses and Domain Names, thus the name Domain Name System. The protocol itself operates at the 7th OSI level which is the application layer and ontop of `UDP/53`. DNS went under a lot of transformation over the year since it was first introduced at 1983, today it exists in many variants that each serve a different purpose or build on previous implementation of the protocol. Some of these are:
@@ -168,6 +168,10 @@ The DNS protocol is used for "translating" between IP addresses and Domain Names
 > #### `DNS over QUIC` (UDP/853)
 >
 > Uses the transport protocol QUIC to transport messages, provides a lot of benefits that TCP does with encryption and speed.
+
+> #### `DNS over Your Mother` (UDP/69)
+>
+> Tunnels the requests thrugh your mom, however some responses may be lost in the way back due to the fact that your mom ate them.
 
 And there are more. 
 
@@ -582,7 +586,7 @@ POP3 is the latest version of the protocol with POP 1 being the first, over the 
 
 
 ## Internet Message Access Protocol A.K.A IMAP
-###### *[#Layer7] [#TCP/143] [#TCP/993]*
+###### *[#Layer7] [#TCP/143] [#TCP/993] [[#What_Came_In_The_Mail?](https://youtu.be/CjgXx6QyZRg?t=10)]*
 
 IMAP also dabbles in reading mail messages from a server, but it is way more efficient than POP. It was conceptualized becayse POP had many problems and IMAP was meant to address them.
 
