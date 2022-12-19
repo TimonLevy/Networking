@@ -18,7 +18,7 @@ The big protocol wikipedia.
 | [IMAP](#internet-message-access-protocol-aka-imap)                    | Internet Message Access Protocol                              |
 | [SMB](#server-message-blocking-protocol-aka-smb)                      | Server Message Blocking                                       |
 | [SNMP](#simple-network-management-protocol-aka-snmp)                  | Simple Network Management Protocol                            |
-| [NTP](#network-time-protocl-aka-ntp)                                  | Network Time Protocol                                         |
+| [NTP](#network-time-protocol-aka-ntp)                                 | Network Time Protocol                                         |
 | [TLS/SSL](#transport-layer-security--secure-socket-layer-aka-tlsssl)  | Transport Layer Security / Secure Socket Layer                |
 
 [to Bibliography](#bibliography)
@@ -31,7 +31,7 @@ The big protocol wikipedia.
 ICMP, or **I**nternet **C**ontrol **M**essage **P**rotocol is a 3rd (OSI Model) layer protocol used to send control messages relating to the Internet protocol (IP).
 
 ### WHY WAS IT INVENTED
-Since the implementation of IP is not meant to be absolutely reliable and it can sometimes mess up, The ICMP protocol be used to return send feedback about problems that can arise when communicatinf with a host. However the ICMP protocl does not act to make the IP more reliable and does not guarantee 100% reliablility itself incase IP fails to deliver. ICMP will usually report on delivery errors of packets and no ICMP packet will be sent about a lost ICMP packet.
+Since the implementation of IP is not meant to be absolutely reliable and it can sometimes mess up, The ICMP protocol be used to return send feedback about problems that can arise when communicatinf with a host. However the ICMP protocol does not act to make the IP more reliable and does not guarantee 100% reliablility itself incase IP fails to deliver. ICMP will usually report on delivery errors of packets and no ICMP packet will be sent about a lost ICMP packet.
 
 ### HOW DOES IT WORK
 An ICMP packet is used to instruct a device in the routing path of a packet (including the source and destination) of a failure or change in the delivery of the packet (Except for `ICMP Type`s 0 and 8). The type and structure of the packet is determined by the `ICMP Type` parameter in the header. Each type also has an `ICMP Code` that determines the subject of the packet.
@@ -451,7 +451,7 @@ This protocol too works on a `Client/Server` basis, note that some concepts and 
 
 
 ## HyperText Transfer Protocol A.K.A HTTP
-###### *[#Layer7] [#TCP/80]*
+###### *[#Layer-7] [#TCP/80]*
 
 HTTP is the protocol used to send web pages over the internet. This is a very broad definition of the protocol but we will get into it later (Like I did to your mom).
 
@@ -536,7 +536,7 @@ SMTP is used to relay mail messages over the network from the local network's sm
 
 
 ## Post Office Protocol 3 A.K.A POP3
-###### *[#Layer7] [TCP/110]*
+###### *[#Layer-7] [TCP/110]*
 
 POP is used to let the user access their mails online, since smtp is only able to push emails to a destination mailbox.
 
@@ -588,7 +588,7 @@ POP3 is the latest version of the protocol with POP 1 being the first, over the 
 
 
 ## Internet Message Access Protocol A.K.A IMAP
-###### *[#Layer7] [#TCP/143] [#TCP/993] [[#What_Came_In_The_Mail?](https://youtu.be/CjgXx6QyZRg?t=10)]*
+###### *[#Layer-7] [#TCP/143] [#TCP/993] [[#What_Came_In_The_Mail?](https://youtu.be/CjgXx6QyZRg?t=10)]*
 
 IMAP also dabbles in reading mail messages from a server, but it is way more efficient than POP. It was conceptualized becayse POP had many problems and IMAP was meant to address them.
 
@@ -688,12 +688,12 @@ A message may be flagged as one of these:
 
 
 ## Server Message Blocking Protocol A.K.A SMB
-###### *[#Layer7] [#TCP/445] [#TCP/139]*
+###### *[#Layer-7] [#TCP/445] [#TCP/139]*
 
 SMB is a protocol meant for file sharing, not to be confused with file transfer. This protocol allows a user on a Windows machine to share a folder over the network and let other user iteract with it on their local machine without downloading it. It works on a client/server model and uses commands to make the other endpoint operate.
 
 ### WHY WAS IT INVENTED?
-The protocol was invented on 1983 by Barry A. Feigenbaum at IBM in order to provide Hosts, printers and other network nodes `shared access` to files on the network. The protocol was then picked up by Microsoft and even since then it was buit upon with the 4th version of the protocol being the current standard. The protocl was also imitated and ported over to Linux to provide Unix based systems access to file sharing and interfacing abilities with Windows machines.
+The protocol was invented on 1983 by Barry A. Feigenbaum at IBM in order to provide Hosts, printers and other network nodes `shared access` to files on the network. The protocol was then picked up by Microsoft and even since then it was buit upon with the 4th version of the protocol being the current standard. The protocol was also imitated and ported over to Linux to provide Unix based systems access to file sharing and interfacing abilities with Windows machines.
 
 Over the years the protocol has been divided into dialects (or versions), with each of them building ontop of the one prior to it or changing something. Here are just a few:
 
@@ -725,7 +725,7 @@ At the end the client will send a command to close the connection and session an
 
 
 ## Simple Network Management Protocol A.K.A SNMP
-###### *[#Layer7] [#UDP/161]*
+###### *[#Layer-7] [#UDP/161]*
 
 The Simple Network Management Protocol is used to collect device information, like cpu usage, up status and bandwith from all the devices over the network to allow simple network managment from one machine very easily.
 
@@ -736,7 +736,7 @@ The protocol was invented back in 1988, back then networks weren't as big as the
 
 > #### `MODEL`
 > 
-> This protocl uses a Controller-Agent model, and it operates on the UDP transport protocol. As to how it get's the information is pretty simple, every device on the network has a table called a `MIB` (Management Information Base). In the MIB will be a list of `Object identifiers`, `Objects` are like properties of the network device, an Object can be the name of the device or a routing table of a router.
+> This protocol uses a Controller-Agent model, and it operates on the UDP transport protocol. As to how it get's the information is pretty simple, every device on the network has a table called a `MIB` (Management Information Base). In the MIB will be a list of `Object identifiers`, `Objects` are like properties of the network device, an Object can be the name of the device or a routing table of a router.
 
 > #### `Server & Requests`
 >
@@ -753,8 +753,8 @@ So basically using these operations and with a MIB table on all devices a networ
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-## Network Time Protocl A.K.A NTP
-###### *[#Layer7] [#UDP/123]*
+## Network Time Protocol A.K.A NTP
+###### *[#Layer-7] [#UDP/123]*
 
 The protocol is used to synchronize time over all the machines in the network, time synchronization is crucial when it comes to many things in a network like logging events. in order to do that an NTP server will dictate the time for all the machines in the network. 
 
@@ -770,7 +770,7 @@ NTP Servers on small networks will usually syncronize using stratum 1,2 or 3 ser
 
 
 ## Transport Layer Security **/** Secure Socket Layer A.K.A TLS/SSL
-###### *[#Layer5]*
+###### *[#Layer-5]*
 
 Both TLS and SSL are protocols used to encrypt information on the wire in a way that both endpoints can decrypt them, meaning that `they generate a set of symetric encryption eys for the given session`. That is why they belong in the `Session Layer`, the one that is also responsible for encryption.
 
@@ -792,12 +792,24 @@ Third, we can assume that there is always someone sniffing on the network (a mid
 
 So why are public/private keys not enough? simply from the fact we always assume there is a middleman, the middleman can easily switch the server's public key with his in the conversation and we will have no way to verify that they public key we recieved was really the server's.
 
-That is one problem the protocols deals with, `Public key authentication`. Another problem is `protocol negotiation`, which version of tls or ssl do the machine's support? And lastly how do we `make breaking the encryption harder or more resilient`?
+That is one problem the protocols deals with, `Public key authentication`. Another problem is `protocol negotiation`, which version of tls or ssl do the machine's support? `What encryption elgorithm to use`? And lastly how do we `make breaking the encryption harder or more resilient`?
 
-Alrght let's look at the handshakes:
+Alright, let's look at the handshake's structure and the differences between SSL and TLS.
 
-#### Secure Socket Layer A.K.A SSL
+> #### `STEP 1: CLIENT HELLO`
+>
+> Basically the client send a tls/ssl session initiation message, In this message will be a few things that are needed in order to synchronize the encryption. The `latest tls/ssl version the client supports`, `A random Nnumber`, `A session identification number`, `A cipher suite` (A list of the **encryption and key exchange** algorithms it supports sorted by preference), `A list of compression algorithms` sorted by preference as well.
+> After sending the client hello the client waits for a **SERVER HELLO** message, meaning the server wishes to initiate a connection, create a session and set the security parameters for the session. That is tell the client what the Session ID is, what encryption ,key exchange and compression algorithms they will use and a random number of it's own.
+>
+> If the server doesn't accept the **CLIENT HELLO** message for some reason then it will send back a `handshake failure` message.
 
+> #### `STEP 2.1: SERVER HELLO`
+>
+> The server looks at they **CLIENT HELLO** message and chooses all the best compatible options and send them back to the client as a sort of "I choose this from what you gave me". To this, the server will add a random number of his own and dictate the Session identifier.
+
+> #### `STEP 2.2: SERVER CERTIFICATE`
+>
+> If the server needs to (which it most probably will nowadays), the server sends it's [signed public key certificate]().
 
 
 
@@ -818,11 +830,11 @@ Alrght let's look at the handshakes:
 
 
 ## BIBLIOGRAPHY
-This bibliography wasput together after writing the NTP section, so most of the earlier protocol's research resources are missing.
+This bibliography was put together after writing the NTP section, so most of the earlier protocol's research resources are missing.
 
 > ### ICMP
 >
-> 1. "[INTERNET CONTROL MESSAGE PROTOCOL, DARPA INTERNET PROGRAM PROTOCOL SPECIFICATION](https://www.rfc-editor.org/rfc/rfc792)", Request For Comments.
+> 1. "[INTERNET CONTROL MESSAGE PROTOCOL, DARPA INTERNET PROGRAM PROTOCOL SPECIFICATION](https://www.rfc-editor.org/rfc/rfc792)", Request For Comments 792.
 
 > ### SMTP
 >
@@ -831,12 +843,12 @@ This bibliography wasput together after writing the NTP section, so most of the 
 
 > ### POP
 >
-> 1. "[POST OFFICE PROTOCOL](https://datatracker.ietf.org/doc/html/rfc918)", Request For Comments.
+> 1. "[POST OFFICE PROTOCOL](https://datatracker.ietf.org/doc/html/rfc918)", Request For Comments 918.
 > 2. "[E-Mail Protocols (SMTP, POP and IMAP)](https://www.youtube.com/watch?v=m8TLN--aZic&t=1s)", Youtube video by **Rick Graziani**.
 
 > ### IMAP
 >
-> 1. "[INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4](https://www.rfc-editor.org/rfc/rfc1730.txt)", Request For Comments.
+> 1. "[INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4](https://www.rfc-editor.org/rfc/rfc1730.txt)", Request For Comments 1730.
 
 > ### SMB
 >
@@ -853,4 +865,7 @@ This bibliography wasput together after writing the NTP section, so most of the 
 > ### TLS/SSL
 > 
 > 1. "[TLS Handshake - EVERYTHING that happens when you visit an HTTPS website](https://www.youtube.com/watch?v=ZkL10eoG1PY)", Youtube video by **Practical Networking**.
-> 2. "[What are SSL/TLS Certificates? Why do we Need them? and How do they Work?](https://www.youtube.com/watch?v=r1nJT63BFQ0)", Youtube Video by **Hussein Nasser**.
+> 2. "[Transport Layer Security, TLS 1.2 and 1.3 (Explained by Example)](https://www.youtube.com/watch?v=AlE5X1NlHgg)", Youtube video by **Hussein Nasser**.
+> 3. "[What is SSL? | What is SSL Ceritificate? | SSL Architecture and Protocols | Secure Socket Layer](https://www.youtube.com/watch?v=-dQyUqoK16w)", Youtube video by **Chirag Bhalodia**.
+> 4. "[How SSL works tutorial - with HTTPS example](https://www.youtube.com/watch?v=iQsKdtjwtYI)", Youtube video by **tubewar**.
+> 5. "[The Secure Sockets Layer (SSL) Protocol Version 3.0](https://www.rfc-editor.org/rfc/rfc6101)", Request For Comments 6101.
