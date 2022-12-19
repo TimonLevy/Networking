@@ -16,11 +16,14 @@ Extra content for the bigous protocolous.
 
 When sending a public key over the net to a client, the message (that is not yet encrypted) is very susceptible to a MitM attack. An attack can easily switch the server's public key inside with their own and relay the message back to us. So what now? Does that mean that we can no longer trust public keys? Nope.
 
-The way we get around that problem is by `digitally signing our keys` and creating what's known as a `digital certificate`. Do not cofuse both terms, signing and certifying are not the same.
+The way we get around that problem is by `digitally signing our keys` and creating what's known as a `digital certificate`. Do not confuse both terms, signing and certifying are not the same.
+
+The digital certificate's job is to `certify our key as our server's true public key` and serve as a `signiture of it's validity`.
+You may continue reading how that is done, but it's not truly necessary.
 
 ### Digital Signature
 
-Let's meet our new best friend, CA Server, Certificate Authority servers. A CA server's job is to certify our key as our server's true key and issue as a `signiture of it's validity`.
+Let's meet our new best friend, CA Server, Certificate Authority servers. A CA server's 
 
 A digital signature is simply put, the `server's key encrypted by the CA's private key`. That way, the client receiving the signature can `decrypt the server's key with the CA's public key`. This method ensure that the decrypted key was not changed in transit by two ways:
 
@@ -45,6 +48,8 @@ So then your certificate, will not only include the key and it's signature but a
 It's goes like, layer to layer until we get to the `ROOT CA`, that certificate has no linked certificate. It certifies itself and it is hardcoded into your system so you wont be able to fake that.
 
 So that's how we certify a message in the network, a little complicated but it gets the job done.
+
+**NOTICE**: Digital signatures and certificates can be applied to any sort of information, not only server public keys.
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
