@@ -4,7 +4,7 @@ The big protocol wikipedia.
 
 | TABLE OF CONTENTS | _________________________________________________________________________________________________________________ |
 | :---------------- | ----------------------------------------------------------------------------------------------------------------: |
-| [ICUP](#internet-control-message-protocol-aka-icup)                   | Internet Control Message protocol                             |
+| [ICMP](#internet-control-message-protocol-aka-icup)                   | Internet Control Message protocol                             |
 | [DNS](#domain-name-system-aka-dns)                                    | Domain Name System                                            |
 | [LLMNR](#link-local-multicast-name-resolution-aka-llmnr)              | Link-Local Multicast Name Resolution                          |
 | [DHCP](#dynamic-host-configuration-protocol-aka-dhcp)                 | Dynamic Host Configuration Protocol                           |
@@ -770,4 +770,63 @@ NTP Servers on small networks will usually syncronize using stratum 1,2 or 3 ser
 ## Transport Layer Security **/** Secure Socket Layer A.K.A TLS/SSL
 ###### *[#Layer5]*
 
-The 
+Both TLS and SSL are protocols used to encrypt information on the wire in a way that both endpoints can decrypt them, meaning that `they generate a set of symetric encryption eys for the given session`. That is why they belong in the `Session Layer`, the one that is also responsible for encryption.
+
+Nowadays TLS is the standard for session encryption and regarded as the better protocol, originally TLS was born from SSL and superseeded it.
+
+### WHY WERE THEY INVENTED?
+
+At the time, most communication through the network happened as cleartext, there was a serious threat from middlemen existing in the network reading all the information. Especially when it came to businesses and online transactions. So in the year 1995 [Netscape](https://www.youtube.com/watch?v=dQw4w9WgXcQ) introduced this protocol to serve as a porm of packet protection by encrypting packet contents on the wire.
+
+### HOW DO THEY WORK?
+
+#### SSL
+
+
+
+
+
+
+
+
+
+
+
+
+## BIBLIOGRAPHY
+This bibliography wasput together after writing the NTP section, so most of the earlier protocol's research resources are missing.
+
+> ### ICMP
+>
+> 1. "[INTERNET CONTROL MESSAGE PROTOCOL, DARPA INTERNET PROGRAM PROTOCOL SPECIFICATION](https://www.rfc-editor.org/rfc/rfc792)", Request For Comments.
+
+> ### SMTP
+>
+> 1. "[What is SMTP - Simple Mail Transfer Protocol](https://www.youtube.com/watch?v=PJo5yOtu7o8)", Youtube video by **PowerCert Animated Videos**.
+> 2. "[SMTP ( Simple Mail transfer protocol )](https://www.youtube.com/watch?v=I2JtOjU5MZI)", Youtube video by **Easy Engineering By Neha Syed**.
+
+> ### POP
+>
+> 1. "[POST OFFICE PROTOCOL](https://datatracker.ietf.org/doc/html/rfc918)", Request For Comments.
+> 2. "[E-Mail Protocols (SMTP, POP and IMAP)](https://www.youtube.com/watch?v=m8TLN--aZic&t=1s)", Youtube video by **Rick Graziani**.
+
+> ### IMAP
+>
+> 1. "[INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4](https://www.rfc-editor.org/rfc/rfc1730.txt)", Request For Comments.
+
+> ### SMB
+>
+> 1. "[Visuality Systems SMB protocol](https://www.youtube.com/playlist?list=PLyOlunpO5LG1W1SgFGDUAlCTSz9j9zBax)", Youtube Playlist by **Visuality Systems**.
+
+> ### SNMP
+>
+> 1. "[SNMP Explained | Simple Network Management Protocol | Cisco CCNA 200-301](https://www.youtube.com/watch?v=Lq7j-QipNrI)", Youtube Video by **CertBros**.
+
+> ### NTP
+>
+> 1. "[NTP Explained | Network Time Protocol | Cisco CCNA 200-301](https://www.youtube.com/watch?v=oCtkwEjhyD4)", Youtube video by **CertBros**.
+
+> ### TLS/SSL
+> 
+> 1. "[TLS Handshake - EVERYTHING that happens when you visit an HTTPS website](https://www.youtube.com/watch?v=ZkL10eoG1PY)", Youtube video by **Practical Networking**.
+> 2. "[What are SSL/TLS Certificates? Why do we Need them? and How do they Work?](https://www.youtube.com/watch?v=r1nJT63BFQ0)", Youtube Video by **Hussein Nasser**.
