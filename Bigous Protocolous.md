@@ -21,6 +21,8 @@ The big protocol wikipedia.
 | [NTP](#network-time-protocl-aka-ntp)                                  | Network Time Protocol                                         |
 | [TLS/SSL](#transport-layer-security--secure-socket-layer-aka-tlsssl)  | Transport Layer Security / Secure Socket Layer                |
 
+[to Bibliography](#bibliography)
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## Internet Control Message Protocol A.K.A [ICUP](https://www.urbandictionary.com/define.php?term=Spell%20iCup)
@@ -780,7 +782,21 @@ At the time, most communication through the network happened as cleartext, there
 
 ### HOW DO THEY WORK?
 
-#### SSL
+The end goal of both protocols is to create session keys to symetrically encrypt the conversation, the way both protocol perform this is with a process called a `Handshake`. But before we start going into the entire process we need to explain a few things. 
+
+The first thing we need to understand about encryption is the existence of public and private encryption keys, keys that allow encryption with one and decryption with the other.
+
+Second, everyone can know the other machine's public keys but not private keys.
+
+Third, we can assume that there is always someone sniffing on the network (a middle man).
+
+So why are public/private keys not enough? simply from the fact we always assume there is a middleman, the middleman can easily switch the server's public key with his in the conversation and we will have no way to verify that they public key we recieved was really the server's.
+
+That is one problem the protocols deals with, `Public key authentication`. Another problem is `protocol negotiation`, which version of tls or ssl do the machine's support? And lastly how do we `make breaking the encryption harder or more resilient`?
+
+Alrght let's look at the handshakes:
+
+#### Secure Socket Layer A.K.A SSL
 
 
 
@@ -790,6 +806,14 @@ At the time, most communication through the network happened as cleartext, there
 
 
 
+
+
+
+
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
