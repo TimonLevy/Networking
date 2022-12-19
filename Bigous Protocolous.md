@@ -4,8 +4,8 @@ The big protocol wikipedia.
 
 | TABLE OF CONTENTS | _________________________________________________________________________________________________________________ |
 | :---------------- | ----------------------------------------------------------------------------------------------------------------: |
-| [ICMP](#internet-control-message-protocol-aka-icmp)                   | Internet Control Message protocol                             |
-| [DeezNutS](#domain-name-system-aka-dns)                               | Domain Name System                                            |
+| [ICUP](#internet-control-message-protocol-aka-icup)                   | Internet Control Message protocol                             |
+| [DeezNutS](#domain-name-system-aka-deeznuts)                          | Domain Name System                                            |
 | [LLMNR](#link-local-multicast-name-resolution-aka-llmnr)              | Link-Local Multicast Name Resolution                          |
 | [DHCP](#dynamic-host-configuration-protocol-aka-dhcp)                 | Dynamic Host Configuration Protocol                           |
 | [NetBIOS](#network-basic-inputoutput-system-aka-netbios)              | Network Basic Input Output System                             |
@@ -18,10 +18,12 @@ The big protocol wikipedia.
 | [IMAP](#internet-message-access-protocol-aka-imap)                    | Internet Message Access Protocol                              |
 | [SMB](#server-message-blocking-protocol-aka-smb)                      | Server Message Blocking                                       |
 | [SNMP](#simple-network-management-protocol-aka-snmp)                  | Simple Network Management Protocol                            |
+| [NTP](#network-time-protocl-aka-ntp)                                  | Network Time Protocol                                         |
+| [TLS/SSL](#transport-layer-security--secure-socket-layer-aka-tlsssl)  | Transport Layer Security / Secure Socket Layer                |
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Internet Control Message Protocol A.K.A ICMP
+## Internet Control Message Protocol A.K.A [ICUP](https://www.urbandictionary.com/define.php?term=Spell%20iCup)
 ###### *[#Layer-3] [#Portless]*
 
 ICMP, or **I**nternet **C**ontrol **M**essage **P**rotocol is a 3rd (OSI Model) layer protocol used to send control messages relating to the Internet protocol (IP).
@@ -48,7 +50,7 @@ IP Header
 |- Source Address
 '- Destination Address
 
-ICMP Header
+I C U P Header
 |- Type                                         8  Bits, determines the format of the rest of the data.
 |- Code                                         8  bits, determines message type code to provide additional infomartion.
 '- Checksum                                     16 Bits, The checksum is the 16-bit ones's complement of
@@ -146,7 +148,7 @@ ICMP Fields:
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-## Domain Name System A.K.A DNS
+## Domain Name System A.K.A [DeezNutS](https://youtu.be/CjgXx6QyZRg?t=10)
 ###### *[#Layer-7] [#TCP/53] [#UDP/53]*
 
 The DNS protocol is used for "translating" between IP addresses and Domain Names, thus the name Domain Name System. The protocol itself operates at the 7th OSI level which is the application layer and ontop of `UDP/53`. DNS went under a lot of transformation over the year since it was first introduced at 1983, today it exists in many variants that each serve a different purpose or build on previous implementation of the protocol. Some of these are:
@@ -752,6 +754,16 @@ The protocol is used to synchronize time over all the machines in the network, t
 
 ### HOW DOES IT WORK?
 
-The way time synchronization works over the internet is by devices syncing their internal clocks with eachother, the reliability of the device's clock sncronization is called `stratum`. `Stratum` is measured from 0 - 15, devices that classify as `stratum 0` are usually professional grade time measurement devices like `Atom clocks` and such, those will connect to `Time servers` which will become `stratum 1` since they syn off of a `stratum 0` device.
+The way time synchronization works over the internet is by devices syncing their internal clocks with eachother, the reliability of the device's clock sncronization is called `stratum`. `Stratum` is measured from 0 - 15, devices that classify as `stratum 0` are usually professional grade time measurement devices like `Atom clocks` and such, those will connect to `Time servers` which will become `stratum 1` since they sync off of a `stratum 0` device.
 
 NTP Servers on small networks will usually syncronize using stratum 1,2 or 3 servers off the internet and then the other devices on te network will syncronize off of that NTP server.
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## Transport Layer Security **/** Secure Socket Layer A.K.A TLS/SSL
+###### *[#Layer5]*
+
+The 
