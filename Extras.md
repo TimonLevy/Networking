@@ -18,7 +18,7 @@ When sending a public key over the net to a client, the message (that is not yet
 
 The way we get around that problem is by `digitally signing our keys` and creating what's known as a `digital certificate`. Do not confuse both terms, signing and certifying are not the same.
 
-The digital certificate's job is to `certify our key as our server's true public key` and serve as a `signiture of it's validity`.
+The digital certificate's job is to `certify our key as our server's true public key` and serve as a `signature of it's validity`.
 You may continue reading how that is done, but it's not truly necessary.
 
 ### Digital Signature
