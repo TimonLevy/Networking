@@ -998,6 +998,12 @@ This bibliography was put together after writing the NTP section, so most of the
 >
 > 1. "[INTERNET CONTROL MESSAGE PROTOCOL, DARPA INTERNET PROGRAM PROTOCOL SPECIFICATION](https://www.rfc-editor.org/rfc/rfc792)", Request For Comments 792.
 
+> ### HTTP
+>
+> 1. "[Hypertext Transfer Protocol Version 2 (HTTP/2)](https://www.rfc-editor.org/rfc/rfc7540)", Refrence For Comments 7540.
+> 2. "[HTTP response status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#successful_responses)", Article on **MDN Web Docs**.
+> 3. "[HTTP request methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)", Article on **MDN Web Docs**.
+
 > ### SMTP
 >
 > 1. "[What is SMTP - Simple Mail Transfer Protocol](https://www.youtube.com/watch?v=PJo5yOtu7o8)", Youtube video by **PowerCert Animated Videos**.
@@ -1011,12 +1017,6 @@ This bibliography was put together after writing the NTP section, so most of the
 > ### IMAP
 >
 > 1. "[INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4](https://www.rfc-editor.org/rfc/rfc1730.txt)", Request For Comments 1730.
-
-> ### HTTP
->
-> 1. "[Hypertext Transfer Protocol Version 2 (HTTP/2)](https://www.rfc-editor.org/rfc/rfc7540)", Refrence For Comments 7540.
-> 2. "[HTTP response status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#successful_responses)", Article on **MDN Web Docs**.
-> 3. "[HTTP request methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)", Article on **MDN Web Docs**.
 
 > ### SMB
 >
@@ -1042,3 +1042,7 @@ This bibliography was put together after writing the NTP section, so most of the
 > 8. "[The TLS Protocol Version 1.0](https://www.ietf.org/rfc/rfc2246.txt)", Request For Comments 2246.
 > 9. "[TLS / SSL Versions - Part 2 - Practical TLS](https://www.youtube.com/watch?v=fk0-UqwVNqY)", Youtube Video by **Practical Networking**.
 > 10. "[TLS 1.3 Handshake](https://www.youtube.com/watch?v=yPdJVvSyMqk)", Youtube video by **F5 DevCentral**.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+###### [Back to top](#bigous-protocolous)
