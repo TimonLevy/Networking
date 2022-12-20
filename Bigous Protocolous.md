@@ -483,7 +483,7 @@ Overall, HTTP works as a request response type protocol, just like dns and dhcp.
 >
 > This version was introduced only a year after the last one and it built upon it. We're talking:
 > * **Host header** - to identify servers that have multiple Domain Names.
-> * **Persistent connections** - HTTP now keeps it's connection alive after sending a request and doesn't open a new session for each request (Which has an RTT of 3 thanks to the TCP handshake).
+> * **Persistent connections** - HTTP now keeps it's connection alive after sending a request and doesn't open a new session for each request (Which takes a full RTT thanks to the TCP handshake.. Ugh, digustang).
 > * **6 New methods** that were really helpful in the usage of the protocol. (PUT, PATCH, DELETE, CONNECT, TRACE, OPTIONS)
 >
 > Though the protocol **still communicated over cleartext**, which wasn't very cool.
@@ -770,11 +770,15 @@ NTP Servers on small networks will usually syncronize using stratum 1,2 or 3 ser
 
 
 ## Transport Layer Security **/** Secure Socket Layer A.K.A TLS/SSL
-###### *[#Layer-5]*
+###### *[#Layer-5] [#Application-Based-Port]*
 
 Both TLS and SSL are protocols used to encrypt information on the wire in a way that both endpoints can decrypt them, meaning that `they generate a set of symetric encryption eys for the given session`. That is why they belong in the `Session Layer`, the one that is also responsible for encryption.
 
-Nowadays TLS is the standard for session encryption and regarded as the better protocol, originally TLS was born from SSL and superseeded it.
+Nowadays TLS is the standard for session encryption and regarded as the better protocol, originally TLS was born from SSL 3.0 and superseeded it.
+
+```
+SSL 1.0 -> SSL 2.0 -> SSL 3.0 -> TLS 1.0 -> TLS 1.1 -> TLS 1.2 -> TLS 1.3
+```
 
 ### WHY WERE THEY INVENTED?
 
@@ -799,18 +803,16 @@ That is one problem. There are many more:
 * `What encryption elgorithm to use`? 
 * How to `exchange secret keys`?
 
-The SSL protocol is made up of 4 sub-protocols, 3 in a higher level and 1 in the lower level. They all work together coherently in order to provide the encryption service that is wanted. Each of the sub-protocols is responsible for something in the functionality of the SSL protocol:
+The SSL & TLS protocols are made up of 4 sub-protocols, 3 in a higher level and 1 in the lower level. They all work together coherently in order to provide the encryption service that is wanted. Each of the sub-protocols is responsible for something in the functionality of the SSL & TLS protocols:
 
 ```
-* SSL Handshake Protocol          -.                      Establish security parameters and session.              
-* SSL Change Cipher Protocol      -|- SSL HIGHER LAYER    Responsible for cipher changing negotiations.
-* SSL Alert Protocol              -'                      Responsible for alerting if there is an error/warning.
-* SSL Record Protocol              -- SSL LOWER LAYER     This is the protocol that encrypts, compresses and ecapsulates the application data.
+* Handshake Protocol          -.                      Establish security parameters and session.              
+* Change Cipher Protocol      -|- HIGHER LAYER    Responsible for cipher changing negotiations.
+* Alert Protocol              -'                      Responsible for alerting if there is an error/warning.
+* Record Protocol              -- LOWER LAYER     This is the protocol that encrypts, compresses and ecapsulates the application data.
 ```
 
-TLS is a protocol of it's own, with no sub-protocol but similar functionality.
-
-SSL also has **two major concepts**:
+SSL/TLS also has **two major concepts**:
 
 > `SESSION`
 >
@@ -822,7 +824,7 @@ SSL also has **two major concepts**:
 >
 > A connection has two cipher spesification states too, `pending` and `current`. Whenever negotiating parameters, those parameters get put in the pending state. And when the connection receives the relevant message it will change the `current` CipherSpecs using the `pending` ones. 
 
-### SSL Handshake Protocol
+### Handshake Protocol
 
 > #### `STEP 1: CLIENT HELLO`
 >
@@ -849,56 +851,65 @@ SSL also has **two major concepts**:
 >
 > After the server is done, the client will begin by **initiating a key exchange** that they will later use to **create session keys**. The exchange algorithm is defined by the cipher suite that the server chose in their `SERVER HELLO` message.
 >
-> We will not go into the different ways to exchange keys, but it is important to note that the keys can not be calculated by anyone else other than the client and server since at least one parameter in the formula will be a secret.
+> We will not go into the different ways to exchange keys, but it is important to note:
+> 
+> in **TLS** the keys can not be calculated by anyone else other than the client and server since at least one parameter in the formula will be a secret. That is what's called a `pre-master secret`.
+>
+> In **SSL** a huge exploit was found that allowed attackers to extract the server's private key and possibly find out the key. SSL 3.0 was the first version to support Diffie-Hellman Key exchange, prior to that only RSA was allowed.
 
-> #### `STEP 4: FINISHED -SSL-`
+> #### `STEP 4.1: CHANGE CIPHER SPECIFICATIONS`
+>
+> In this step the client sends a `change cipher spec` message telling the server to update it's connection's state.
+
+> #### `STEP 4.2: HANDSHAKE FINISHED`
 >
 > The client will send a `FINISHED` message that is already encrypted in the negotiated encryption algorithm and uses the exhcnaged keys for encrypting. this message will usually be the last before the encrypted conversation starts between the both but a server can send a `FINISHED` message as well.
 
 ```
-CLIENT                            SERVER
-  |           CLIENT HELLO          |
-  | ------------------------------> |
-  |           SERVER HELLO          |
-  |        SERVER CERTIFICATE       |
-  |        SERVER HELLO DONE        |
-  | <------------------------------ |
-  | <------------------------------ |
-  | <------------------------------ |
-  |        CHANGE CIPHER SPEC*      |
-  |             FINISHED            |
-  | ------------------------------> |
-  | ------------------------------> |
-  |                                 |
-  |        CHANGE CIPHER SPEC*      |
-  |             FINISHED            |
-  | <------------------------------ |
-  | <------------------------------ |
-  V                                 V
-
-  * SSL
+.               CLIENT                            SERVER
+.                 |           CLIENT HELLO          |
+.                 | ------------------------------> |
+.                 |           SERVER HELLO          |
+.                 |        SERVER CERTIFICATE       |
+.                 |        SERVER HELLO DONE        |
+.                 | <------------------------------ |
+Client verifies   | <------------------------------ |
+Certificate       | <------------------------------ |
+.                 |           KEY EXCHANGE          |
+.                 |        CHANGE CIPHER SPEC       |
+.                 |             FINISHED            |
+.                 | ------------------------------> |
+.                 | ------------------------------> |
+.                 | ------------------------------> |
+.                 |                                 |
+.                 |        CHANGE CIPHER SPEC       |
+.                 |             FINISHED            |
+.                 | <------------------------------ |
+.                 | <------------------------------ |
+.                 V                                 V
+* SSL
 ``` 
 A basic diagram showing the flow of a handshake. there may be more messages then this, but this is the bare-necessity.
 
-### SSL Change Cipher Spec Protocol
+### Change Cipher Spec Protocol
 
-This protocol is the simplest of the SSL Protocols, it is made up of a single byte with the value of "1". The purpose of this protocol is to tell the recipient to update the connection's state to use the negotiated CipherSpec immediately (Cipher Specifications: keys, Algorithms, etc.). This message will be enccrypted by the current connection's CipherSpecs.
+This protocol is the simplest of the sub-protocols, it is made up of a single byte with the value of "1". The purpose of this protocol is to tell the recipient to update the connection's state to use the negotiated CipherSpec immediately (Cipher Specifications: keys, Algorithms, etc.). This message will be enccrypted by the current connection's CipherSpecs.
 
-### SSL Alert Protocol
+### Alert Protocol
 
 This protocol will alert the recipient in case of an error or warning, the alerts are labeled by level of severity. In case of a fata severity the connection is immediately terminated and the session nullified, to not let a new connection use the same parameters and potentially repeat the error.
 
-### SSL Record Prtocol
+### Record Prtocol
 
-The record protocol is responsible for the encryption of the message, the validation of message integrity, fragmantation and the compression. It does that using the current CipherSpecs which will include the encryption algorithms, keys, compression algorithms and MAC algorithms.
+The record protocol is responsible for the encryption of the message, the validation of message integrity, fragmantation and the compression. It does that using the current CipherSpecs which will include the encryption algorithms, keys, compression algorithms and [MAC algorithms](https://github.com/TimonLevy/Networking/blob/main/Extras.md#message-authentication-codes).
 
-MAC algorithms are **Message Authentication Codes** algorithms, using them the server calculates a hash from the message and the session key and couples it with the encrypted message. Then the recipient of the message will decrypt the message, perform the same mac function using the decrypted message and the key and compare the values to check that the message was not changed during transit.
+However, TLS uses a different MAC lgorithm called HMAC, essentially it hashes the message to make it more compact but still representative of the original message. 
 
 The whole process goes like this:
 1. The mesage will be fragmented.
 2. Each fragment will be compressed and become smaller.
 3. Each fragment will have a MAC calculated and appended to it, the fragment will be back to it's original size.
-4. The fragments will be encrypted and an SSL Record Protocol header will be added to it.
+4. The fragments will be encrypted and a  Record Protocol header will be added to it.
 
 
 ###### [Back to top](#bigous-protocolous)
@@ -947,3 +958,6 @@ This bibliography was put together after writing the NTP section, so most of the
 > 4. "[How SSL works tutorial - with HTTPS example](https://www.youtube.com/watch?v=iQsKdtjwtYI)", Youtube video by **tubewar**.
 > 5. "[The Secure Sockets Layer (SSL) Protocol Version 3.0](https://www.rfc-editor.org/rfc/rfc6101)", Request For Comments 6101.
 > 6. "[Difference between Secure Socket Layer (SSL) and Transport Layer Security (TLS)](https://www.geeksforgeeks.org/difference-between-secure-socket-layer-ssl-and-transport-layer-security-tls/)", Article on Geeks-For-Geeks.
+> 7. "[THE EVOLUTION OF SSL AND TLS](https://www.digicert.com/blog/evolution-of-ssl)", Article on DigiCert.
+> 8. "[The TLS Protocol Version 1.0](https://www.ietf.org/rfc/rfc2246.txt)", Request For Comments 2246.
+> 9. "[TLS / SSL Versions - Part 2 - Practical TLS](https://www.youtube.com/watch?v=fk0-UqwVNqY)", Youtube Video by **Practical Networking**.

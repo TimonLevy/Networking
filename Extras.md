@@ -55,6 +55,14 @@ So that's how we certify a message in the network, a little complicated but it g
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+## Message Authentication Codes
+
+MAC algorithms are **Message Authentication Codes** algorithms, using them the server calculates a "Code" from the message and a HMAC key and couples it with the message. Then the recipient of the message will decrypt the message, perform the same mac function using the decrypted message and the key and compare the values to check that the message was not changed during transit.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 ## Bibliography
 
 > ### SSL/TLS Certificates
