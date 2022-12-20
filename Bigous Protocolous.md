@@ -20,6 +20,7 @@ The big protocol wikipedia.
 | [SNMP](#simple-network-management-protocol-aka-snmp)                  | Simple Network Management Protocol                            |
 | [NTP](#network-time-protocol-aka-ntp)                                 | Network Time Protocol                                         |
 | [TLS/SSL](#transport-layer-security--secure-socket-layer-aka-tlsssl)  | Transport Layer Security / Secure Socket Layer                |
+| [HTTPS](#hypertext-transfer-protocol-over-tlsssl-aka-https)           | Hypertext Tranfer Protocol over TLS/SSL                       |
 
 [to Bibliography](#bibliography)
 
@@ -434,15 +435,79 @@ Overall, HTTP works as a request response type protocol, just like dns and dhcp.
 >
 > Though the protocol **still communicated over cleartext**, which wasn't very cool.
 
-> #### `HTTP/2.0`
+> #### `The latest version: HTTP/2.0`
 >
 > This protocol ought to make things a whole lot better:
-> * **Multiplexing** - Now you can send multiple requests on multiple concurrent connections that represent a single session.
-> * **Prioritizing** - Sending more that one request? Tell what you want first!
+> * **Multiplexing** - Now you can send multiple requests on multiple concurrent connections that represent a single session using multiple TCP connections!
+> * **Prioritizing** - Sending more than one request? Tell what you want to receive first!
 > * **Automatic Compression** - Automatic [Gzip](https://10web.io/site-speed-glossary/gzip-compression/) compression.
-> * **Connection reset** - The optino to terminate and reestablish a connection with the server, if for some reason you need it.
+> * **Connection reset** - The option to terminate and reestablish a connection with the server, if for some reason you need it.
 > * **Server Push** - Let the server give you all the commonly requested data before you even ask for it, this let's it load balance.
 
+### HOW DOES IT WORK?
+
+Let's break it down one by one, start with the most simple.
+
+> #### `Initializing a Connection`
+>
+> Since HTTP uses TCP for transport, and HTTP has no "handshake" of it's own all that's needed is the TCP 3-way-handshake.
+>
+> After initialization the clinet and server may exchange `FRAME`s, units of http data.
+
+> #### `Methods and Responses`
+>
+> Http works as a `Master-Slave` or `Request-Response`. The client sends a `DATA Frame` that includes a `method` to the server and the server returns a response. Like, the client makes a request for a webpage and the server can return the webpage if it has it, or return an error if something went wrong.
+>
+> The method for requesting content off of an HTTP is called `GET`. When a client sends a GET request the server will look for that resource in it's directory and send it over, most of the time encoded.
+> This method constitutes most of the protocol's use, when loading a website on your browser your machine makes a GET request for all of the resources that need to be displayed, those can be:
+> * ALL of the images, videos and gifs.
+> * The website's HTML code.
+> * The website's JS scripts, CSS code.
+>
+> When a resource if found the server will return a "200 OKAY" response, that means that the request was processed and replied to correctly. Otherwise it may return the infamous "404" error, but we will get to that later.
+
+> #### `Methods and Response Codes`
+>
+> Other than `GET`, HTTP offers many more commands to interact with the server, here are a few.
+>
+> * `HEAD`      recieve an exact response like `GET` but without any resource data.
+> * `POST`      "Submit" an entry to a server side resource, like a database. Most of the time this will make a change in that resource.
+> * `PUT`       Create or replace an existing resource on the server side.
+> * `DELETE`    Delete a resource on the server.
+> * `CONNECT`   Used to tunnel a connection to an http server through a VPN.
+>
+> And there are a few more.
+>
+> Reponse codes are numerical numbers that represent the response that happened on the server, if the processing of the request was handled fine then the code will be **200**, if a resource was not found then the code can be **404**. Response codes are broken down into 5 families, dictated by the first digit (the hundreds digit):
+>
+> | CODE      | FAMILY                            |
+> | :-------: | :-------------------------------- |
+> | 100 - 199 | Information responses.            |
+> | 200 - 299 | Successful responses.             |
+> | 300 - 399 | Redirection responses             |
+> | 400 - 499 | Client Error responses.           |
+> | 500 - 599 | Server Error responses.           |
+>
+> For example, 200 will be the first code in the `Successful response` family and it stands for "The request succeeded". 201 stands for "The request succeeded and a new resource was created.", this may be in response to a `PUT` command.
+
+> #### `Multiplexing Connections`
+>
+> Using HTTP/2.0 a client can send multiple `Frames` simultaneously using a concept called `STREAMs`. A `stream` is a bi-directional flow of data betwen the data and the server, using a `stream` the client sends and receives data from the server.
+>
+> Basically all communications over the networks happen on streams, what's special about HTTP/2.0 is that it allows opening and managing multiple streams under one session. Then the protocol can send request over different streams and not be bottlenecked by a big resource.
+> 
+> * A stream **can** be opened and closed by either client or server
+> * A stream **can** be uni-directional or bi-directional.
+> * A stream **can** be given a priority.
+> * A stream **has** an identification number.
+> * A stream **can** be dependant on another stream.
+> 
+> HTTP provides many `FRAME`s for managing streams.
+>
+> * `DATA`          This is the frame that will contain http request and response data. If the **END_STREAM** flag was set in the frame, then this frame will be the last DATA frame to be sent on the current stream.
+> * `HEADER`        This frame is sent in order to `create a new stream`, inside the frame will be parameters like: Stream identifier, dependencies and priority.
+> * `PRIORITY`      This frame is used to change the priority of the stream.
+> * `PUSH_PROMISE`  This frame tells the peer that you want to create a stream/streams.
 
 ###### [Back to top](#bigous-protocolous)
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -907,6 +972,18 @@ The whole process goes like this:
 2. Each fragment will be compressed and become smaller.
 3. Each fragment will have a MAC calculated and appended to it, the fragment will be back to it's original size.
 4. The fragments will be encrypted and a  Record Protocol header will be added to it.
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## Hypertext Transfer Protocol Over TLS/SSL A.K.A HTTPS
+###### *[#Layer-7] [#TCP/443]*
+
+This protocol isn't really a standalone protocol but a more secure version of the [HTTP](#hypertext-transfer-protocol-aka-http) protocol. HTTPS uses tcp port 443 to connect, and HTTP version 2.0 + TLS version 1.3 (curently). The protocol allows encrypted communication over the internet using the TLS/SSL protocol.
+
+for information about HTTPS/2.0 refer to the [HTTP](#hypertext-transfer-protocol-aka-http) section.
 
 
 ###### [Back to top](#bigous-protocolous)
