@@ -1008,8 +1008,8 @@ This bibliography was put together after writing the NTP section, so most of the
 > 3. "[What is SSL? | What is SSL Ceritificate? | SSL Architecture and Protocols | Secure Socket Layer](https://www.youtube.com/watch?v=-dQyUqoK16w)", Youtube video by **Chirag Bhalodia**.
 > 4. "[How SSL works tutorial - with HTTPS example](https://www.youtube.com/watch?v=iQsKdtjwtYI)", Youtube video by **tubewar**.
 > 5. "[The Secure Sockets Layer (SSL) Protocol Version 3.0](https://www.rfc-editor.org/rfc/rfc6101)", Request For Comments 6101.
-> 6. "[Difference between Secure Socket Layer (SSL) and Transport Layer Security (TLS)](https://www.geeksforgeeks.org/difference-between-secure-socket-layer-ssl-and-transport-layer-security-tls/)", Article on Geeks-For-Geeks.
-> 7. "[THE EVOLUTION OF SSL AND TLS](https://www.digicert.com/blog/evolution-of-ssl)", Article on DigiCert.
+> 6. "[Difference between Secure Socket Layer (SSL) and Transport Layer Security (TLS)](https://www.geeksforgeeks.org/difference-between-secure-socket-layer-ssl-and-transport-layer-security-tls/)", Article on **Geeks-For-Geeks**.
+> 7. "[THE EVOLUTION OF SSL AND TLS](https://www.digicert.com/blog/evolution-of-ssl)", Article on **DigiCert**.
 > 8. "[The TLS Protocol Version 1.0](https://www.ietf.org/rfc/rfc2246.txt)", Request For Comments 2246.
 > 9. "[TLS / SSL Versions - Part 2 - Practical TLS](https://www.youtube.com/watch?v=fk0-UqwVNqY)", Youtube Video by **Practical Networking**.
 > 10. "[TLS 1.3 Handshake](https://www.youtube.com/watch?v=yPdJVvSyMqk)", Youtube video by **F5 DevCentral**.
