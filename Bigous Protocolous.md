@@ -1012,6 +1012,12 @@ This bibliography was put together after writing the NTP section, so most of the
 >
 > 1. "[INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4](https://www.rfc-editor.org/rfc/rfc1730.txt)", Request For Comments 1730.
 
+> ### HTTP
+>
+> 1. "[Hypertext Transfer Protocol Version 2 (HTTP/2)](https://www.rfc-editor.org/rfc/rfc7540)", Refrence For Comments 7540.
+> 2. "[HTTP response status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#successful_responses)", Article on **MDN Web Docs**.
+> 3. "[HTTP request methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)", Article on **MDN Web Docs**.
+
 > ### SMB
 >
 > 1. "[Visuality Systems SMB protocol](https://www.youtube.com/playlist?list=PLyOlunpO5LG1W1SgFGDUAlCTSz9j9zBax)", Youtube Playlist by **Visuality Systems**.
