@@ -806,10 +806,12 @@ That is one problem. There are many more:
 The SSL & TLS protocols are made up of 4 sub-protocols, 3 in a higher level and 1 in the lower level. They all work together coherently in order to provide the encryption service that is wanted. Each of the sub-protocols is responsible for something in the functionality of the SSL & TLS protocols:
 
 ```
-* Handshake Protocol          -.                      Establish security parameters and session.              
-* Change Cipher Protocol      -|- HIGHER LAYER    Responsible for cipher changing negotiations.
-* Alert Protocol              -'                      Responsible for alerting if there is an error/warning.
-* Record Protocol              -- LOWER LAYER     This is the protocol that encrypts, compresses and ecapsulates the application data.
+Handshake Protocol       -.                      Establish security parameters and session.              
+Change Cipher Protocol*  -|- HIGHER LAYER    Responsible for cipher changing negotiations.
+Alert Protocol           -'                      Responsible for alerting if there is an error/warning.
+Record Protocol          -- LOWER LAYER     This is the protocol that encrypts, compresses and ecapsulates the application data.
+
+* Doesn't exist in TLS 1.3
 ```
 
 SSL/TLS also has **two major concepts**:
@@ -824,11 +826,11 @@ SSL/TLS also has **two major concepts**:
 >
 > A connection has two cipher spesification states too, `pending` and `current`. Whenever negotiating parameters, those parameters get put in the pending state. And when the connection receives the relevant message it will change the `current` CipherSpecs using the `pending` ones. 
 
-### Handshake Protocol
+### Handshake Protocol (SSL 3.0 - TLS 1.2)
 
 > #### `STEP 1: CLIENT HELLO`
 >
-> Basically the client send a tls/ssl session initiation message, In this message will be a few things that are needed in order to synchronize the encryption. The `latest tls/ssl version the client supports`, `A random Nnumber`, `A session identification number`, `A cipher suite` (A list of the **encryption and key exchange** algorithms it supports sorted by preference), `A list of compression algorithms` sorted by preference as well.
+> Basically the client send a tls/ssl session initiation message, In this message will be a few things that are needed in order to synchronize the encryption. The `latest tls/ssl version the client supports`, `A random number`, `A session identification number`, `A cipher suite` (A list of the **encryption and key exchange** algorithms it supports sorted by preference), `A list of compression algorithms` sorted by preference as well.
 > After sending the client hello the client waits for a **SERVER HELLO** message, meaning the server wishes to initiate a connection.
 >
 > If the server doesn't accept the **CLIENT HELLO** message for some reason then it will send back a `handshake failure` message.
@@ -869,31 +871,80 @@ SSL/TLS also has **two major concepts**:
 .               CLIENT                            SERVER
 .                 |           CLIENT HELLO          |
 .                 | ------------------------------> |
+.                 |                                 |
 .                 |           SERVER HELLO          |
 .                 |        SERVER CERTIFICATE       |
 .                 |        SERVER HELLO DONE        |
 .                 | <------------------------------ |
 Client verifies   | <------------------------------ |
 Certificate       | <------------------------------ |
+.                 |                                 |
 .                 |           KEY EXCHANGE          |
 .                 |        CHANGE CIPHER SPEC       |
 .                 |             FINISHED            |
 .                 | ------------------------------> |
 .                 | ------------------------------> |
-.                 | ------------------------------> |
+.                 | ------------ENCRYPTED---------> |
 .                 |                                 |
 .                 |        CHANGE CIPHER SPEC       |
 .                 |             FINISHED            |
 .                 | <------------------------------ |
-.                 | <------------------------------ |
+.                 | <-----------ENCRYPTED---------- |
+.                 |                                 |
+.                 |             APP DATA            |
+.                 | ------------ENCRYPTED---------> |
+.                 |                                 |
+.                 |             RESPONSE            |
+.                 | <-----------ENCRYPTED---------- |
+.                 |                                 |
 .                 V                                 V
-* SSL
 ``` 
 A basic diagram showing the flow of a handshake. there may be more messages then this, but this is the bare-necessity.
 
 ### Change Cipher Spec Protocol
 
 This protocol is the simplest of the sub-protocols, it is made up of a single byte with the value of "1". The purpose of this protocol is to tell the recipient to update the connection's state to use the negotiated CipherSpec immediately (Cipher Specifications: keys, Algorithms, etc.). This message will be enccrypted by the current connection's CipherSpecs.
+
+### Handshake Protocol (TLS 1.3)
+TLS saw a big revision in the handshake process, one that made it way less viable for attacks, quicker and kept `Perfect Forward Secrecy`.
+
+Here's an overview of it.
+```
+.               CLIENT                            SERVER
+.                 |           CLIENT HELLO          |
+.                 | ------------------------------> |
+.                 |                                 |
+.                 |           SERVER HELLO          |
+.                 | <------------------------------ |
+.                 |                                 |
+.                 |        SERVER CERTIFICATE       |
+.                 |             FINISHED            |
+.                 | <-----------ENCRYPTED---------- |
+.           1 RTT | <-----------ENCRYPTED---------- |
+.                 |                                 |
+.                 |        FINISHED + APP DATA      |
+.                 | ------------ENCRYPTED---------> |
+.                 |                                 |
+.                 |             RESPONSE            |
+.                 | <-----------ENCRYPTED---------- |
+.                 |                                 |
+.                 V                                 V
+```
+
+> #### `STEP 1: CLIENT HELLO`
+>
+> The client send most of the same things that it used to. `Cipher suites`, `Client Random`, `tls/ssl version` (always set to 1.2), `session id` and added to that is a new attribute `key share`. The protocol specification only allow [perfect forward secrecy](https://github.com/TimonLevy/Networking/blob/main/Extras.md#perfect-forward-secrecy) compatible ciphers, so this `key share` value is the value the server needs in order to generate the key. The client does not know which protocol the server will pick so it may send a few `key share`s.
+
+> #### `STEP 2: SERVER HELLO`
+>
+> The server will pick a cipher, calculate the `client key` using the client's `key share`. Then it creates a new `key share` of it's own and sends that and the chosen cipher to the client.
+> 
+> After this message the connection will be encrypted.
+
+After this the server will send a certificate to validate itself and a finished message to let the client know it's done. Using the server's `key share` the client can `generate the server's symmetric key` and decrypt the messages from the server.
+
+* The client will send messages encrypted with it's client key and decrypt messages from the server using the server's key.
+* The server will send messages encrypted with it's server key and decrypt messages from the client using the client's key.
 
 ### Alert Protocol
 
@@ -961,3 +1012,4 @@ This bibliography was put together after writing the NTP section, so most of the
 > 7. "[THE EVOLUTION OF SSL AND TLS](https://www.digicert.com/blog/evolution-of-ssl)", Article on DigiCert.
 > 8. "[The TLS Protocol Version 1.0](https://www.ietf.org/rfc/rfc2246.txt)", Request For Comments 2246.
 > 9. "[TLS / SSL Versions - Part 2 - Practical TLS](https://www.youtube.com/watch?v=fk0-UqwVNqY)", Youtube Video by **Practical Networking**.
+> 10. "[TLS 1.3 Handshake](https://www.youtube.com/watch?v=yPdJVvSyMqk)", Youtube video by **F5 DevCentral**.
