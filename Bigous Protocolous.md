@@ -2,8 +2,8 @@
 
 The big protocol wikipedia.
 
-| TABLE OF CONTENTS | _________________________________________________________________________________________________________________ |
-| :---------------- | ----------------------------------------------------------------------------------------------------------------: |
+| TABLE OF CONTENTS           | _______________________________________________________________________________________________________ |
+| :-------------------------- | ---------------------------------------------------------------------------------------------: |
 | [ICMP](#internet-control-message-protocol-aka-icup)                   | Internet Control Message protocol                             |
 | [DNS](#domain-name-system-aka-dns)                                    | Domain Name System                                            |
 | [LLMNR](#link-local-multicast-name-resolution-aka-llmnr)              | Link-Local Multicast Name Resolution                          |
@@ -20,7 +20,17 @@ The big protocol wikipedia.
 | [SNMP](#simple-network-management-protocol-aka-snmp)                  | Simple Network Management Protocol                            |
 | [NTP](#network-time-protocol-aka-ntp)                                 | Network Time Protocol                                         |
 | [TLS/SSL](#transport-layer-security--secure-socket-layer-aka-tlsssl)  | Transport Layer Security / Secure Socket Layer                |
+| > [TLS 1.2 - Handshake Protocol](#handshake-protocol-ssl-30---tls-12) | SSL 3.0 - TLS 1.2 Handshake Protocol                          |
+| > [Change Cipher Protocol](#change-cipher-spec-protocol)              | SSL Change Cipher Protocol                                    |
+| > [TLS 1.3 - Handshake Protocol](#handshake-protocol-tls-13)          | TLS 1.3 Handshake Protocol                                    |
+| > [Alert Protocol](#alert-protocol)                                   | TLS/SSL Alert Protocol                                        |
+| > [Record Protocol](#record-prtocol)                                  | TLS/SSL Record Layer Protocol                                 |
 | [HTTPS](#hypertext-transfer-protocol-over-tlsssl-aka-https)           | Hypertext Tranfer Protocol over TLS/SSL                       |
+| [IPsec](#internet-protocol-security-aka-ipsec)                        | Internet Protocol Security Suite                              |
+| > [IKEv1.0](#ikev10)                                                  | Internet Key Exchange Protocol ver 1.0                        |
+| > [IKEv2.0](#ikev20)                                                  | Internet Key Exchange Protocol ver 2.0                        |
+| > [AH Protocol](#authenticationi-header-ah-protocol)                  | Authentication Header Protocol                                |
+| > [ESP](#encapsulation-security-protocol-esp)                         | Encapsulation Security Protocol                               |
 
 [to Bibliography](#bibliography)
 
@@ -1053,9 +1063,28 @@ Both AH and ESP are encapsulation protocols, an IPsec VPN may use one or both of
 > 
 > Lastly let's talk about the other protocols
 
+> The biggest difference between the two protocol is that [ESP] provides encryption and [AH] does not.
+>
+> #### Authenticationi Header [AH] Protocol
+>
+> This protocol's goal is to provide message integrity and authentication, it does that by adding a header to the packet called the Authentication Header. In the header will be a `Hash or MD` (Message Digest) of the TCP/IP header (depending on the tunneling mode) + A shared key. When the peer receives the packet it will compare the digest/hash in the authentication header with the message hash/digest that it will generate itself. This proves integrity if the messages are the same and proves authenticity if the calculation with the shared key succeeded on both sides.
 > 
-
-
+> #### Encapsulation Security Protocol [ESP]
+>
+> This protocol also does what the AH protocol does but it also encrypts the message (ESP supports AES, DES & 3DES). ESP adds an `ESP Trailer` to the IP/TCP packet (depending on tunneling mode) and encrypts that, afterwards it will add an `ESP Header`.
+> ```
+> .--------{2.DIGESTED}---------.
+> |                             |
+> |       .----{1.ENCRYPTED}----.
+> |       |                     |
+> .-------+------+-------+------. 
+> | ESP H | IP H | TCP H | Data |
+> '-------+------+-------+------'
+> This diagram shows ESP encapsulation in 'tunnel' tunneling mode.
+> ```
+> Then the protocol `hashes/digests the entire packet` with the `shared key` and puts the hash/digest in a new `ESP Authentication` Trailer. Lastly in the tunneling mode is *Tunnel* the protocol adds a new IP Header.
+>
+> The peer will decrypt the message, and then check the digest against a digest it will generate on it's own to affirm integrity and authentication. But more over, a succeful decryption of the message in itself proves the authenticity of the sender.
 
 
 ###### [Back to top](#bigous-protocolous)
