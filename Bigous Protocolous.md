@@ -1157,6 +1157,8 @@ This bibliography was put together after writing the NTP section, so most of the
 > 3. "[Authentication Header (AH) and Encapsulating Security Payload (ESP)](https://www.youtube.com/watch?v=ScxCFzxVel8)", Youtube video by **GD Networking Newbie**.
 > 4. "[QTNA #37: IPSec modes](https://www.youtube.com/watch?v=HbaUqhYZjq4)", Youtube video by **CyberVista**.
 > 5. "[Module 5 Lecture 1 IP Security: Operation Modes-Transport Mode and Tunnel Mode](https://www.youtube.com/watch?v=uVmkL8uPZPk)", Youtube video by **Eupheus Mnemon**.
+> 6. "[001 IPSEC KEv2](https://www.youtube.com/watch?v=LHnnzdipaKQ)", Youtube video by **Sikandar Shaik**.
+> 7. "[002 IKEv1 vs IKEv2](https://www.youtube.com/watch?v=UEimHi_imsk)", Youtube video by **Sikandar Shaik**.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 ###### [Back to top](#bigous-protocolous)
