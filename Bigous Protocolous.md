@@ -1022,6 +1022,7 @@ IPsec suite provides **Integrity**, **Authentication**, **Confidentiality** to a
 Both AH and ESP are encapsulation protocols, an IPsec VPN may use one or both of them. IKE has two versions, V1 and V2 which are a little different so let's get into it.
 
 > #### IKEv1.0
+> ###### *[#UDP/500]*
 > 
 > ##### First Phase
 > 
@@ -1060,6 +1061,13 @@ Both AH and ESP are encapsulation protocols, an IPsec VPN may use one or both of
 > Tunnel modes describe the way the packet will be transformed, `Tunnel mode` means the **entire packet will be encrypted** and a **new IP header** will be added to provide routing, that means that NAT is possible using this mode. `Transport mode` the packet keeps it's original IP header for routing, this mode doesn't protect the entire packet but only the transport layer payload.
 > 
 > Using this `Transform Set` IPsec "constructs a new tunnel" over which it will send the data securely and the conversation will begin.
+
+
+> #### IKEv2.0
+> ###### *[#UDP/500] [#UDP/4500]*
+>
+> IKE version 2 is faster than version 1, provides `NAT Traversal`, provides a `keep-alive` mechanism, supports the `**Extensible Authentication Protocol [EAP]**`, reconnecting to a tunnel after changing networks, stronger cryptoraphic algorithms (PFS).
+> The goal of both IKE protocols is exactly the same, since IKEv2 is a little more complicated and does exactly the same I will not go into the exact process. Just know that IKEv1 sends 6 or 9 messages and IKEv2 sends only 4 messages.
 > 
 > Lastly let's talk about the other protocols
 
