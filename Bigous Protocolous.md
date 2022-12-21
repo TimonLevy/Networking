@@ -781,7 +781,7 @@ NTP Servers on small networks will usually syncronize using stratum 1,2 or 3 ser
 
 
 ## Transport Layer Security **/** Secure Socket Layer A.K.A TLS/SSL
-###### *[#Layer-5] [#Application-Based-Port]*
+###### *[#Layer-5] [#Application-Based-Port] [#Encrypted]*
 
 Both TLS and SSL are protocols used to encrypt information on the wire in a way that both endpoints can decrypt them, meaning that `they generate a set of symetric encryption eys for the given session`. That is why they belong in the `Session Layer`, the one that is also responsible for encryption.
 
@@ -957,6 +957,8 @@ After this the server will send a certificate to validate itself and a finished 
 * The client will send messages encrypted with it's client key and decrypt messages from the server using the server's key.
 * The server will send messages encrypted with it's server key and decrypt messages from the client using the client's key.
 
+Another feature TLS version 1.3 provides, is the ability to send a client hello message together with the first byte of data already encrypted! This is called a 0-RTT handshake.
+
 ### Alert Protocol
 
 This protocol will alert the recipient in case of an error or warning, the alerts are labeled by level of severity. In case of a fata severity the connection is immediately terminated and the session nullified, to not let a new connection use the same parameters and potentially repeat the error.
@@ -979,7 +981,7 @@ The whole process goes like this:
 
 
 ## Hypertext Transfer Protocol Over TLS/SSL A.K.A HTTPS
-###### *[#Layer-7] [#TCP/443]*
+###### *[#Layer-7] [#TCP/443] [#Encrypted]*
 
 This protocol isn't really a standalone protocol but a more secure version of the [HTTP](#hypertext-transfer-protocol-aka-http) protocol. HTTPS uses tcp port 443 to connect, and HTTP version 2.0 + TLS version 1.3 (curently). The protocol allows encrypted communication over the internet using the TLS/SSL protocol.
 
@@ -990,6 +992,74 @@ for information about HTTPS/2.0 refer to the [HTTP](#hypertext-transfer-protocol
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+## Internet Protocol Security A.K.A IPsec
+###### *[#Layer-3] [#VPN] [#Encrypted]*
+
+IPsec is a protocol that provides VPN services through encryption, A VPN is "A private connection over the public network". IPsec encrypts all packet layers above layer 3, it does that with a process that is simillar to TLS/SSL. Something resembling a handshake, where all the magic happens. But it operates a little differently in concept.
+
+### WHY WAS IT INVENTED?
+
+IPsec is actually not one protocol but a **protocl suite**, a bunch of protocols that work together to service a machine coherently. IPsec was developed in the mid-1990 in order to provide security at the IP layer, and secure communications through authentication and encryption. Basically it serves the same purpose as TLS/SSL but on the 3rd layer instead of the 5th.
+
+### HOW DOES IT WORK?
+
+IPsec suite provides **Integrity**, **Authentication**, **Confidentiality** to any Layer 3 communication that uses it. IPsec also provides it's own encryption's **Key Management Services**, how it does all of that is by using different protocols:
+
+* `**Authentication Header [AH]**`                Provides authentication and integrity.
+* `**Encapsulation Security Protocol [ESP]**`     Provides authentication, integrity and confidentiality (encryption).
+* `**Internet Key Exchange [IKE]**`               Used to negotiate the *Security Association* (SA).
+
+Both AH and ESP are encapsulation protocols, an IPsec VPN may use one or both of them. IKE has two versions, V1 and V2 which are a little different so let's get into it.
+
+> #### IKEv1.0
+> 
+> ##### First Phase
+> 
+> The IKE protocol performs what is similar to a handshake, both peers in the communicaion need to agree on five `Security Association`s in order to create a `VPN tunnel`:
+> 
+> * **H ashing algorithm** for message integrity checking.
+> * **A uthentication** for Proving the other side is who he says he is.
+> * **G roup** agreeing on the Diffie-Hellman group to use.
+> * **L ifetime** how long should the tunnel stay up for?
+> * **E ncryption algorithm** for consealing message data.
+> 
+> H.A.G.L.E, it's an easy accronym to remember (not).
+>
+> Also, the negotiation, or rather IKEv1 Phase 1 can happen in two modes:
+> * `**Main Mode**` The identity of both peers is encrypted and annonymous.
+> * `**Agressive**` The identity of both peers is cleartext and public (not secure).
+> 
+> Let me explain things a little bit more:
+>
+> The **Authentication** SA is the way that both machines can authenticate the identity of the other machine, that can be using a digital certificate or RSA.
+>
+> The **Group** SA is the group number to use when exchanging keys using Diffie-Hellman, I wont go into the Diffie-Hellman protocol. Just know that a higher number means a amore secure key.
+>
+> So after agreeing on the five `SA`s, which we will refer to as a `Policy Set`, both peers create a securly encrypted communication "tunnel". First they authenticate eachother, and then they `create a shared secret key` using Diffie-Hellman and the `Policy Set`. Ontop of that *first tunnel* they will initiate the second phase of the IKE protocol.
+>
+> ##### Second Phase
+> 
+> The goal of the second phase is to negotiate the `scope` of the tunnel, "What data to protect? and How?", the goal of phase 1 is to protect phase 2.
+> Negotiations on this phase construct a `new SA set` called the `Transform Set`. The transform set includes:
+>
+> * **Encapsulation Protocol** [AH] or [ESP].
+> * **Encryption algorithm** the last one was to create the phase 1 tunnel, this one is to create the final tunnel.
+> * **Hashing algorithm** for message integrity checking.
+> * **Tunnel Mode** eiter `Transport` or `Tunnel`.
+>
+> Tunnel modes describe the way the packet will be transformed, `Tunnel mode` means the **entire packet will be encrypted** and a **new IP header** will be added to provide routing, that means that NAT is possible using this mode. `Transport mode` the packet keeps it's original IP header for routing, this mode doesn't protect the entire packet but only the transport layer payload.
+> 
+> Using this `Transform Set` IPsec "constructs a new tunnel" over which it will send the data securely and the conversation will begin.
+> 
+> Lastly let's talk about the other protocols
+
+> 
+
+
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## BIBLIOGRAPHY
 This bibliography was put together after writing the NTP section, so most of the earlier protocol's research resources are missing.
@@ -1043,6 +1113,13 @@ This bibliography was put together after writing the NTP section, so most of the
 > 9. "[TLS / SSL Versions - Part 2 - Practical TLS](https://www.youtube.com/watch?v=fk0-UqwVNqY)", Youtube Video by **Practical Networking**.
 > 10. "[TLS 1.3 Handshake](https://www.youtube.com/watch?v=yPdJVvSyMqk)", Youtube video by **F5 DevCentral**.
 
+> ### IPsec
+>
+> 1. "[CCNP Security | IKEv1 Phase 1 and Phase 2 Explained](https://www.youtube.com/watch?v=GGB8cvN6AQI)", Youtube video by **CCNADailyTIPS**.
+> 2. "[IPsec - IKE Phase 1 | IKE Phase 2](https://www.youtube.com/watch?v=tapoOQ-MkPU)", Youtube video by **GD Networking Newbie**.
+> 3. "[Authentication Header (AH) and Encapsulating Security Payload (ESP)](https://www.youtube.com/watch?v=ScxCFzxVel8)", Youtube video by **GD Networking Newbie**.
+> 4. "[QTNA #37: IPSec modes](https://www.youtube.com/watch?v=HbaUqhYZjq4)", Youtube video by **CyberVista**.
+> 5. "[Module 5 Lecture 1 IP Security: Operation Modes-Transport Mode and Tunnel Mode](https://www.youtube.com/watch?v=uVmkL8uPZPk)", Youtube video by **Eupheus Mnemon**.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 ###### [Back to top](#bigous-protocolous)
