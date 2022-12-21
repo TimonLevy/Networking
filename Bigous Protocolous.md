@@ -1015,9 +1015,9 @@ IPsec is actually not one protocol but a **protocl suite**, a bunch of protocols
 
 IPsec suite provides **Integrity**, **Authentication**, **Confidentiality** to any Layer 3 communication that uses it. IPsec also provides it's own encryption's **Key Management Services**, how it does all of that is by using different protocols:
 
-* `**Authentication Header [AH]**`                Provides authentication and integrity.
-* `**Encapsulation Security Protocol [ESP]**`     Provides authentication, integrity and confidentiality (encryption).
-* `**Internet Key Exchange [IKE]**`               Used to negotiate the *Security Association* (SA).
+* **`Authentication Header [AH]`**                Provides authentication and integrity.
+* **`Encapsulation Security Protocol [ESP]`**     Provides authentication, integrity and confidentiality (encryption).
+* **`Internet Key Exchange [IKE]`**               Used to negotiate the *Security Association* (SA).
 
 Both AH and ESP are encapsulation protocols, an IPsec VPN may use one or both of them. IKE has two versions, V1 and V2 which are a little different so let's get into it.
 
@@ -1037,8 +1037,8 @@ Both AH and ESP are encapsulation protocols, an IPsec VPN may use one or both of
 > H.A.G.L.E, it's an easy accronym to remember (not).
 >
 > Also, the negotiation, or rather IKEv1 Phase 1 can happen in two modes:
-> * `**Main Mode**` The identity of both peers is encrypted and annonymous.
-> * `**Agressive**` The identity of both peers is cleartext and public (not secure).
+> * **`Main Mode`** The identity of both peers is encrypted and annonymous.
+> * **`Agressive`** The identity of both peers is cleartext and public (not secure).
 > 
 > Let me explain things a little bit more:
 >
