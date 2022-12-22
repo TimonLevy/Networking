@@ -36,7 +36,7 @@ The big protocol wikipedia.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Internet Control Message Protocol A.K.A [ICUP](https://www.urbandictionary.com/define.php?term=Spell%20iCup)
+## Internet Control Message Protocol A.K.A [ICUP](www.urbandictionary.com/define.php?term=Spell%20iCup)
 ###### *[#Layer-3] [#Portless]*
 
 ICMP, or **I**nternet **C**ontrol **M**essage **P**rotocol is a protocol used to send control messages relating to the Internet protocol (IP).
@@ -292,7 +292,7 @@ Telnet is a session layer protocol that enables terminal access to an applicatio
 
 ### WHY WAS IT INVENTED?
 
-The idea for a terminal that can interface with the network was proposed on [rfc 15](https://www.rfc-editor.org/rfc/rfc15.html "Network Subsystem for Time Sharing Hosts") back in 1969. The documents discusses the idea of remotely accessing another machines terminal abstractly and even having the ability to transfer files over the network. The host machine would just send each chacrater input to the remote machine, and the host machien would have a special format to ented basic commands.
+The idea for a terminal that can interface with the network was proposed on [rfc 15](www.rfc-editor.org/rfc/rfc15.html "Network Subsystem for Time Sharing Hosts") back in 1969. The documents discusses the idea of remotely accessing another machines terminal abstractly and even having the ability to transfer files over the network. The host machine would just send each chacrater input to the remote machine, and the host machien would have a special format to ented basic commands.
 
 ### HOW DOES IT WORK?
 
@@ -316,7 +316,7 @@ However, telnet still has uses like:
 The file transfer protocol is used to *transfer files* from one host to another on the wide net.
 
 ### WHY WAS IT INVENTED?
-The protocol to transfer files over the net was first prposed in 1971 on [rfc 114](https://www.rfc-editor.org/rfc/rfc114), the document discusses the usability of a protocol to act as an abstraction layer when a user from one machine wants to retrieve a file from another machine to his own while not being familiar with the other machine's file system and interactive commands (unlike Telnet). Basically, the protocol is supposed to act as a middle man for transferring files quickly and efficiently between one host and another that knows both host's languages and provides it's own commands. The protocol also allows remote storage of files.
+The protocol to transfer files over the net was first prposed in 1971 on [rfc 114](www.rfc-editor.org/rfc/rfc114), the document discusses the usability of a protocol to act as an abstraction layer when a user from one machine wants to retrieve a file from another machine to his own while not being familiar with the other machine's file system and interactive commands (unlike Telnet). Basically, the protocol is supposed to act as a middle man for transferring files quickly and efficiently between one host and another that knows both host's languages and provides it's own commands. The protocol also allows remote storage of files.
 
 
 ### HOW DOES IT WORK?
@@ -418,8 +418,8 @@ Http evolved so much over the years so I'll ty to summarize it to as little as p
 
 Overall, HTTP works as a request response type protocol, just like dns and dhcp. The whole point of it is to get the hosted webpage from the server, like "www.google.com" where I research this stuff or "jokes.moomoo.co.il" where I get my your mom jokes.
 
-[In the beninging](https://www.youtube.com/watch?v=fWKB8zdVM-U) the internet was in it's diapers, all you could find are super simple webpages like blogs. There was no need for a complicated protocol to transfer this data and that's where HTTP came in.
-![The Original Spacejam Website](https://www.themarysue.com/wp-content/uploads/2010/12/SpaceJam_Home.png)
+[In the beninging](www.youtube.com/watch?v=fWKB8zdVM-U) the internet was in it's diapers, all you could find are super simple webpages like blogs. There was no need for a complicated protocol to transfer this data and that's where HTTP came in.
+![The Original Spacejam Website](www.themarysue.com/wp-content/uploads/2010/12/SpaceJam_Home.png)
 ###### pretty simple right?
 
 
@@ -450,7 +450,7 @@ Overall, HTTP works as a request response type protocol, just like dns and dhcp.
 > This protocol ought to make things a whole lot better:
 > * **Multiplexing** - Now you can send multiple requests on multiple concurrent connections that represent a single session using multiple TCP connections!
 > * **Prioritizing** - Sending more than one request? Tell what you want to receive first!
-> * **Automatic Compression** - Automatic [Gzip](https://10web.io/site-speed-glossary/gzip-compression/) compression.
+> * **Automatic Compression** - Automatic [Gzip](10web.io/site-speed-glossary/gzip-compression/) compression.
 > * **Connection reset** - The option to terminate and reestablish a connection with the server, if for some reason you need it.
 > * **Server Push** - Let the server give you all the commonly requested data before you even ask for it, this let's it load balance.
 
@@ -609,7 +609,7 @@ POP3 is the latest version of the protocol with POP 1 being the first, over the 
 
 
 ## Internet Message Access Protocol A.K.A IMAP
-###### *[#Layer-7] [#TCP/143] [#TCP/993] [[#What_Came_In_The_Mail?](https://youtu.be/CjgXx6QyZRg?t=10)]*
+###### *[#Layer-7] [#TCP/143] [#TCP/993] [[#What_Came_In_The_Mail?](youtu.be/CjgXx6QyZRg?t=10)]*
 
 IMAP also dabbles in reading mail messages from a server, but it is way more efficient than POP. It was conceptualized becayse POP had many problems and IMAP was meant to address them.
 
@@ -803,7 +803,7 @@ SSL 1.0 -> SSL 2.0 -> SSL 3.0 -> TLS 1.0 -> TLS 1.1 -> TLS 1.2 -> TLS 1.3
 
 ### WHY WERE THEY INVENTED?
 
-At the time, most communication through the network happened as cleartext, there was a serious threat from middlemen existing in the network reading all the information. Especially when it came to businesses and online transactions. So in the year 1995 [Netscape](https://www.youtube.com/watch?v=dQw4w9WgXcQ) introduced this protocol to serve as a porm of packet protection by encrypting packet contents on the wire.
+At the time, most communication through the network happened as cleartext, there was a serious threat from middlemen existing in the network reading all the information. Especially when it came to businesses and online transactions. So in the year 1995 [Netscape](www.youtube.com/watch?v=dQw4w9WgXcQ) introduced this protocol to serve as a porm of packet protection by encrypting packet contents on the wire.
 
 ### HOW DO THEY WORK?
 
@@ -864,7 +864,7 @@ SSL/TLS also has **two major concepts**:
 
 > #### `STEP 2.2: SERVER CERTIFICATE`
 >
-> If the server needs to (which it most probably will nowadays), the server sends it's [certificate](https://github.com/TimonLevy/Networking/blob/main/Extras.md#what-are-ssltls-certificates) that validates it's authenticity and give the server it's public key.
+> If the server needs to (which it most probably will nowadays), the server sends it's [certificate](github.com/TimonLevy/Networking/blob/main/Extras.md#what-are-ssltls-certificates) that validates it's authenticity and give the server it's public key.
 
 > #### `STEP 2.3: SERVER HELLO DONE`
 >
@@ -975,7 +975,7 @@ This protocol will alert the recipient in case of an error or warning, the alert
 
 ### Record Prtocol
 
-The record protocol is responsible for the encryption of the message, the validation of message integrity, fragmantation and the compression. It does that using the current CipherSpecs which will include the encryption algorithms, keys, compression algorithms and [MAC algorithms](https://github.com/TimonLevy/Networking/blob/main/Extras.md#message-authentication-codes).
+The record protocol is responsible for the encryption of the message, the validation of message integrity, fragmantation and the compression. It does that using the current CipherSpecs which will include the encryption algorithms, keys, compression algorithms and [MAC algorithms](github.com/TimonLevy/Networking/blob/main/Extras.md#message-authentication-codes).
 
 However, TLS uses a different MAC lgorithm called HMAC, essentially it hashes the message to make it more compact but still representative of the original message. 
 
@@ -1232,75 +1232,76 @@ This bibliography was put together after writing the NTP section, so most of the
 
 > ### ICMP
 >
-> 1. "[INTERNET CONTROL MESSAGE PROTOCOL, DARPA INTERNET PROGRAM PROTOCOL SPECIFICATION](https://www.rfc-editor.org/rfc/rfc792)"
+> 1. "[INTERNET CONTROL MESSAGE PROTOCOL, DARPA INTERNET PROGRAM PROTOCOL SPECIFICATION](www.rfc-editor.org/rfc/rfc792)"
 > , Request For Comments 792.
 
 > ### HTTP
 >
-> 1. "[Hypertext Transfer Protocol Version 2 (HTTP/2)](https://www.rfc-editor.org/rfc/rfc7540)", Refrence For Comments 7540.
-> 2. "[HTTP response status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#successful_responses)", Article on **MDN Web Docs**.
-> 3. "[HTTP request methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)", Article on **MDN Web Docs**.
+> 1. "[Hypertext Transfer Protocol Version 2 (HTTP/2)](www.rfc-editor.org/rfc/rfc7540)", Refrence For Comments 7540.
+> 2. "[HTTP response status codes](developer.mozilla.org/en-US/docs/Web/HTTP/Status#successful_responses)", Article on **MDN Web Docs**.
+> 3. "[HTTP request methods](developer.mozilla.org/en-US/docs/Web/HTTP/Methods)", Article on **MDN Web Docs**.
 
 > ### SMTP
 >
-> 1. "[What is SMTP - Simple Mail Transfer Protocol](https://www.youtube.com/watch?v=PJo5yOtu7o8)", Youtube video by **PowerCert Animated Videos**.
-> 2. "[SMTP ( Simple Mail transfer protocol )](https://www.youtube.com/watch?v=I2JtOjU5MZI)", Youtube video by **Easy Engineering By Neha Syed**.
+> 1. "[What is SMTP - Simple Mail Transfer Protocol](www.youtube.com/watch?v=PJo5yOtu7o8)", Youtube video by **PowerCert Animated Videos**.
+> 2. "[SMTP ( Simple Mail transfer protocol )](www.youtube.com/watch?v=I2JtOjU5MZI)", Youtube video by **Easy Engineering By Neha Syed**.
 
 > ### POP
 >
-> 1. "[POST OFFICE PROTOCOL](https://datatracker.ietf.org/doc/html/rfc918)", Request For Comments 918.
-> 2. "[E-Mail Protocols (SMTP, POP and IMAP)](https://www.youtube.com/watch?v=m8TLN--aZic&t=1s)", Youtube video by **Rick Graziani**.
+> 1. "[POST OFFICE PROTOCOL](datatracker.ietf.org/doc/html/rfc918)", Request For Comments 918.
+> 2. "[E-Mail Protocols (SMTP, POP and IMAP)](www.youtube.com/watch?v=m8TLN--aZic&t=1s)", Youtube video by **Rick Graziani**.
 
 > ### IMAP
 >
-> 1. "[INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4](https://www.rfc-editor.org/rfc/rfc1730.txt)", Request For Comments 1730.
+> 1. "[INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4](www.rfc-editor.org/rfc/rfc1730.txt)", Request For Comments 1730.
 
 > ### SMB
 >
-> 1. "[Visuality Systems SMB protocol](https://www.youtube.com/playlist?list=PLyOlunpO5LG1W1SgFGDUAlCTSz9j9zBax)"
+> 1. "[Visuality Systems SMB protocol](www.youtube.com/playlist?list=PLyOlunpO5LG1W1SgFGDUAlCTSz9j9zBax)"
 > , Youtube Playlist by **Visuality Systems**.
 
 > ### SNMP
 >
-> 1. "[SNMP Explained | Simple Network Management Protocol | Cisco CCNA 200-301](https://www.youtube.com/watch?v=Lq7j-QipNrI)"
+> 1. "[SNMP Explained | Simple Network Management Protocol | Cisco CCNA 200-301](www.youtube.com/watch?v=Lq7j-QipNrI)"
 > , Youtube Video by **CertBros**.
 
 > ### NTP
 >
-> 1. "[NTP Explained | Network Time Protocol | Cisco CCNA 200-301](https://www.youtube.com/watch?v=oCtkwEjhyD4)", Youtube video by **CertBros**.
+> 1. "[NTP Explained | Network Time Protocol | Cisco CCNA 200-301](www.youtube.com/watch?v=oCtkwEjhyD4)", Youtube video by **CertBros**.
 
 > ### TLS/SSL
 > 
-> 1. "[TLS Handshake - EVERYTHING that happens when you visit an HTTPS website](https://www.youtube.com/watch?v=ZkL10eoG1PY)"
+> 1. "[TLS Handshake - EVERYTHING that happens when you visit an HTTPS website](www.youtube.com/watch?v=ZkL10eoG1PY)"
 > , Youtube video by **Practical Networking**.
-> 2. "[Transport Layer Security, TLS 1.2 and 1.3 (Explained by Example)](https://www.youtube.com/watch?v=AlE5X1NlHgg)"
+> 2. "[Transport Layer Security, TLS 1.2 and 1.3 (Explained by Example)](www.youtube.com/watch?v=AlE5X1NlHgg)"
 > , Youtube video by **Hussein Nasser**.
-> 3. "[What is SSL? | What is SSL Ceritificate? | SSL Architecture and Protocols | Secure Socket Layer](https://www.youtube.com/watch?v=-dQyUqoK16w)
+> 3. "[What is SSL? | What is SSL Ceritificate? | SSL Architecture and Protocols | Secure Socket Layer](www.youtube.com/watch?v=-dQyUqoK16w)
 > ", Youtube video by **Chirag Bhalodia**.
-> 4. "[How SSL works tutorial - with HTTPS example](https://www.youtube.com/watch?v=iQsKdtjwtYI)", Youtube video by **tubewar**.
-> 5. "[The Secure Sockets Layer (SSL) Protocol Version 3.0](https://www.rfc-editor.org/rfc/rfc6101)", Request For Comments 6101.
-> 6. "[Difference between Secure Socket Layer (SSL) and Transport Layer Security (TLS)](https://www.geeksforgeeks.org/difference-between-secure-socket-layer-ssl-and-transport-layer-security-tls/)", Article on **Geeks-For-Geeks**.
-> 7. "[THE EVOLUTION OF SSL AND TLS](https://www.digicert.com/blog/evolution-of-ssl)", Article on **DigiCert**.
-> 8. "[The TLS Protocol Version 1.0](https://www.ietf.org/rfc/rfc2246.txt)", Request For Comments 2246.
-> 9. "[TLS / SSL Versions - Part 2 - Practical TLS](https://www.youtube.com/watch?v=fk0-UqwVNqY)", Youtube Video by **Practical Networking**.
-> 10. "[TLS 1.3 Handshake](https://www.youtube.com/watch?v=yPdJVvSyMqk)", Youtube video by **F5 DevCentral**.
+> 4. "[How SSL works tutorial - with HTTPS example](www.youtube.com/watch?v=iQsKdtjwtYI)", Youtube video by **tubewar**.
+> 5. "[The Secure Sockets Layer (SSL) Protocol Version 3.0](www.rfc-editor.org/rfc/rfc6101)", Request For Comments 6101.
+> 6. "[Difference between Secure Socket Layer (SSL) and Transport Layer Security (TLS)](www.geeksforgeeks.org/difference-between-secure-socket-layer-ssl-and-transport-layer-security-tls/)", Article on **Geeks-For-Geeks**.
+> 7. "[THE EVOLUTION OF SSL AND TLS](www.digicert.com/blog/evolution-of-ssl)", Article on **DigiCert**.
+> 8. "[The TLS Protocol Version 1.0](www.ietf.org/rfc/rfc2246.txt)", Request For Comments 2246.
+> 9. "[TLS / SSL Versions - Part 2 - Practical TLS](www.youtube.com/watch?v=fk0-UqwVNqY)", Youtube Video by **Practical Networking**.
+> 10. "[TLS 1.3 Handshake](www.youtube.com/watch?v=yPdJVvSyMqk)", Youtube video by **F5 DevCentral**.
 
 > ### IPsec
 >
-> 1. "[CCNP Security | IKEv1 Phase 1 and Phase 2 Explained](https://www.youtube.com/watch?v=GGB8cvN6AQI)", Youtube video by **CCNADailyTIPS**.
-> 2. "[IPsec - IKE Phase 1 | IKE Phase 2](https://www.youtube.com/watch?v=tapoOQ-MkPU)", Youtube video by **GD Networking Newbie**.
-> 3. "[Authentication Header (AH) and Encapsulating Security Payload (ESP)](https://www.youtube.com/watch?v=ScxCFzxVel8)"
+> 1. "[CCNP Security | IKEv1 Phase 1 and Phase 2 Explained](www.youtube.com/watch?v=GGB8cvN6AQI)", Youtube video by **CCNADailyTIPS**.
+> 2. "[IPsec - IKE Phase 1 | IKE Phase 2](www.youtube.com/watch?v=tapoOQ-MkPU)", Youtube video by **GD Networking Newbie**.
+> 3. "[Authentication Header (AH) and Encapsulating Security Payload (ESP)](www.youtube.com/watch?v=ScxCFzxVel8)"
 > , Youtube video by **GD Networking Newbie**.
-> 4. "[QTNA #37: IPSec modes](https://www.youtube.com/watch?v=HbaUqhYZjq4)", Youtube video by **CyberVista**.
-> 5. "[Module 5 Lecture 1 IP Security: Operation Modes-Transport Mode and Tunnel Mode](https://www.youtube.com/watch?v=uVmkL8uPZPk)"
+> 4. "[QTNA #37: IPSec modes](www.youtube.com/watch?v=HbaUqhYZjq4)", Youtube video by **CyberVista**.
+> 5. "[Module 5 Lecture 1 IP Security: Operation Modes-Transport Mode and Tunnel Mode](www.youtube.com/watch?v=uVmkL8uPZPk)"
 > , Youtube video by **Eupheus Mnemon**.
-> 6. "[001 IPSEC KEv2](https://www.youtube.com/watch?v=LHnnzdipaKQ)", Youtube video by **Sikandar Shaik**.
-> 7. "[002 IKEv1 vs IKEv2](https://www.youtube.com/watch?v=UEimHi_imsk)", Youtube video by **Sikandar Shaik**.
+> 6. "[001 IPSEC KEv2](www.youtube.com/watch?v=LHnnzdipaKQ)", Youtube video by **Sikandar Shaik**.
+> 7. "[002 IKEv1 vs IKEv2](www.youtube.com/watch?v=UEimHi_imsk)", Youtube video by **Sikandar Shaik**.
 
 > ### SSH
 >
-> 1. "[How SSH Works](https://www.youtube.com/watch?v=5JvLV2-ngCI)", Youtube video by **Mental Outlaw**.
-> 2. "[9 - Cryptography Basics - SSH Protocol Explained](https://www.youtube.com/watch?v=0Sffl7YO0aY)", Youtube video by **CBTVid**.
+> 1. "[How SSH Works](www.youtube.com/watch?v=5JvLV2-ngCI)", Youtube video by **Mental Outlaw**.
+> 2. "[9 - Cryptography Basics - SSH Protocol Explained](www.youtube.com/watch?v=0Sffl7YO0aY)", Youtube video by **CBTVid**.
+> 3. "[SH | SSH Protocol Stack | SSH Protocols explain with animation | Why SSH? | Secure Shell (SSH)](www.youtube.com/watch?v=jA1IoEHcrIU)", Youtube video by **Chirag Bhalodia**.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 ###### [Back to top](#bigous-protocolous)
