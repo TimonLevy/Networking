@@ -1081,13 +1081,10 @@ Both AH and ESP are encapsulation protocols, an IPsec VPN may use one or both of
 >
 > This protocol also does what the AH protocol does but it also encrypts the message (ESP supports AES, DES & 3DES). ESP adds an `ESP Trailer` to the IP/TCP packet (depending on tunneling mode) and encrypts that, afterwards it will add an `ESP Header`.
 > ```
-> .--------{2.DIGESTED}---------.
-> |                             |
-> |       .----{1.ENCRYPTED}----.
-> |       |                     |
-> .-------+------+-------+------. 
-> | ESP H | IP H | TCP H | Data |
-> '-------+------+-------+------'
+>  _________2.DIGESTED__________
+> |        _____1.ENCRYPTED_____|
+> '_______'______ _______ ______'
+> |_ESP_H_|_IP_H_|_TCP_H_|_Data_|
 > This diagram shows ESP encapsulation in 'tunnel' tunneling mode.
 > ```
 > Then the protocol `hashes/digests the entire packet` with the `shared key` and puts the hash/digest in a new `ESP Authentication` Trailer. Lastly in the tunneling mode is *Tunnel* the protocol adds a new IP Header.
@@ -1150,41 +1147,41 @@ Alright, first step!
 
 ### Connection Initialization & Key exchange
 ```
-Since I want to draw another diagram I will do this in a code box. Let's try                    C                                 S
-and do this simply step by step. The client will want to initiate a connection.                 | Identification String Exchange  |
-The client will send an 'Identification String Exchange' message, to                            | ------------------------------> |
-synchronize the SSH version. The server will return the same message.                           | <------------------------------ |
-                                                                                                |                                 |
-Afterwards comes the `Key Exchange Initialization` message, just like in TLS                    |   Key Exchange Initialization   |
-the client and server will send their ciphers in preffered order and more                       | ------------------------------> |
-parameters that the exchange requires like hashing & compression algorithms.                    | <------------------------------ |
-Both client and server will do this at about the same time.                                     |                                 |
-                                                                                                |                                 |
-After agreeing on a cipher, hashing & compression algorithm the client will send                |                                 |
-an `ECDH Key Exchange Initialization` message to start a diffie hellman Key                     |                                 |
-Exchange procedure. In this step both client and server will generate the same key              |                                 |
-using emphereal public and private they create and send eachother. They will also               |     ECDH Key Exchange Init      |
-sign all of their messages up until now together with their emphereal public key                | ------------------------------> |
-and the secret key as a hash, the server will sign their hash with their private                |     ECDH Key Exchange Reply     |
-rsa key.                                                                                        | <------------------------------ |
-                                                                                                |                                 |
-First the server has to accept the server's public rsa key, either by a certificate             |                                 |
-or a `public key database`. If bot of those don't succeed the client can decide                 |                                 |
-wether to accept the conection or not.                                                          |                                 |
-                                                                                                |                                 |
-The client can decrypt then hash with the server's public rsa key and                           |                                 |
-match the server's hash to a hash they generate themselves the exact same way.                  |                                 |
-That way the client proves both the server has the same key and that the server is              |                                 |
-the server.                                                                                     |                                 |
-                                                                                                |                                 |
-The client and sever will not actually communicate with the shared secret key, they             |                                 |
-will use that key to derive 6 new keys. 2 keys for `encryption`, 2 keys as `Init                |             New Keys            |
-Vectors`, 2 keys for `Integrity` (like, SSL MAC). the client will send an encrypted             | ------------------------------> |
-`New Keys`.                                                                                     |     SSH_MSG_SERVICE_REQUEST     |
-                                                                                                | ------------------------------> |
-And to end it, the client send an `SSH_MSG_SERVICE_REQUEST` message to ask for the              |     SSH_MSG_SERVICE_ACCEPT      |
-authentication service. The server will return an `SSH_MSG_SERVICE_ACCEPT` response             | <------------------------------ |
-and the user will be allowed to log in.                                                         V                                 V
+Since I want to draw another diagram I will do this in a code box. Let's try         C                                 S
+and do this simply step by step. The client will want to initiate a connection.      | Identification String Exchange  |
+The client will send an 'Identification String Exchange' message, to                 | ------------------------------> |
+synchronize the SSH version. The server will return the same message.                | <------------------------------ |
+                                                                                     |                                 |
+Afterwards comes the `Key Exchange Initialization` message, just like in TLS         |   Key Exchange Initialization   |
+the client and server will send their ciphers in preffered order and more            | ------------------------------> |
+parameters that the exchange requires like hashing & compression algorithms.         | <------------------------------ |
+Both client and server will do this at about the same time.                          |                                 |
+                                                                                     |                                 |
+After agreeing on a cipher, hashing & compression algorithm the client will send     |                                 |
+an `ECDH Key Exchange Initialization` message to start a diffie hellman Key          |                                 |
+Exchange procedure. In this step both client and server will generate the same key   |                                 |
+using emphereal public and private they create and send eachother. They will also    |     ECDH Key Exchange Init      |
+sign all of their messages up until now together with their emphereal public key     | ------------------------------> |
+and the secret key as a hash, the server will sign their hash with their private     |     ECDH Key Exchange Reply     |
+rsa key.                                                                             | <------------------------------ |
+                                                                                     |                                 |
+First the server has to accept the server's public rsa key, either by a certificate  |                                 |
+or a `public key database`. If bot of those don't succeed the client can decide      |                                 |
+wether to accept the conection or not.                                               |                                 |
+                                                                                     |                                 |
+The client can decrypt then hash with the server's public rsa key and                |                                 |
+match the server's hash to a hash they generate themselves the exact same way.       |                                 |
+That way the client proves both the server has the same key and that the server is   |                                 |
+the server.                                                                          |                                 |
+                                                                                     |                                 |
+The client and sever will not actually communicate with the shared secret key, they  |                                 |
+will use that key to derive 6 new keys. 2 keys for `encryption`, 2 keys as `Init     |             New Keys            |
+Vectors`, 2 keys for `Integrity` (like, SSL MAC). the client will send an encrypted  | ------------------------------> |
+`New Keys`.                                                                          |     SSH_MSG_SERVICE_REQUEST     |
+                                                                                     | ------------------------------> |
+And to end it, the client send an `SSH_MSG_SERVICE_REQUEST` message to ask for the   |     SSH_MSG_SERVICE_ACCEPT      |
+authentication service. The server will return an `SSH_MSG_SERVICE_ACCEPT` response  | <------------------------------ |
+and the user will be allowed to log in.                                              V                                 V
 ```
 
 ### SSH Transport Layer Protocol
@@ -1195,13 +1192,12 @@ The transport layer protocol is responsible for a few things, some of them we al
 >
 > Here is a diagram to explain how the protocol does that:
 > ```
->                                 ____________________SSH_PACKET____________________
->                                |__________________2.MAC_____________________      |
->                                |       _____________1.ENCRYPTED_____________|     |
+> seq# - packet sequence no.      ____________________SSH_PACKET____________________
+> pktl - packet len              |__________________2.MAC_____________________      |
+> pdl  - padding len             |       _____________1.ENCRYPTED_____________|     |
 >  _________________             '______'______ _____ ______________ _________'_____'
 > |_____PAYLOAD_____|            |_seq#_|_pktl_|_pdl_|_CMPRSSD_PYLD_|_padding_|_MAC_|
 >          '--------------------------------------------'
-> seq# - packet sequence no., pktl - packet len, pdl - padding len
 > ```
 
 > #### `Saving Host Keys`
@@ -1216,10 +1212,32 @@ The transport layer protocol is responsible for a few things, some of them we al
 
 ### SSH User Authentication Protocol
 
-This protocl also has 3 main functions:
+This protocol role is to authenticate users wanting to connect to the server. The client sends an authentication request message with the username credential. The server will then offer the client authentication methods:
+* Password - client inputs a password, the password in encrypted in transit.
+* Public Key - client authenticates themselves using their public key.
+* Host Based - client authenticates themselves using a central host (Like a DC).
 
+The client may authenticate themselves by any of these methods, the protocol will return a success response and authenticate the user. Or if the authentication is not enough, the server may ask the client to further authenticate themselves.
+
+### SSH Connection Protocol
+
+This protocol rides ontop of the `SSH Transport Layer Protocol`. The protocol is responsible for many of the things that make SSH so great.
+
+> #### `Multiplexing`
 >
+> This protocol is responsible for opening and closing channels for concurrent data transfer, there are 4 types of channels:
+> * Session - used in remote execution of a program (like the shell), file transfer, etc.
+> * X11 - Used to send desktop interface to remote machines, for applications that show graphical interface of the server machine.
+> * forwarded-tcpip - remote port forwarding, we will get to that in a second.
+> * direct-tcpip - local port forwarding.
 
+> #### `Port forwarding`
+>
+> SSH enables port forwarding on an encrypted ssh tunnel to protect communication, SSH allows both remote and local port forwarding.
+> * local - local port forwarding let's an applicaiton forward a port onto ssh directly onto a port of the server.
+> * remote - remote port forwarding let's an application forward information on the ssh tunnel to an intermediate server (like a firewall) that will send the information to the ssh client on the server.
+>
+> Remote port forwarding is used when direct communication to the server is impossible, for example when there is a firewall. The `SSH client` on the client machine will `encrypt the data` and the `ssh server` on the server machine will `decrypt the data` before forwaring it to the server application.
 
 
 ###### [Back to top](#bigous-protocolous)
