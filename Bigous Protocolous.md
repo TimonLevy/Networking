@@ -1098,12 +1098,142 @@ Both AH and ESP are encapsulation protocols, an IPsec VPN may use one or both of
 ###### [Back to top](#bigous-protocolous)
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+## Modbus
+
+Modbus is a data communication protocol. Modbus provides a common language for devices and equipment to communicate with one another, those devices are usually `PLC` (Programmable Logic Controller) or `SCADA` (Supervisory Control And Data Acquisition) devices.
+
+### WHY WAS IT INVENTED?
+
+Modbus was invented by Modicon in 1979 to be used by it's PLCs. Modbus allows devices with different interfaces to communicate over a **common language**.
+
+### HOW DOES IT WORK?
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## Secure Shell A.K.A SSH
+###### *[#Layer-7] [#TCP/22]*
+
+SSH was conceptualized as a secure replacement for the [telnet](#teletype-network-aka-telnet) protocol. The SSH protocol allows a user to remotely interface with another machine on the internet with their communication secured.
+
+### WHY WAS IT INVENTED?
+
+The protocol was invented by Tatu Ylönen after he found a password sniffer on his university's network. Since the prominent remote managment protocol back then was Telnet, all communications appeared as cleartext on the wire. That pushed Tatu to design the first version of the protocol all the way back in 1995.
+
+### HOW DOES IT WORK?
+
+SSH is actually a suite of SSH protocols riding on TCP, each playing a key part in the role of remote managment. Those protocols are:
+
+```
+  ______________________________________
+ /                 /                   /| SSH TRANSPORT LAYER PROTOCOL - Provides server authentication, message integrity, compression and data
+/_________________/___________________/ |                                confidentiality. (encryption)
+|  SSH USER AUTH  |  SSH CONNECTION   | | SSH USER AUTHENTICATION PROTOCOL - Provides user authentication services.
+|    PROTOCOL     |     PROTOCOL      | / SSH CONECTION PROTOCOL - Allows multiplexing a single connection to multiple logical channels. 
+|_________________|___________________|/.
+ /                                     /|
+/_____________________________________/ |
+|                                     | |
+|    SSH TRANSPORT LAYER PROTOCOL     | /
+|_____________________________________|/.
+ /                                     /|
+/_____________________________________/ |
+|                                     | |
+|    TRANSMISSION CONTROL PROTOCOL    | /
+|_____________________________________|/
+```
+
+Alright, first step! 
+
+### Connection Initialization & Key exchange
+```
+Since I want to draw another diagram I will do this in a code box. Let's try                    C                                 S
+and do this simply step by step. The client will want to initiate a connection.                 | Identification String Exchange  |
+The client will send an 'Identification String Exchange' message, to                            | ------------------------------> |
+synchronize the SSH version. The server will return the same message.                           | <------------------------------ |
+                                                                                                |                                 |
+Afterwards comes the `Key Exchange Initialization` message, just like in TLS                    |   Key Exchange Initialization   |
+the client and server will send their ciphers in preffered order and more                       | ------------------------------> |
+parameters that the exchange requires like hashing & compression algorithms.                    | <------------------------------ |
+Both client and server will do this at about the same time.                                     |                                 |
+                                                                                                |                                 |
+After agreeing on a cipher, hashing & compression algorithm the client will send                |                                 |
+an `ECDH Key Exchange Initialization` message to start a diffie hellman Key                     |                                 |
+Exchange procedure. In this step both client and server will generate the same key              |                                 |
+using emphereal public and private they create and send eachother. They will also               |     ECDH Key Exchange Init      |
+sign all of their messages up until now together with their emphereal public key                | ------------------------------> |
+and the secret key as a hash, the server will sign their hash with their private                |     ECDH Key Exchange Reply     |
+rsa key.                                                                                        | <------------------------------ |
+                                                                                                |                                 |
+First the server has to accept the server's public rsa key, either by a certificate             |                                 |
+or a `public key database`. If bot of those don't succeed the client can decide                 |                                 |
+wether to accept the conection or not.                                                          |                                 |
+                                                                                                |                                 |
+The client can decrypt then hash with the server's public rsa key and                           |                                 |
+match the server's hash to a hash they generate themselves the exact same way.                  |                                 |
+That way the client proves both the server has the same key and that the server is              |                                 |
+the server.                                                                                     |                                 |
+                                                                                                |                                 |
+The client and sever will not actually communicate with the shared secret key, they             |                                 |
+will use that key to derive 6 new keys. 2 keys for `encryption`, 2 keys as `Init                |             New Keys            |
+Vectors`, 2 keys for `Integrity` (like, SSL MAC). the client will send an encrypted             | ------------------------------> |
+`New Keys`.                                                                                     |     SSH_MSG_SERVICE_REQUEST     |
+                                                                                                | ------------------------------> |
+And to end it, the client send an `SSH_MSG_SERVICE_REQUEST` message to ask for the              |     SSH_MSG_SERVICE_ACCEPT      |
+authentication service. The server will return an `SSH_MSG_SERVICE_ACCEPT` response             | <------------------------------ |
+and the user will be allowed to log in.                                                         V                                 V
+```
+
+### SSH Transport Layer Protocol
+
+The transport layer protocol is responsible for a few things, some of them we alredy touched already.
+
+> #### `Integrity, Compression, and Confidentiality of data`
+>
+> Here is a diagram to explain how the protocol does that:
+> ```
+>                                 ____________________SSH_PACKET____________________
+>                                |__________________2.MAC_____________________      |
+>                                |       _____________1.ENCRYPTED_____________|     |
+>  _________________             '______'______ _____ ______________ _________'_____'
+> |_____PAYLOAD_____|            |_seq#_|_pktl_|_pdl_|_CMPRSSD_PYLD_|_padding_|_MAC_|
+>          '--------------------------------------------'
+> seq# - packet sequence no., pktl - packet len, pdl - padding len
+> ```
+
+> #### `Saving Host Keys`
+>
+> This protocol needs to save the host keys that he different hosts (clients) connecetd to the ssh'd machine (server).
+> It can do that by relying on a CA and matching client Certificates, or just keeping them in an internal Database.
+
+> #### `Key Generation`
+>
+> The protocol is also responsible for the key generation, that is generate the 6 keys from the exchanged secret key.
+> The key exchange intself is also done by the `SSH Transport Layer Protocol`.
+
+### SSH User Authentication Protocol
+
+This protocl also has 3 main functions:
+
+>
+
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 ## BIBLIOGRAPHY
 This bibliography was put together after writing the NTP section, so most of the earlier protocol's research resources are missing.
 
 > ### ICMP
 >
-> 1. "[INTERNET CONTROL MESSAGE PROTOCOL, DARPA INTERNET PROGRAM PROTOCOL SPECIFICATION](https://www.rfc-editor.org/rfc/rfc792)", Request For Comments 792.
+> 1. "[INTERNET CONTROL MESSAGE PROTOCOL, DARPA INTERNET PROGRAM PROTOCOL SPECIFICATION](https://www.rfc-editor.org/rfc/rfc792)"
+> , Request For Comments 792.
 
 > ### HTTP
 >
@@ -1127,11 +1257,13 @@ This bibliography was put together after writing the NTP section, so most of the
 
 > ### SMB
 >
-> 1. "[Visuality Systems SMB protocol](https://www.youtube.com/playlist?list=PLyOlunpO5LG1W1SgFGDUAlCTSz9j9zBax)", Youtube Playlist by **Visuality Systems**.
+> 1. "[Visuality Systems SMB protocol](https://www.youtube.com/playlist?list=PLyOlunpO5LG1W1SgFGDUAlCTSz9j9zBax)"
+> , Youtube Playlist by **Visuality Systems**.
 
 > ### SNMP
 >
-> 1. "[SNMP Explained | Simple Network Management Protocol | Cisco CCNA 200-301](https://www.youtube.com/watch?v=Lq7j-QipNrI)", Youtube Video by **CertBros**.
+> 1. "[SNMP Explained | Simple Network Management Protocol | Cisco CCNA 200-301](https://www.youtube.com/watch?v=Lq7j-QipNrI)"
+> , Youtube Video by **CertBros**.
 
 > ### NTP
 >
@@ -1139,9 +1271,12 @@ This bibliography was put together after writing the NTP section, so most of the
 
 > ### TLS/SSL
 > 
-> 1. "[TLS Handshake - EVERYTHING that happens when you visit an HTTPS website](https://www.youtube.com/watch?v=ZkL10eoG1PY)", Youtube video by **Practical Networking**.
-> 2. "[Transport Layer Security, TLS 1.2 and 1.3 (Explained by Example)](https://www.youtube.com/watch?v=AlE5X1NlHgg)", Youtube video by **Hussein Nasser**.
-> 3. "[What is SSL? | What is SSL Ceritificate? | SSL Architecture and Protocols | Secure Socket Layer](https://www.youtube.com/watch?v=-dQyUqoK16w)", Youtube video by **Chirag Bhalodia**.
+> 1. "[TLS Handshake - EVERYTHING that happens when you visit an HTTPS website](https://www.youtube.com/watch?v=ZkL10eoG1PY)"
+> , Youtube video by **Practical Networking**.
+> 2. "[Transport Layer Security, TLS 1.2 and 1.3 (Explained by Example)](https://www.youtube.com/watch?v=AlE5X1NlHgg)"
+> , Youtube video by **Hussein Nasser**.
+> 3. "[What is SSL? | What is SSL Ceritificate? | SSL Architecture and Protocols | Secure Socket Layer](https://www.youtube.com/watch?v=-dQyUqoK16w)
+> ", Youtube video by **Chirag Bhalodia**.
 > 4. "[How SSL works tutorial - with HTTPS example](https://www.youtube.com/watch?v=iQsKdtjwtYI)", Youtube video by **tubewar**.
 > 5. "[The Secure Sockets Layer (SSL) Protocol Version 3.0](https://www.rfc-editor.org/rfc/rfc6101)", Request For Comments 6101.
 > 6. "[Difference between Secure Socket Layer (SSL) and Transport Layer Security (TLS)](https://www.geeksforgeeks.org/difference-between-secure-socket-layer-ssl-and-transport-layer-security-tls/)", Article on **Geeks-For-Geeks**.
@@ -1154,11 +1289,18 @@ This bibliography was put together after writing the NTP section, so most of the
 >
 > 1. "[CCNP Security | IKEv1 Phase 1 and Phase 2 Explained](https://www.youtube.com/watch?v=GGB8cvN6AQI)", Youtube video by **CCNADailyTIPS**.
 > 2. "[IPsec - IKE Phase 1 | IKE Phase 2](https://www.youtube.com/watch?v=tapoOQ-MkPU)", Youtube video by **GD Networking Newbie**.
-> 3. "[Authentication Header (AH) and Encapsulating Security Payload (ESP)](https://www.youtube.com/watch?v=ScxCFzxVel8)", Youtube video by **GD Networking Newbie**.
+> 3. "[Authentication Header (AH) and Encapsulating Security Payload (ESP)](https://www.youtube.com/watch?v=ScxCFzxVel8)"
+> , Youtube video by **GD Networking Newbie**.
 > 4. "[QTNA #37: IPSec modes](https://www.youtube.com/watch?v=HbaUqhYZjq4)", Youtube video by **CyberVista**.
-> 5. "[Module 5 Lecture 1 IP Security: Operation Modes-Transport Mode and Tunnel Mode](https://www.youtube.com/watch?v=uVmkL8uPZPk)", Youtube video by **Eupheus Mnemon**.
+> 5. "[Module 5 Lecture 1 IP Security: Operation Modes-Transport Mode and Tunnel Mode](https://www.youtube.com/watch?v=uVmkL8uPZPk)"
+> , Youtube video by **Eupheus Mnemon**.
 > 6. "[001 IPSEC KEv2](https://www.youtube.com/watch?v=LHnnzdipaKQ)", Youtube video by **Sikandar Shaik**.
 > 7. "[002 IKEv1 vs IKEv2](https://www.youtube.com/watch?v=UEimHi_imsk)", Youtube video by **Sikandar Shaik**.
+
+> ### SSH
+>
+> 1. "[How SSH Works](https://www.youtube.com/watch?v=5JvLV2-ngCI)", Youtube video by **Mental Outlaw**.
+> 2. "[9 - Cryptography Basics - SSH Protocol Explained](https://www.youtube.com/watch?v=0Sffl7YO0aY)", Youtube video by **CBTVid**.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 ###### [Back to top](#bigous-protocolous)
