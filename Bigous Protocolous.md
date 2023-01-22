@@ -2,8 +2,8 @@
 
 The big protocol wikipedia.
 
-| TABLE OF CONTENTS           | _______________________________________________________________________________________________________ |
-| :-------------------------- | ---------------------------------------------------------------------------------------------: |
+| TABLE OF CONTENTS | _________________________________________________________________________________________________________________ |
+| :-------------------------------------------------------------------- | ------------------------------------------------------------: |
 | [ICMP](#internet-control-message-protocol-aka-icup)                   | Internet Control Message protocol                             |
 | [DNS](#domain-name-system-aka-dns)                                    | Domain Name System                                            |
 | [LLMNR](#link-local-multicast-name-resolution-aka-llmnr)              | Link-Local Multicast Name Resolution                          |
@@ -31,10 +31,12 @@ The big protocol wikipedia.
 | > [IKEv2.0](#ikev20)                                                  | Internet Key Exchange Protocol ver 2.0                        |
 | > [AH Protocol](#authenticationi-header-ah-protocol)                  | Authentication Header Protocol                                |
 | > [ESP](#encapsulation-security-protocol-esp)                         | Encapsulation Security Protocol                               |
+| [modbus](#modbus)                                                     | Modbus                                                        |
 | [SSH](#secure-shell-aka-ssh)                                          | Secure Shell                                                  |
 | > [SSH Transport Layer Protocol](#ssh-transport-layer-protocol)       | SSH Transport Layer Protocol                                  |
-| > [SSH User Authentication Protocol](#ssh-user-authentication-protocol)|SSH User Authentication Protocol                              |
+|> [SSH User Authentication Protocol](#ssh-user-authentication-protocol)| SSH User Authentication Protocol                              |
 | > [SSH Communication Protocol](#ssh-connection-protocol)              | SSH Communication Protocol                                    |
+| [RDP](#remote-desktop-protocol-aka-rdp)                               | Remote Desktop Protocol                                       |
 
 [to Bibliography](#bibliography)
 
@@ -1025,7 +1027,7 @@ IPsec suite provides **Integrity**, **Authentication**, **Confidentiality** to a
 
 Both AH and ESP are encapsulation protocols, an IPsec VPN may use one or both of them. IKE has two versions, V1 and V2 which are a little different so let's get into it.
 
-> #### IKEv1.0
+> #### `IKEv1.0`
 > ###### *[#UDP/500]*
 > 
 > ##### First Phase
@@ -1067,7 +1069,7 @@ Both AH and ESP are encapsulation protocols, an IPsec VPN may use one or both of
 > Using this `Transform Set` IPsec "constructs a new tunnel" over which it will send the data securely and the conversation will begin.
 
 
-> #### IKEv2.0
+> #### `IKEv2.0`
 > ###### *[#UDP/500] [#UDP/4500]*
 >
 > IKE version 2 is faster than version 1, provides `NAT Traversal`, provides a `keep-alive` mechanism, supports the `**Extensible Authentication Protocol [EAP]**`, reconnecting to a tunnel after changing networks, stronger cryptoraphic algorithms (PFS).
@@ -1247,6 +1249,138 @@ This protocol rides ontop of the `SSH Transport Layer Protocol`. The protocol is
 ###### [Back to top](#bigous-protocolous)
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+## Remote Desktop Protocol A.K.A RDP
+###### *[#layer-7] [#tcp/3389]*
+
+RDP is a protocol that allows an interface to a remote windows machine with input devices (keyboards & mice) and output devices (monitors, speakers and headsets).
+
+### WHY WAS IT INVENTED?
+
+The remote desktop feature was first pushed out with the release of Windows NT 4.0, called `Remote Desktop Protocol 4.0`. The protocol was not created for a particular purpose but it is heavily used nowadays for remote machine intefaces. 
+
+### HOW DOES IT WORK?
+
+RDP uses a bundle of protocols to achieve the final product that is RDP.
+
+```
+  __________________________________________
+ /                                         /|
+/_________________________________________/ |
+|       RDSTLS/SSL/CredSSP (Encrypt)      | |  | An encryption protocol. 
+|_________________________________________|/|
+| Multipoint Communication Service (MCS)  | |  | A protocol that lets the connection become multiplexed, meaning communication
+|                  T.125                  | |  | through multiple channels.
+|_________________________________________|/|
+| Connection-Oriented Transport Protocol  | |  | A connection-oriented Transport Protocol. Used for the transport of packets.
+|                  X.224                  | |
+|_________________________________________|/|
+|                   TPKT                  | |  | A transport protocol for the OSI model, performs a different encapsulation.
+|_________________________________________|/   | Uses TCP for transport but works with a different architechture.
+```
+
+The data in the RDP session is funneled through the 7 layer OSI model then it is sectioned, directed to a channel, encrypted, wrapped, framed and packaged before sending.
+
+#### RDP Connection
+
+To initiate a connection RDP performs a sort of handshake.
+
+```
+.     Cli                                           Ser
+.      |                                             |
+.      | ------------------------------>             | ] Connection -
+.      |             <------------------------------ | ] Initiation
+.      |                                             |
+.      | ------------------------------>             | ] Basic Settings -
+.      |             <------------------------------ | ] Exchange
+.      |                                             |
+.      | ------------------------------>             | ] Channel -
+.      |             <------------------------------ | ] Connection
+.      |                                             |
+.      | ------------------------------>             | ] Security commencement
+.      |                                             |
+.      | ------------------------------>             | ] Secure Settings Exchange
+.      |                                             |
+.      |             <------------------------------ | ] Licensing
+.      |                                             |
+.      |             <------------------------------ | ] Capabilities -
+.      | ------------------------------>             | ] Exchange
+.      |                                             |
+.      | ------------------------------>             | ] Connection -
+.      |             <------------------------------ | ] Finalization
+.      |                                             |
+.      | ------------------------------>             | ] Data -
+.      |             <------------------------------ | ] Exchange
+.      |                                             |
+.      V                                             V
+```
+
+> #### `Connection Initialization`
+>
+> The connection is initiated by sending a request using the X.224 protocol.
+> The request contains some flags and the security protocols supported by the client. 
+>
+> The connection is confirmed once the server sends an x.224 packet back with a negotiation response.
+> That response will contain the selected security protocol.
+>
+> *From now on each message will be wrapped using the x.224 protocol.*
+
+> #### `Basic Settings Exchange`
+>
+> The client and server start communicating some basic settings using MSC by sending initialize and response PDUs (Protocol Data Units).
+> These basic settings contain: graphics settings, some security data like encrytion methods and randoms, information about what channels the client wants to open.
+> The server will open those channels and returns the client channels IDs.
+
+> #### `Channel Connection`
+>
+> The client and server will now communicate back and forth and will connect every single channel that the client requested in the last stage.
+> The client will send a request to "connect" a specific channel, the server will do so and to confirm will return that channel's id.
+>
+> *From now on each message will be wrapped in an MSC PDU and directed to a virtual channel*
+
+> #### `Security Commencement`
+>
+> The client will send it's own random encrypted with the server's public key, now both peers can calculate a symmetric key.
+> *From now on, subsequent traffic can be encrypted.*
+
+> #### `Secure Settings Exchange`
+>
+> The client sends information about the user (domain, username, password etc.) and supported compression methods.
+
+> #### `Licensing`
+>
+> In this stage the RDP server (RDS) will verify it's liense to connect more than 2 machine simultaneously. In case it does not have the protper license it will support only up to 2 connections.
+
+> #### `Capabilities Exchange`
+>
+> The server will send a PDU containing a structure that has many capability sets like: general, input, fonts, virtual channels and more (overal 28 types).
+> Then the server will send a PDU with the display monitors' information to the client.
+> Finally, the client will repond with a PDU containing it's owht structure of capability sets.
+
+> #### `Connection Finalization`
+>
+> This step is comprised of many little steps. First the client and server synchronize user identifiers. Then they both send a PDU to indicate shared control over the session. Then client asks for control over the session and the server grants it.
+
+After finishing the handshake the client and server will communicate graphical data (from the server) and input data (from the client) on their respective channels. So a packet will look something like this:
+
+```
+ _________________________________________________________________________________________
+| Encrypted  ________________________________________________________________________     |
+|           | OSI over TCP (X.224) ________________________________________________  |    |
+|           |                     | MCS Layer (data is put into channel)           | |    |
+|           |                     |                __________________              | |    |
+|           |                     |               | PDU (data)       |             | |    |
+|           |                     |               |__________________|             | |    |
+|           |                     '________________________________________________' |    |
+|           '________________________________________________________________________'    |
+'_________________________________________________________________________________________'
+```
+
+Obviously this is not the exact structure of an RDP packet, since the entire packet can not be encrypted for sake for transmission. But it does ilustrate the structure of "How does the protocol encapsulate it's information".
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 ## BIBLIOGRAPHY
