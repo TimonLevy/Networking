@@ -31,13 +31,13 @@ The big protocol wikipedia.
 | > [IKEv2.0](#ikev20)                                                  | Internet Key Exchange Protocol ver 2.0                        |
 | > [AH Protocol](#authenticationi-header-ah-protocol)                  | Authentication Header Protocol                                |
 | > [ESP](#encapsulation-security-protocol-esp)                         | Encapsulation Security Protocol                               |
-| [modbus](#modbus)                                                     | Modbus                                                        |
 | [SSH](#secure-shell-aka-ssh)                                          | Secure Shell                                                  |
 | > [SSH Transport Layer Protocol](#ssh-transport-layer-protocol)       | SSH Transport Layer Protocol                                  |
 |> [SSH User Authentication Protocol](#ssh-user-authentication-protocol)| SSH User Authentication Protocol                              |
 | > [SSH Communication Protocol](#ssh-connection-protocol)              | SSH Communication Protocol                                    |
 | [RDP](#remote-desktop-protocol-aka-rdp)                               | Remote Desktop Protocol                                       |
 | [MS-SSTDS](#microsoft-sql-server-tubular-data-stream-aka-ms-sstds)    | Microsoft SQL Server Tubular Data Stream (MSSQL)              |
+| [Modbus](#modbus)                                                     | Modbus                                                        |
 
 [to Bibliography](#bibliography)
 
@@ -1103,21 +1103,6 @@ Both AH and ESP are encapsulation protocols, an IPsec VPN may use one or both of
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-## Modbus
-
-Modbus is a data communication protocol. Modbus provides a common language for devices and equipment to communicate with one another, those devices are usually `PLC` (Programmable Logic Controller) or `SCADA` (Supervisory Control And Data Acquisition) devices.
-
-### WHY WAS IT INVENTED?
-
-Modbus was invented by Modicon in 1979 to be used by it's PLCs. Modbus allows devices with different interfaces to communicate over a **common language**.
-
-### HOW DOES IT WORK?
-
-
-###### [Back to top](#bigous-protocolous)
----------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 ## Secure Shell A.K.A SSH
 ###### *[#Layer-7] [#TCP/22]*
 
@@ -1474,6 +1459,72 @@ Overall, the flow of a connection may look something like this:
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+## Modbus
+
+Modbus is a data communication protocol. Modbus provides a common language for devices and equipment to communicate with one another, those devices are usually `PLC` (Programmable Logic Controller) or `SCADA` (Supervisory Control And Data Acquisition) devices. To save any confusion, Modbus is a standalone protocol that does not belong to the TCP/IP or OSI model. However, there is a Modbus version for Ethernet.
+
+### WHY WAS IT INVENTED?
+
+Modbus was invented by Modicon in 1979 to be used by it's PLCs. Modbus allows devices with different interfaces to communicate over a **common language**. Today it is a widely used protocol in the industry since it is open source and free to use, that way any engineer can simply pick it up and use it in their own equipment.
+
+### HOW DOES IT WORK?
+
+The Modbus protocol operates in a `client/server` model, the client is the one **recieving** the information and the server is the one **sending** the information (a bit confusing I know). The information, in the form of bits, is sent over the serial lines. The modbus protocol can operate in two different modes, RTU will send information in the form of binary over the wire, ASCII will send information in the form of ASCII over the wire.
+
+The way that message work in RTU mode is as follows:
+
+```
+ ___________________________________________________
+| 1  byte | 1  byte |       n bytes       | 2 bytes |
+|_srv_adr_|_opcode__|_Data________________|_CRC_____|
+```
+
+Let's break it down.
+
+> #### `Server Address`
+>
+> A modbus network is made up of up to 248 machines, 1 client and up to 247 servers. Each server in the network has it's own address, so the first byte in the message will be the server's address. When a server receives a message it will read the first byte and will be able to understand whether to drop the packet or not.
+
+> #### `Opcode`
+>
+> The opcode is a byte sized value that represents a specific operation like read from a specific table/coil. Data is stored inside of the server in the form of registers/coils, coils store analog data (1 or 0, true or false), registers store numerical values. There are four tables to keep those values and each value has it's address:
+>
+> | Coil/Register Numbers | Addresses   | Type        | Table Name                          |
+> | --------------------- | ----------- | ----------- | ----------------------------------- |
+> | 1 - 9999              | 0000 - 270E | Read/Write  | Output Coils                        |
+> | 10001 - 19999         | 0000 - 270E | Read        | Input Coils                         |
+> | 40001 - 49999         | 0000 - 270E | Read/Write  | Output Registers                    |
+> | 30001 - 39999         | 0000 - 270E | Read        | Input Registers                     |
+>
+> | Action          | Table             | Code  |
+> | :-------------- | :---------------- | :---- |
+> | Read            | Output Coil       | 01    |
+> | Read            | Input Coil        | 02    |
+> | Read            | Output Register   | 03    |
+> | Read            | Input Register    | 04    |
+> | Write Single    | Output Coil       | 05    |
+> | Write Single    | Output Register   | 06    |
+> | Write Multiple  | Output Coil       | 0F    |
+> | Write Multiple  | Output Register   | 10    |
+>
+> So a message that start with `3203..` tells the server to *read* from the *Output Register* in the server with the *id* of 50 (32 in HEX), *the value address will also be given in the message*.
+
+> #### `Modbus Map`
+>
+> A modbus map is a table that maps the kind of data inside the tables. Addresses to data types, size and byte orders.
+> Some machiens may have a pre-built given by the manufacturer, while others let the operator program their own modbus maps.
+
+> #### `CRC`
+>
+> Stands for Cyclic Redundancy Check, it is a digest of the entire message inside of the two last bytes of the message. The client will then digest the recieved message and compare the result to the last two bytes to see if there were mishaps in transport.
+
+Using these formats in the messages the client and servers can communicate reliably and efficiently.
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 ## BIBLIOGRAPHY
 This bibliography was put together after writing the NTP section, so most of the earlier protocol's research resources are missing.
 
@@ -1562,6 +1613,11 @@ This bibliography was put together after writing the NTP section, so most of the
 > ### MS-SQL
 >
 > 1. "[[MS-SSTDS]: Tabular Data Stream Protocol Version 4.2](learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-sstds/dab36a48-6c13-44c7-954a-0f5c8623590d)", Article on **MSDN**.
+
+> ### Modbus
+>
+> 1. "[What is Modbus and How does it work?](www.se.com/us/en/faqs/FA168406/)", Article on **Schneider Electric**.
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 ###### [Back to top](#bigous-protocolous)
