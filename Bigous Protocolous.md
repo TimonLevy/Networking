@@ -1397,14 +1397,77 @@ The protocol was created in order to let a client to interface with an ms sql se
 
 The protocol operated on a client server model, in which the client will send a request to the server and the server will perform the operation the client requested and return a response. This protocol also performs authentication.
 
-The ms-sql session is directly tied to the transport layer protocol's session, and it does not matter what transport layer protocol is used.
+The ms-sql session is directly tied to the transport layer protocol's session, and it does not matter what transport layer protocol is used. The protocol also provides an optin for encryption with TLS/SSL.
 
 Let's go into details:
 
-> **Authentication**
+> #### `Authentication`
 >
-> Before performs operations or sending sql statements to be executed the client must authenticate itself to the server.
-> 
+> Before performing operations or sending sql statements to be executed the client must authenticate itself to the server.
+> Before "logging in", the client will send a `PRELOGIN` message. This message will contain some context for the session, and also may be used to wrap the TLS handshake payload. Then the server will return a `PRELOGIN response`.
+>
+> Afterwards the client must send a `LOGIN` message in order to authenticate, this message will contain the username and password of the user. The server will return a `LOGIN response`, that messagewill contain information about the server if the login is successful.
+
+> #### `Client` `SQL Batch`
+>
+> When the client wants to send the server sql statements (an sql batch) it will bundle them up in a 'batch' and send them.
+
+> #### `Server` `Row Data`
+>
+> The server will answer `SQL Batch` messages that return data with the data that was requested stored in rows.
+
+> #### `Client` `Remote Procedure Call (RPC)`
+>
+> If the client wishes to perform an rpc call on the sever then it can send an isolated rpc call packet.
+
+> #### `Server` `Remote Procedure Call (RPC) Response`
+>
+> The server can return data or status of the executed RPC call back to the client.
+
+> #### `Attention`
+>
+> This message can be used to terminate the last operation that was requested.
+
+Overall, the flow of a connection may look something like this:
+
+```
+.     Cli                                           Ser
+.      |                                             |
+.      |                                             |
+.      | ------------------------------>             | ] TCP
+.      |             <------------------------------ | ] Handshake
+.      |                                             |
+.      |                   PRELOGIN                  |
+.      |                                             |
+.      | ------------------------------>             | ] PRELOGIN
+.      |             <------------------------------ | ] 
+.      |                                             |
+.      | ------------------------------>             | ] PRELOGIN wrapping TLS
+.      |             <------------------------------ | ] 
+.      |                                             |
+.   ---+------------------ENCRYPTED------------------+---
+.      |                                             |
+.      |                    LOGIN                    |
+.      |                                             |
+.      | ------------------------------>             | ] LOGIN
+.      |             <------------------------------ | ]
+.      |                                             |
+.      |                  POST-LOGIN                 |
+.      |                                             |
+.      | ------------------------------>             | ] SQL Batch
+.      |             <------------------------------ | ] Row data
+.      |                                             |
+.      | ------------------------------>             | ] RPC call
+.      |             <------------------------------ | ] RPC data response
+.      |                                             |
+.      |                     ...                     |
+.      |                                             |
+.   ---+---------------UNTIL-DISCONNECT--------------+---
+.      |                                             |
+.      |                                             |
+.      |                                             |
+.      V                                             V
+```
 
 
 ###### [Back to top](#bigous-protocolous)
