@@ -37,6 +37,7 @@ The big protocol wikipedia.
 |> [SSH User Authentication Protocol](#ssh-user-authentication-protocol)| SSH User Authentication Protocol                              |
 | > [SSH Communication Protocol](#ssh-connection-protocol)              | SSH Communication Protocol                                    |
 | [RDP](#remote-desktop-protocol-aka-rdp)                               | Remote Desktop Protocol                                       |
+| [MS-SSTDS](#microsoft-sql-server-tubular-data-stream-aka-ms-sstds)    | Microsoft SQL Server Tubular Data Stream (MSSQL)              |
 
 [to Bibliography](#bibliography)
 
@@ -1377,6 +1378,33 @@ After finishing the handshake the client and server will communicate graphical d
 ```
 
 Obviously this is not the exact structure of an RDP packet, since the entire packet can not be encrypted for sake for transmission. But it does ilustrate the structure of "How does the protocol encapsulate it's information".
+
+
+###### [Back to top](#bigous-protocolous)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## Microsoft SQL Server Tubular Data Stream A.K.A MS-SSTDS
+###### *[#Layer-7] [#TCP/1433]*
+
+The ms-sstds (also known as mssql, and will be refered to as fro now on) protocol is a protocol that allows authentication, query and other operations on a microsoft sql server.
+
+### WHY WAS IT INVENTED?
+
+The protocol was created in order to let a client to interface with an ms sql server.
+
+### HOW DOES IT WORK?
+
+The protocol operated on a client server model, in which the client will send a request to the server and the server will perform the operation the client requested and return a response. This protocol also performs authentication.
+
+The ms-sql session is directly tied to the transport layer protocol's session, and it does not matter what transport layer protocol is used.
+
+Let's go into details:
+
+> **Authentication**
+>
+> Before performs operations or sending sql statements to be executed the client must authenticate itself to the server.
+> 
 
 
 ###### [Back to top](#bigous-protocolous)
