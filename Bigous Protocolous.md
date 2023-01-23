@@ -1487,5 +1487,18 @@ This bibliography was put together after writing the NTP section, so most of the
 > 2. "[9 - Cryptography Basics - SSH Protocol Explained](www.youtube.com/watch?v=0Sffl7YO0aY)", Youtube video by **CBTVid**.
 > 3. "[SH | SSH Protocol Stack | SSH Protocols explain with animation | Why SSH? | Secure Shell (SSH)](www.youtube.com/watch?v=jA1IoEHcrIU)", Youtube video by **Chirag Bhalodia**.
 
+> ### RDP
+>
+> 1. "[Explain Like I’m 5: Remote Desktop Protocol (RDP)](www.cyberark.com/resources/threat-research-blog/explain-like-i-m-5-remote-desktop-protocol-rdp)", Article on **CyberArk**.
+
+> ### LDAP
+>
+> 1. "[What is LDAP and Active Directory ? How LDAP works and what is the structure of LDAP/AD?](www.youtube.com/watch?v=QyhNaY5O468)", Youtube video by **Talented Developer**.
+> 2. "[Lightweight Directory Access Protocol (LDAP): The Protocol](www.rfc-editor.org/rfc/rfc4511)", Request For Comments 4511.
+
+> ### MS-SQL
+>
+> 1. "[[MS-SSTDS]: Tabular Data Stream Protocol Version 4.2](learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-sstds/dab36a48-6c13-44c7-954a-0f5c8623590d)", Article on **MSDN**.
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 ###### [Back to top](#bigous-protocolous)
