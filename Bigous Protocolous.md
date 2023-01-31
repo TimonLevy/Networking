@@ -426,7 +426,7 @@ Http evolved so much over the years so I'll ty to summarize it to as little as p
 Overall, HTTP works as a request response type protocol, just like dns and dhcp. The whole point of it is to get the hosted webpage from the server, like "www.google.com" where I research this stuff or "jokes.moomoo.co.il" where I get my your mom jokes.
 
 [In the beninging](www.youtube.com/watch?v=fWKB8zdVM-U) the internet was in it's diapers, all you could find are super simple webpages like blogs. There was no need for a complicated protocol to transfer this data and that's where HTTP came in.
-![The Original Spacejam Website](www.themarysue.com/wp-content/uploads/2010/12/SpaceJam_Home.png)
+![The Original Spacejam Website](https://www.themarysue.com/wp-content/uploads/2010/12/SpaceJam_blankdcr.png)
 ###### pretty simple right?
 
 
@@ -835,9 +835,9 @@ The SSL & TLS protocols are made up of 4 sub-protocols, 3 in a higher level and 
 
 ```
 Handshake Protocol       -.                      Establish security parameters and session.              
-Change Cipher Protocol*  -|- HIGHER LAYER    Responsible for cipher changing negotiations.
+Change Cipher Protocol*  -|- HIGHER LAYER        Responsible for cipher changing negotiations.
 Alert Protocol           -'                      Responsible for alerting if there is an error/warning.
-Record Protocol          -- LOWER LAYER     This is the protocol that encrypts, compresses and ecapsulates the application data.
+Record Protocol          -- LOWER LAYER          This is the protocol that encrypts, compresses and ecapsulates the application data.
 
 * Doesn't exist in TLS 1.3
 ```
