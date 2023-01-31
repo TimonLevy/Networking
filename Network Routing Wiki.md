@@ -287,3 +287,68 @@ Lastly, `Dynamic Routing`. When setting a Router to `Dynamic Routing` it will oc
 | Dynamic              | Dynamic   | 10.0.66.0     | 10.0.44.2   |   |   | 3                    | Dynamic   | 10.0.55.0     | 10.0.44.1   |
 
 Hooray, now, without any intervention, networks 10.0.55.0 and 10.0.66.0 can communicate!
+
+
+
+# Question 2
+
+Computers on the network communicate by sending each other messages containing data, this data is then used by the computers to perform certein tasks. But how do these messages know where to go? Network devices and addresses.
+
+Network devices are devices that are used to get messages from one machine to another inside of a network, all the computers in the network are connected. Depending on the size and configuration of the network a different device will be needed. A device will be able to communicate to another device using two different addresses: IP and MAC. A MAC address is a unique address to that device only, and IP address is a higher layer address that tells the device where the machine is. Basicaly MAC address means "Who am I?" and an IP address means "Where am I?".
+
+> ### Switch
+>
+> A switch is a device that is used for creating **Local Area Networks**, All the devices that are connected to the switch will be able to find eachother by each device's MAC address. The device connect to the switch using a cable inserted to a physical port at the switch, The switch then knows to map each machine's MAC address to the physical port using the MAC address from the messages that is sent from that port.
+>
+> Devices can also send messages to all the devices connected to the switch, doing something called a **broadcast**.
+>
+> The switch's job and scope is to perform message forwarding hop by hop.
+
+Switch are used to connect geograhically closed computers to a network and let them comunicat with eachother, but a switch only has a limited amount of ports. So how are so many computers all over the world connected?
+
+> ### Router
+>
+> A router is a device that can route messages to other devices using IP addresses, it is used to create **Wide Area Networks**. Devices connect to the router by also using pysical ports, using a bunch of chained routers one computer in Japan can send a message to a computer in Germany, all in a matter of seconds. They do it by keeping a database called a **Routing Table**.
+>
+> The routing table is a table containing the information on how to route messages, what network is located on each of the router's ports. The router's job and scope is from endpoint to another enpoint.
+>
+> A computer has to know the IP address of the machine it wants to send the message to through the routers.
+
+```
++--------------10.0.0.x/24--------------+              +---------------10.0.1.x/24-------------+
+|            __   _                     |              |                     __   _            |
+|      PC1  [Ll] |=| ______             |              |             ______ [Ll] |=| PC3       |
+|           ==== '-' .1    \            |              |            /    .1 ==== '-'           |
+|                           \           | eth1    eth0 |           /                           |
+|                            \ +----+   |    +----+    |   +----+ /                            |
+|                             \| S1 |------> | R1 | <------| S2 |/                             |
+|                             /+----+   |    +----+    |   +----+\                             |
+|                            /          | .254    .254 |          \                            |
+|            __   _         /           |              |           \         __   _            |
+|      PC2  [Ll] |=| ______/            |              |            \______ [Ll] |=| PC4       |
+|           ==== '-' .2                 |              |                 .2 ==== '-'           |
+|                                       |              |                                       |
++---------------------------------------+              +---------------------------------------+
+```
+
+Let's assume a situation where PC1 wants to send a message to PC3. There are a few more things we need to know before we can fully imagine that.
+
+> ### Default Gateway
+>
+> The address that the message will be sent to when a device doesn't know who to send the packet to, it usually means that the message is meant for a machine outside the network. The gateway will also usually be the nearest router to computer. To al computers in the drawing above the default gateway will be the router (R1).
+
+> ### ARP - Address Resolution Protocol
+>
+> Arp is a way to associate a MAC address to an IP address, When a device wants to know the IP address that is related to a certein MAC address it will send a broadcasted inquiry. The computer will ask all machine in the LAN "Who has the MAC address of [mac address]", it will also add their own IP and MAC addresses and will wait for a reply. The machine that the MAC belongs to can reply and send the message to the iquiring computer using the addresses it appended to the inquiry.
+>
+> After "solving" for the IP address it will save that comparison inside a local database called the `ARP Table`.
+
+Alright, after we got that let's see what will happen in the situation where PC1 wants to send a message to PC3. **PC1 HAS TO KNOW PC3's IP ADDRESS**.
+
+PC1 knows that PC3 is not n their own network by compairing the IP addresses, `10.0.0.1` and `10.0.1.1`. PC1 will then try to send the message to the default gateway, but it doesn't know how to do that thought the switch because it only has it's IP so it wil user ARP. The switch will send the inquiry to `PC2` and `R1`, `R1` will return a response. In that transaction that switch S1 will also learn both PC1 and R1's MAC addresses and bind them to their ports.
+
+Using the found MAC address PC1 will send the message to the router R1, R1 will know that the LAN `10.0.1.x` is on the other port so it will send it there, the router doesn't know what PC3's MAC address is so it will send an ARP inquiry. PC3 will return a response. The switch S2 will learn and bind their MAC addresses.
+
+The router will send the message to PC3 using the newly found MAC address then.
+
+If PC3 wants to return a response, it will send a message with PC1's IP address and R1's MAC address (it learnt it in from the ARP inquiry). The Router knows PC1's MAC address and it will send it to PC1.
