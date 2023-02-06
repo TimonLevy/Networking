@@ -94,10 +94,10 @@ if (__name__ = "__main__"):
     main()
 ```
 
-![The packets as seen in wireshark]()
+![The packets as seen in wireshark](/Pictures/ARP_Poisoning/Wireshark_View.PNG)
 
 The above script sends a packet to each of the machines posing as the other machine. We can then see the effects on both machine's ARP Tables:
 
-![Machine1, IP: 192.168.100.1]()
+![Machine1, IP: 192.168.100.1](/Pictures/ARP_Poisoning/Victim_1_Poisoned_ARP_Table.PNG)
 
-![Machine2, IP: 192.168.100.2]()
+![Machine2, IP: 192.168.100.2](/Pictures/ARP_Poisoning/Victim_2_Poisoned_ARP_Table.PNG)
