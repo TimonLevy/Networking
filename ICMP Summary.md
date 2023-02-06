@@ -107,4 +107,9 @@ At first it did not work, and I didn't know why. The script was perfect and the 
 
 Exhibit 1 madafaka, this bitch!
 
-![Default rule for ICMPv4 traffic](\Pictures\Old_Firewall_Rule.PNG)
+![Default rule for ICMPv4 traffic](/Pictures/Old_Firewall_Rule.PNG)
+
+On windows, allegedly ICMP redirection is turned on by default. But on the firewall the ICMPv4 rule does not allow ICMP redirection pacets to pass through! Only ICMP echo.
+
+So I made my own rule:
+
