@@ -16,21 +16,27 @@ The protocol's packet format is as follows
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 | Hardware Type               | Protocol Type                 |
 +---------------+-------------+-------------------------------+
-| L2 Addr Len   | L3 Addr Len | Opcode                        |
+| Hw Addr Len   | Pr Addr Len | Opcode                        |
 +-----------------------------+-------------------------------+
-| Sender Layer 2 Address (size is written in L2 Addr Len)     |
+| Sender Hardware Address (size is written in L2 Addr Len)    |
 |                             +-------------------------------|
 |_____________________________|                               |
-| Sender Layer 3 Address (size is written in L3 Addr Len)     |
+| Sender Hardware Address (size is written in L3 Addr Len)    |
 +-------------------------------------------------------------+
-| Target Layer 2 Address (size is written in L2 Addr Len)     |
+| Target Protocol Address (size is written in L2 Addr Len)    |
 |                             +-------------------------------|
 |_____________________________|                               |
-| Target Layer 3 Address (size is written in L3 Addr Len)     |
+| Target Protocol Address (size is written in L3 Addr Len)    |
 +-------------------------------------------------------------+
 ```
 
+The `Hardware Type` field is for different types of Layer 2 address formats, together with the `Hardware Address Length` it is used to decide the address in the Sender & Target Hardware address. Same goes for the `Protocol Type` and `Protocol Address Length`.
 
-
-A request can be summed up this way: "Who has [IP/MAC Address]? I am [My IP Address] [My MAC Address]." (In broadcast)
+An Ethernet (Hardware) & IP (Protocol) request can be summed up this way: "Who has [IP/MAC Address]? I am [My IP Address] [My MAC Address]." (In broadcast)
 And a reply will be: "I am [IP/MAC Address], my MAC/IP Address is [Address]."
+
+# Vulnerability
+
+There is a problem with this system however, ARP responses may be accepted by machines without them ever sending a request. And that may lead to a malicious change in the victim's ARP table. One that let's the attacker become a middlemen! An attacker can then diguise themselves as another machine, and actch all the network directed to that machine. Once they have that network they can alter it, block it or simply just read it.
+
+How I did it.
