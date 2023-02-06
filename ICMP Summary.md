@@ -60,7 +60,7 @@ The reserved 32 bit buffer is allocated according the type and code, if `Redirec
 
 An ICMP redirection attack takes advantage of the ICMP redirect message, and an attacker tries to place himself as a gateway for a victim machine on the local network. It is very simple. Here is the network layout:
 
-![Network map, Kali IP change to .4 instead of .5](/Pictures/Network_Map.png)
+![Network map, Kali IP change to .4 instead of .5](/Pictures/ICMP_Redirection/Network_Map.png)
 
 The Attacker is the Kali machine (192.168.100.5), My victim is the 'Win10 - 01' machine (192.168.100.1) and the machine I am going to gateway to is the DC (192.168.50.1). Now, let's craft ourself a redirect packet.
 
@@ -107,24 +107,24 @@ At first it did not work, and I didn't know why. The script was perfect and the 
 
 Exhibit 1 madafaka, this bitch!
 
-![Default rule for ICMPv4 traffic](/Pictures/Old_Firewall_Rule.PNG)
+![Default rule for ICMPv4 traffic](/Pictures/ICMP_Redirection/Old_Firewall_Rule.PNG)
 
 On windows, allegedly ICMP redirection is turned on by default. But on the firewall the ICMPv4 rule does not allow ICMP redirection pacets to pass through! Only ICMP echo.
 
 So I made my own rule:
 
-![New rule :)](/Pictures/New_Firewall_Rule.PNG)
+![New rule :)](/Pictures/ICMP_Redirection/New_Firewall_Rule.PNG)
 
 And allowed all ICMP traffic in! Like a good cybersecurity personel. Finally my victim was exposed to ICMP redirection attacks! I ran `tracert 192.158.50.1` on the victim machine and while it was running, I ran the script as well. And *voilà*! It worked!
 
-![tracert](/Pictures/ICMP_Redirected_Tracert.PNG)
+![tracert](/Pictures/ICMP_Redirection/ICMP_Redirected_Tracert.PNG)
 
 Here you can see a picture of the packet that were sent by the tracert.
 
-![A packet sent to the default gateway](/Pictures/ICMP_Layer_2_Original.PNG)
+![A packet sent to the default gateway](/Pictures/ICMP_Redirection/ICMP_Layer_2_Original.PNG)
 
 Notice the MAC address, this one belongs to the default gateway (192.168.100.254).
 
-![A packet sent to meeeee](/Pictures/ICMP_Layer_2_Changed.PNG)
+![A packet sent to meeeee](/Pictures/ICMP_Redirection/ICMP_Layer_2_Changed.PNG)
 
 The MAC address here belongs to the kali machine.
