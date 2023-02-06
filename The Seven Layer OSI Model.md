@@ -20,6 +20,9 @@ To better illustrate what I mean, I will take the classic example of sending a l
 
 ### **THE LAYERS**
 
+```diff
+- (Please in each layer and explain *shortly* about one of them (1-2 lines))
+```
 
 
 
@@ -57,6 +60,10 @@ This way of packet delivery is called **Hop-to-Hop**.
             [C1] ---------- [R0] ---------- [R1] ---------- [R2] ---------- [C2]
             ====`o                                                          ====`o
 MAC ADDR    a0-d2-e0        f0-d1-f2        a2-2f-3f        5f-2c-4d        a0-d2-e1
+```
+
+```diff
+- (Is swich strickly a second layer component?)
 ```
 
 #### **The Third Layer, The Networking Layer**
