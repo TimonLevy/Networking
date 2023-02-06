@@ -54,4 +54,9 @@ If a type has no codes then that field will just be 0.
 
 The rest of the field take up the rest of the packet's buffer. The buffer is 64 bits long, 8 for Type, 8 for Code and 16 for checksum leave 32 bits for the other fields which are defualtly reserved. That is because the developers of the protocol thought that someday more types will added so dynamics are required.
 
-The reserved 32 bit buffer is allocated according the type and code, if `Redirect` is sent then the 32 bits will be used to save the IP address of the preffered gateway. If `Destination Unreachable` is sent, the 32 bits are left empty since they have no use. 
+The reserved 32 bit buffer is allocated according the type and code, if `Redirect` is sent then the 32 bits will be used to save the IP address of the preffered gateway. If `Destination Unreachable` is sent, the 32 bits are left empty since they have no use.
+
+# ICMP Redirection Attack
+
+An ICMP redirection attack takes advantage of the ICMP redirect message, and an attacker tries to place himself as a gateway for a victim machine on the local network. It is very simple.
+
