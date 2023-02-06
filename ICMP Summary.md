@@ -58,5 +58,7 @@ The reserved 32 bit buffer is allocated according the type and code, if `Redirec
 
 # ICMP Redirection Attack
 
-An ICMP redirection attack takes advantage of the ICMP redirect message, and an attacker tries to place himself as a gateway for a victim machine on the local network. It is very simple.
+An ICMP redirection attack takes advantage of the ICMP redirect message, and an attacker tries to place himself as a gateway for a victim machine on the local network. It is very simple. Here is the network layout:
+
+![Network map, Kali IP change to .4 instead of .5]()
 
