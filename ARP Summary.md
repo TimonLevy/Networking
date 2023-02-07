@@ -11,23 +11,23 @@ The way it works is by sending a request to the entire network in a broadcast as
 The protocol's packet format is as follows:
 
 ```
-0                   1                   2                   3
-0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| Hardware Type               | Protocol Type                 |
-+---------------+-------------+-------------------------------+
-| Hw Addr Len   | Pr Addr Len | Opcode                        |
-+-----------------------------+-------------------------------+
-| Sender Hardware Address (size is written in Hw Addr Len)    |
-|                             +-------------------------------|
-|_____________________________|                               |
-| Sender Protocol Address (size is written in Pr Addr Len)    |
-+-------------------------------------------------------------+
-| Target Hardware Address                                     |
-|                             +-------------------------------|
-|_____________________________|                               |
-| Target Protocol Address                                     |
-+-------------------------------------------------------------+
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| Hardware Type                 | Protocol Type                 |
++---------------+---------------+-------------------------------+
+| Hw Addr Len   | Pr Addr Len   | Opcode                        |
++---------------+---------------+-------------------------------+
+| Sender Hardware Address (size is written in Hw Addr Len)      |
+|                              +--------------------------------|
+|______________________________|                                |
+| Sender Protocol Address (size is written in Pr Addr Len)      |
++---------------------------------------------------------------+
+| Target Hardware Address                                       |
+|                              +--------------------------------|
+|______________________________|                                |
+| Target Protocol Address                                       |
++---------------------------------------------------------------+
 ```
 
 The `Hardware Type` field is for different types of Layer 2 address formats, together with the `Hardware Address Length` it is used to decide the address in the Sender & Target Hardware address. Same goes for the `Protocol Type` and `Protocol Address Length`.
