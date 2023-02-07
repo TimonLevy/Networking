@@ -21,12 +21,12 @@ The protocol's packet format is as follows:
 | Sender Hardware Address (size is written in Hw Addr Len)    |
 |                             +-------------------------------|
 |_____________________________|                               |
-| Sender Hardware Address (size is written in Hw Addr Len)    |
+| Sender Protocol Address (size is written in Pr Addr Len)    |
 +-------------------------------------------------------------+
-| Target Protocol Address (size is written in Pr Addr Len)    |
+| Target Hardware Address                                     |
 |                             +-------------------------------|
 |_____________________________|                               |
-| Target Protocol Address (size is written in Pr Addr Len)    |
+| Target Protocol Address                                     |
 +-------------------------------------------------------------+
 ```
 
