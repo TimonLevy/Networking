@@ -1,0 +1,167 @@
+# TCP
+
+TCP is the `Transmission Control Protocol`, it is responsible for "service to service" routing. If Ethernet is responsible for routing to the target step by step and Internet Endpoint to endpoint then TCP (and UDP and QUIC) is responsible for delivering the data from the client program on the sender machine to the matching server program on the receiver machine, and it does that by using logical ports.
+
+TCP accomplishes the goal of creating a stable and reliable session in between two services, terminating sessions safely and ensuring all data arrives.
+
+## How Does it Do That?
+
+TCP revolves around a few key concepts:
+
+* Sending data in order and data-loss recovery using *sequence numbers*.
+* Connection oriented communication using *handshakes*.
+* Service-to-Service and multiplexing using port numbers.
+
+Let's look at the structure of a TCP Packet:
+
+```
+ 0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Source Port          |       Destination Port        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        Sequence Number                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                     Acknowledgment Number                     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| Data  |       |C|E|U|A|P|R|S|F|                               |
+| Offset| Rsrvd |W|C|R|C|S|S|Y|I|            Window             |
+|       |       |R|E|G|K|H|T|N|N|                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           Checksum            |         Urgent Pointer        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                           [Options]                           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               :
+:                             Data                              :
+:                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+```
+
+*Source & Destination Port*
+
+*Sequence Number*
+
+> The index of the first data octet in the segment, used to keep track of the data indexes in the sequence that is the data flow.
+
+*Acknowledgement Number*
+
+> If the ACK Flag is set, this field holds the number of the next expected seq number.
+
+*Data Offset*
+
+> Indicated where the data begins and the header ends. Used when there are options added to the header.
+
+*Reserved*
+
+> Reserved for future use, must be 0 when sending and ignored when receiving TCP packets.
+
+*Control Bits*
+
+> Flags, used to signal different things.
+> * CWR - Congestion Windows Reduced.
+> * ECE - ECN Echo.
+> * URG - Urgent Point field is significant.
+> * ACK - Acknowledged the last Packet.
+> * PSH - Push function.
+> * RST - Reset the connection.
+> * SYN - Synchronize seq numbers.
+> * FIN - No more data will be sent from the sender.
+
+*Window*
+
+> The number of bytes (beginning from the one indicated by the ack number) the sender is willing to accept.
+
+*Checksum*
+
+> A calculated data field used in order to ensure data integrity.
+
+*Urgent Pointer*
+
+> Points to the sequence number of the urgent data in this segement as an offset from the normal seq number. (Only to be recognized if URG is set)
+
+*Options*
+
+> Added optional properties to add to the header.
+
+### TCP 3-Way Handshake
+
+TCP is a statefull connection oriented communication protocol. In order to create a statefull connection a process called the `TCP 3-way Handshake` is initiated, in it, both machines and services recognize eachother as endpoints on a connection and prepare themselves.
+
+```
+.     CONN_STATE  A                           B  CONN_STATE
+.
+.     CLOSED      |                           |  LISTENING
+.                 | <CTL=SYN>                 |
+.     SYN SENT    | ------------------------> |  SYN RCVD
+.                 |                           | 
+.                 |             <CTL=SYN,ACK> | 
+.     ESTABLISHED | <------------------------ |  SYN RCVD
+.                 |                           | 
+.                 | <CTL=ACK>                 |   
+.     ESTABLISHED | ------------------------> |  ESTABLISHED
+.                 | <CTL=ACK><Data>           | 
+.     ESTABLISHED | ------------------------> |  ESTABLISHED
+.                 :                           :
+.                 :                           :
+.
+.     * CONN_STATE indicate connection states after packets received
+```
+
+This is a diagram of the TCP 3WHS, I only included the Control Bits for clarity. The first step when a machine wants to inititate a connection, it will send a TCP packet with the SYN flag set. The other machine will answer with the SYN and ACK flags set, the sequence number and acknowledgement number will both be synchronized at this point. Lastly, peer A will send another ACK flagged packet to finish the handshake. From then on data may be sent from each endpoint.
+
+```
+.            A                                               B
+.
+.            | <SEQ=100><CTL=SYN>                            |
+. 1          | --------------------------------------------> |
+.            |                                               |
+.            |               <SEQ=300><ACK=101><CTL=SYN,ACK> | 
+. 2          | <-------------------------------------------- |
+.            |                                               |
+.            | <SEQ=101><ACK=301><CTL=ACK>                   |   
+. 3          | --------------------------------------------> |
+.            |                                               |
+.            | <SEQ=101><ACK=301><CTL=ACK><Data>             | 
+. 4          | --------------------------------------------> |
+.            :                                               :
+.            :                                               :
+```
+
+Here is the same diagram but witht he sequence and acknowledgment numbers. The flags stay the same, SYN > SYN, ACK > ACK. We can see how the numbers are affected though.
+
+1. `PEER A` starts the connection with a SYN flag and decides on a random Seq number that will be used to keep track of the data. *seq numbers are initialized randomly*
+2. `PEER B` Acknowledges the *seq number* 100 and predicts the next number to be 101. As well it generates a random *seq number* of it's own, 300.
+3. `PEER A` sends a packet only to acknowledge `PEER B`'s seq number. (Note: it itself doesn't count to the seq number so it will not increase)
+4. The connetion is now fully established and `PEER A` sends some data, the ACK flag will now be set throughout the entire conversation.
+
+### Sending data
+
+Data will be sent on the established byte-stream in segments encapsulated by the TCP header.
+
+* The beginning of the data and end of header will be indicated by the *data offset* field.
+* The length of the data will be indicated by the value in the *window* field the other peer sent.
+* Any urgent data will be found by the *urgent pointer* and *URG* flag.
+
+When receiving data the receiver must let the other peer that they acknowledged the data they sent using the *ACK* flag and the *ack number*. If a certein segment wasn't acknowledged it will be retrasmitted by the sender until acknowledged.
+
+### Ending a Connection
+
+A connection can be ended by either of the peers, and that will simply made by using the *FIN* flag. However, When a peer sends a *FIN* packet it is still open to recieve packets until the other side sends a FIN as well. When a peer recieves a *FIN* packet they have to acknowledge it.
+
+```
+.            A                                               B
+.
+.            | <SEQ=100><ACK=301><CTL=FIN,ACK>               |
+. 1          | --------------------------------------------> |
+.            |                                               |
+.            |                   <SEQ=300><ACK=101><CTL=ACK> | 
+. 2   CLOSED | <-------------------------------------------- |
+.            |                                               |
+.            |               <SEQ=300><ACK=101><CTL=FIN,ACK> | 
+. 3          | <-------------------------------------------- |
+.            |                                               |
+.            | <SEQ=101><ACK=301><CTL=ACK>                   | 
+. 4          | --------------------------------------------> | CLOSED
+.            '                                               '
+```
