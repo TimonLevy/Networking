@@ -1,4 +1,4 @@
-# IP FRAGMENTATION AND WEAKNESSES
+# IP FRAGMENTATION
 
 IP Fragmentation is the process of breaking down and Internet Protocol packet to multiple smaller packets called "fragments", that is done when a packet is sent from a network with high MTU (Maximum Tranmission Unit) to a network with a lower MTU.
 
