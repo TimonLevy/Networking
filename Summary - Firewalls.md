@@ -1,0 +1,25 @@
+# Firewalls
+
+Firewalls are a network device (Not proprietary) used to enforce the acceptance and denial of network connections that are routed through them. A firewall decides which network connections to pass through using a set of `firewall rules`.
+
+Firewalls will usualy be the main "router" of the network since you want to be able to filter as many connection as possible with a single device (for financial reasons).
+
+# Stateful VS. Stateless
+
+> **Stateless** firewalls are firewalls that filter packets statically, treating each packet as a singular using (and not as a part of a data stream). That means that the filtering capablities are basic such as source and destination ip, protocols and ports. 
+
+> **Stateful** firewalls are firewalls that look at entire data streams and applies advanced analyses to detect threats that are at the data stream level.
+
+The difference is in the simplicity, they both achieve the same goal. Stateful firewalls require more resources to analyze a data streams and accept it, it doesn't work based on strict rules and predetermined outcomes while stateless FWs do. Also, due to the higher consumption of resources by a single data stream of stateful fireworks, they are more susceptible to DDOS attacks.
+
+# Pros and Cons of a Firewall
+
+It is undeniabe that having a firewall nowadays is crucial, but what are the cons of that? Obviously the firewall allows the contorl of traffic inside and to the network, blocking communication using specific IPs/protocols/ports and even analyzing the communication in the network to prevent cyber attacks.
+
+Let's break it down.
+
+First. **Cost**, firewalls come in both hardware and software versions where the former is the (way) more expensive. But it doesn't end with the purchase cost. Meintenance is also a factor to consider which includes a professional IT personal, if the firewall is of the hardware variety then installation costs are also accounted for.
+
+**Comfortability**, depending on the strictness of the FW rules, the user can become restricted from performing ertein tasks. A thing that can damage a company's productivity.
+
+**Complexity**, firewalls used in massive networks often require teams of professionals to operate the complexity of such firewalls.
