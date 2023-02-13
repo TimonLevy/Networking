@@ -39,3 +39,9 @@ There are multiple ways to translate addresses:
 > | ----                        | ----                          |
 > | 10.0.1.1                    | 192.168.142.22                |
 > | 10.0.1.25:80                | 192.168.142.22:80             |
+
+## Encouters with NAT in the wild
+
+As attackers we will sometimes wants to perform some actions on a network from the outside, maybe because we still have not gained access to it. In that case we will have to use it's public IP/IPs in order to interact with it, so what do we do? Since those addresses don't necessarily map to a single machine we wil perform a port scan on that address. See what possible attack vectors that address allows.
+
+From then we will act upon the findings or perform some more recon based on them.
