@@ -1,6 +1,6 @@
 # Firewalls
 
-Firewalls are a network device (Not proprietary) used to enforce the acceptance and denial of network connections that are routed through them. A firewall decides which network connections to pass through using a set of `firewall rules`.
+Firewalls are a hardware/software network device used to enforce the acceptance and denial of network connections that are routed through them. A firewall decides which network connections to pass through using a set of `firewall rules`.
 
 Firewalls will usualy be the main "router" of the network since you want to be able to filter as many connection as possible with a single device (for financial reasons).
 

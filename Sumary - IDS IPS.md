@@ -1,0 +1,21 @@
+# IDS - Intruder Detection System
+
+An intruder Detection System is a network component that looks into network traffic and, based on certein methods, alerts when it detects malicious traffic.
+
+An intruder detection system will usually be applied on a central network device like the firewall since you want to filter as much data as possible, but any device that can supports it can be an IDS.
+
+#### Host and Network Based
+
+Host based IDS is a little different since it does not analyze networ traffic but application and computer logs to detect malicious activity. 
+
+## IPS - Intruder Prevention System
+
+If an IDS is given the abilty to stop communication that it detects as malicious, it becomes an IPS. IPS' may sometimes get their analyses wrong and block communication on a *false positive*. However when it block malicious traffic as intended it is called a *true positive*.
+
+## Detection
+
+Detections of "intrusions" can be done in different methods, one of them is signing method:
+
+> In the signing method, the packet is digested by some hashing algorithm that outputs a `signature`. This signature is them compared to a database containing hundreds or thousands of signatures of malicious packets.
+
+> Another method for detection is detecting anomalous se of certein protocols and how they deviate from the normal use case of those prtocols.
