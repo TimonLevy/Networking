@@ -1,0 +1,15 @@
+NO		NAME						CHANGE
+--		----						----
+6		UsersToInternet				Remove http and ftp protocols, only allow secure communication.
+
+18		CRLs						Remove the rule, add a more relevant rule.
+20		User management				Remove the rule.
+
+21		DB_Access					Set only sql protocols to be allowed.
+
+25		DomainContoler_RPC			Change the typo in the name. Contoler > Controller.
+25		DomainContoler_RPC			Do not allow communication from the DC to the outer net.
+
+27		Internet_To_DMZ_External	Do not allow communication through those protocols to the External DMZ segment.
+
+XX		DropBadProtocols			Create a rule to drop any packet using a protocol that isn't regularly used. Like SMB 1.0 and so on.
