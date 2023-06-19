@@ -32,10 +32,10 @@ The SSL & TLS protocols are made up of 4 sub-protocols, each responsible for ano
 
 SSL/TLS also has **two major concepts**:
 
-<font size=2>SESSION</font><br>
+<font size=2>**SESSION**</font><br>
 > A session is a set of negotiated security parameters (key exchnage & encryption algorithms, SID etc.) between one endpoint and another.
 
-<font size=2>CONNECTION</font><br>
+<font size=2>**CONNECTION**</font><br>
 > A connection is the application of a session's parameters to an active network connection.
 
 ### Handshake Protocol (SSL 3.0 - TLS 1.2)
