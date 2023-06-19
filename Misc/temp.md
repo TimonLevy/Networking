@@ -32,15 +32,11 @@ The SSL & TLS protocols are made up of 4 sub-protocols, each responsible for ano
 
 SSL/TLS also has **two major concepts**:
 
-> `SESSION`
->
+<font size=2>SESSION</font><br>
 > A session is a set of negotiated security parameters (key exchnage & encryption algorithms, SID etc.) between one endpoint and another.
 
-> `CONNECTION`
->
-> A connection is the **application of a session's parameters to an active connection**, meaning **every** `connection` has to be tied to only **one** `session`. But, **one** `session` can be **used by multiple different** `connections`.
->
-> A connection has two cipher spesification states too, `pending` and `current`. Whenever negotiating parameters, those parameters get put in the pending state. And when the connection receives the relevant message it will change the `current` CipherSpecs using the `pending` ones. 
+<font size=2>CONNECTION</font><br>
+> A connection is the application of a session's parameters to an active network connection.
 
 ### Handshake Protocol (SSL 3.0 - TLS 1.2)
 
