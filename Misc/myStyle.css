@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16;
+}
+
+/* This tag is used for the tags under the chapter names. */
+tags {
+    font-size: 12;
+    white-space: after;
+/*  font-style: italic; */
+}
+
+tags::after {
+    content: "\a\a\a";
+    white-space: pre;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+p1 {
+    font-size: 0.8em;
+}
+
+inset {
+    margin-left: 20px;
+}
