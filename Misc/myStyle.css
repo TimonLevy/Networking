@@ -1,28 +1,71 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Arial';
+    white-space: pre-wrap;
     font-size: 16;
+    margin-left: 15px;
 }
 
 /* This tag is used for the tags under the chapter names. */
 tags {
     font-size: 12;
     white-space: after;
-/*  font-style: italic; */
+    font-style: italic;
 }
 
-tags::after {
-    content: "\a\a\a";
-    white-space: pre;
-}
-
+/* Add margin below <h1> text */
 h1 {
     margin-bottom: 5px;
 }
 
-p1 {
+/* Create a new inset class that is like > in md. */
+p.inset {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-inline-start: 40px;
+
     font-size: 0.8em;
+    background-color: snow;
 }
 
-inset {
-    margin-left: 20px;
+/* Add newline after "explanation" class <p> tag. */
+p.explanation::after {
+        content: "\a\a";
+        white-space: pre;
+}
+
+/* Make superset text smaller then normal text. */
+sup {
+    font-size: 0.7em;
+}
+
+table {
+    table-layout: fixed;
+    text-align: left;
+}
+
+td:nth-of-type(1) {
+    font-weight: bold;
+}
+
+
+/* The styling used for "code blocks". */
+div.drawing {
+    margin-inline-start: 40px;
+    display: inline-block;
+    border-radius: 10px;
+    background-color: gainsboro;
+}
+
+div.drawing-content {
+    font-family: 'Courier New', monospace;
+    padding: 0px 40px;
+}
+
+diff {
+    display: inline-block;
+    border-radius: 15px;
+    padding: 10px 20px;
+    background-color:rgb(110, 64, 153);
+    color:azure;
 }
