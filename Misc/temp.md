@@ -7,11 +7,11 @@ Both TLS and SSL are protocols used to encrypt information on the wire in a way 
 SSL 1.0 -> SSL 2.0 -> SSL 3.0 -> TLS 1.0 -> TLS 1.1 -> TLS 1.2 -> TLS 1.3
 ```
 
-### WHY WERE THEY INVENTED?
+WHY WERE THEY INVENTED?
 
 At the time, communication on the internet was transmitted cleartext, which posed great dangers to it's users. So in the year 1995 [Netscape](https://www.youtube.com/watch?v=dQw4w9WgXcQ) introduced this protocol to serve protection to the communication by encrypting the packet's contents when it travels.
 
-### HOW DO THEY WORK?
+HOW DO THEY WORK?
 
 The process of encryptions goes as such:
 - Protocol Handshake
@@ -21,21 +21,21 @@ Sounds simple on paper, but it reality it is more complicated.
 
 The SSL & TLS protocols are made up of 4 sub-protocols, each responsible for another part of the process.
 
-```
-[Handshake Protocol    ]   ═╗                      Establish security parameters and session.
-[Change Cipher Protocol]*  ═╬═ HIGHER LAYER        Responsible for cipher changing negotiations.
-[Alert Protocol        ]   ═╝                      Responsible for alerting if there is an error/warning.
-[Record Protocol       ]   ══ LOWER LAYER          This is the protocol that encrypts, compresses and ecapsulates the application data.
-```
+| Protocol                    | Purpose                                                                             |
+| :-------------------------- | :---------------------------------------------------------------------------------- |
+| Handshake Protocol          | Establish security parameters and session.                                          |
+| Change Cipher Protocol      | Responsible for cipher changing negotiations.                                       |
+| Alert Protocol              | Responsible for alerting if there is an error/warning.                              |
+| Record Protocol             | This is the protocol that encrypts, compresses and ecapsulates the application data.|
 
-<font size=2>* Doesn't exist in TLS 1.3</font>
+<sup style="font-size: 0.3em">* Doesn't exist in TLS 1.3</sup>
 
 SSL/TLS also has **two major concepts**:
 
-<font size=2>**SESSION**</font><br>
+<font size=2> **SESSION** </font><br>
 > A session is a set of negotiated security parameters (key exchnage & encryption algorithms, SID etc.) between one endpoint and another.
 
-<font size=2>**CONNECTION**</font><br>
+<font size=2> **CONNECTION** </font><br>
 > A connection is the application of a session's parameters to an active network connection.
 
 ### Handshake Protocol (SSL 3.0 - TLS 1.2)
