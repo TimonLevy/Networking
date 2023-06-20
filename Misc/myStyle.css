@@ -59,7 +59,8 @@ div.drawing {
 
 div.drawing-content {
     font-family: 'Courier New', monospace;
-    padding: 0px 40px;
+    font-size: 12px;
+    padding: 10px 20px;
 }
 
 diff {
