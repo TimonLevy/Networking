@@ -1,0 +1,58 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="../../Misc/myStyle.css">
+</head>
+
+<body>
+<div id="SShTitle">
+<h1>Secure Shell A.K.A SSH</h1>
+<tags>[#Layer-7] [#TCP/22]</tags>
+</div>
+<div id="SSHSummary">
+SSH was conceptualized as a secure replacement for the telnet protocol. The SSH protocol allows a user to remotely interface with another machine on the internet with their communication secured.
+
+<h3>WHY WAS IT INVENTED?</h3>
+The protocol was invented by Tatu Ylönen after he found a password sniffer on his university's network. Since the prominent remote managment protocol back then was Telnet, all communications appeared as cleartext on the wire. That pushed Tatu to design the first version of the protocol all the way back in 1995.
+
+<h3>HOW DOES IT WORK</h3>
+SSH is actually a suite of SSH protocols riding on TCP, each playing a key part in the role of remote managment. Those protocols are:
+
+<b><label>SSH Transport layer Protocol</label></b>
+Provides server authentication, message integrity, compression and data confidentiality. (encryption)
+
+<b><label>SSH User Authentication protocol</label></b>
+Provides user authentication services.
+
+<b><label>SSH Connection Protocol</label></b>
+Allows multiplexing a single connection to multiple logical channels.
+
+<div class="drawing"><div class="drawing-content">
+  ______________________________________
+ /                 /                   /|
+/_________________/___________________/ |
+|  SSH USER AUTH  |  SSH CONNECTION   | |
+|    PROTOCOL     |     PROTOCOL      | /
+|_________________|___________________|/.
+ /                                     /|
+/_____________________________________/ |
+|                                     | |
+|    SSH TRANSPORT LAYER PROTOCOL     | /
+|_____________________________________|/.
+ /                                     /|
+/_____________________________________/ |
+|                                     | |
+|    TRANSMISSION CONTROL PROTOCOL    | /
+|_____________________________________|/
+</div></div>
+
+The protocol is very useful and is the default remote management tool for linux based machines. The shell that the protocl provides interactibility with the file system and processes in a very comfortable fashion.
+While it is a very useful and easy to use protocol it does still have it's problems:
+<ul>
+  <li>Key Management - In a huge network, it might be a hassle to keep track and manage all the ssh keys in the network. If some are forgotten about and fall into the wrong hand, they could provide attacks with access.</li>
+  <li>Configuration - The default user to use with ssh is the mostly the root user, which isn't ideal in terms of permission management. Needs to be configured when applied.</li>
+  <li>Mismanagement of Keys - The first bullet talked about the difficulty in management, this one is about mishandling. An ssh key grants the machine access to remote ssh with the configured user. Sometimes people mishandle their keys and dulpicate them across the network or keep them stored embedded in code. Which can lead to easy spreading of an attacker in the network.</li>
+</ul>
+
+<a href="./SSHAdvanced.html">For the detailed explanation of the process behind the protocol</a>
+
+<diff>- (Started checking this protocol but you wrote too much information summaries it)</diff>
+</body>

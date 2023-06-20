@@ -1,0 +1,131 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="../../Misc/myStyle.css">
+</head>
+
+<h1>SSH: An In-Depth Guide</h1>
+<div id="SSHKeyExchange">
+<h4>CONNECTION INITIALIZATION & KEY EXCHANGE</h4>
+
+The client will want to initiate a connection so it will send an <mark1>Identification String Exchange</mark1> message, to synchronize the SSH version.
+The server will return the same message, where it agrees on some parameters.
+
+Then comes the <mark1>Key Exchange Initialization message</mark1> just like in TLS the client and server will send their ciphers in preffered order and more parameters that the exchange requires like hashing & compression algorithms. Both client and server will do this.
+
+After agreeing on a cipher, hashing & compression algorithm the client will send an <mark1>ECDH Key Exchange Initialization</mark1> message to start a diffie hellman Key Exchange procedure:
+
+1. The client will generate emphereal (short lasting) public and private keys. Then it will send over the public key (PubK).¹
+2. The server will generate it's own set of ephemeral keys. Using them and the client's PubK it will generate a secret key.¹
+3. Then the server performs the following operations:
+
+<div class="drawing"><div class="drawing-content">PrivateKeySign(
+    HashAlgorithm(
+        Add(
+            ClientIdentificationString,
+            ServerIdentificationString,
+            ClientKeyExchangeInitPayload,
+            ServerKeyExchangeInitPayload,
+            ServerHostPublicKey,
+            ClientEphemeralPublicKey,
+            ServerEphemeralPublicKey,
+            SharedSecretKey
+        )
+    )
+)</div></div>
+
+   Together with this calculated, hashed and signed value it will send it's Host's and ephemeral public keys.
+
+4. The client will perform the same calculations:
+   - Secret key.
+   - calculated and hashed product.
+   - unsign the server's product. with the server's public key. (the client has to accept the server's public rsa key, either by a certificate or a public key database. If both of those don't succeed the client decides whether to accept the key or not.) 
+   - compare the two.
+
+   If both are the same it means:
+   A. The server is the owner of the server's private key (Authenticity).
+   B. They both succesfuly created the shared secret.
+
+5. Both client and server break down the shared secret key to create 3 new 2 key sets for both of them.
+   A set for encryption, a set to be used and IVs (Initialization vectors) and the last set for integrity (like SSL MAC).
+
+6. After getting the 3 key pairs both server and client will send <mark1>New Keys</mark1> message and will start encrypting the messages.
+7. The client will send an authentication request, <mark1>SSH_MSG_SERVICE_REQUEST</mark1>.
+8. The server will authorized the user, send a <mark1>SSH_MSG_SERVICE_ACCEPT</mark1> and the user will log in.
+
+<div class="drawing"><div class="drawing-content">
+C                                 S
+│ Identification String Exchange  │
+│ ──────────────────────────────► │
+│ ◄────────────────────────────── │
+│                                 │
+│   Key Exchange Initialization   │
+│ ──────────────────────────────► │
+│ ◄────────────────────────────── │
+│                                 │
+│     ECDH Key Exchange Init      │
+│ ──────────────────────────────► │
+│ECDH Key Exchange Reply, New Keys│
+│ ◄────────────────────────────── │
+│                                 │
+│             New Keys            │
+│ ──────────────────────────────► │
+│     SSH_MSG_SERVICE_REQUEST     │
+│ ───────────ENCRYPTED──────────► │
+│     SSH_MSG_SERVICE_ACCEPT      │
+│ ◄──────────ENCRYPTED─────────── │
+V                                 V
+</div></div>
+<div style="font-size:0.7em;">
+¹   The ephemeral keys aren't the same ones as the host's public and private keys.
+    They are a different set of keys used for the Diffie-Hellman exchange.
+²   SSH allows the use of persistent ssh keys to authenticate the user instead of using typed credentials.
+</div>
+</div>
+<div id="SSHTransport">
+<h4>SSH Transport Layer Protocol</h4>
+<b><label>Integrity, Compression, and Confidentiality of data</label></b>
+Here is a diagram to explain how the protocol does all of the above:
+<div class="drawing">
+<div class="drawing-content">
+seq# - packet sequence no.     ┌────────────────────SSH─PACKET────────────────────┐
+pktl - packet len              ├──────────────────2.MAC─────────────────────┐     │
+pdl  - padding len             │      ┌─────────────1.ENCRYPTED─────────────┤     │
+┌─────────────────┐            ┌──────┬──────┬─────┬──────────────┬─────────┬─────┐
+│     PAYLOAD     │            │ seq# │ pktl │ pdl │ CMPRSSD PYLD │ padding │ MAC │
+└─────────────────┘            └──────┴──────┴─────┴──────────────┴─────────┴─────┘
+         └─────────────────────────────────────────────────┘
+</div></div>
+
+<b><label>Saving Host Keys</label></b>
+This protocol needs to save the host keys that he different hosts (clients) connecetd to the ssh'd machine (server).
+It can do that by relying on a CA and matching client Certificates, or just keeping them in an internal Database.
+
+<b><label>Key Generation</label></b>
+The protocol is also responsible for the key generation, that is generate the 6 keys from the exchanged secret key.
+The key exchange intself is also done by the `SSH Transport Layer Protocol`.
+</div>
+<div id="SSHAuthentication">
+<h4>SSH User Authentication Protocol</h4>
+This protocol role is to authenticate users wanting to connect to the server. The client sends an authentication request message with the username credential. The server will then offer the client authentication methods:
+* Password - client inputs a password, the password in encrypted in transit.
+* Public Key - client authenticates themselves using their public key.
+* Host Based - client authenticates themselves using a central host (Like a DC).
+
+The client may authenticate themselves by any of these methods, the protocol will return a success response and authenticate the user. Or if the authentication is not enough, the server may ask the client to further authenticate themselves.
+</div>
+<div id="SSHConnection">
+<h4>SSH Connection Protocol</h4>
+This protocol rides ontop of the `SSH Transport Layer Protocol`. The protocol is responsible for many of the things that make SSH so great.
+
+<b><label>Multiplexing</label></b>
+This protocol is responsible for opening and closing channels for concurrent data transfer, there are 4 types of channels:
+* Session - used in remote execution of a program (like the shell), file transfer, etc.
+* X11 - Used to send desktop interface to remote machines, for applications that show graphical interface of the server machine.
+* forwarded-tcpip - remote port forwarding, we will get to that in a second.
+* direct-tcpip - local port forwarding.
+
+<b><label>Port forwarding</label></b>
+SSH enables port forwarding on an encrypted ssh tunnel to protect communication, SSH allows both remote and local port forwarding.
+* local - local port forwarding let's an applicaiton forward a port onto ssh directly onto a port of the server.
+* remote - remote port forwarding let's an application forward information on the ssh tunnel to an intermediate server (like a firewall) that will send the information to the ssh client on the server.
+
+Remote port forwarding is used when direct communication to the server is impossible, for example when there is a firewall. The `SSH client` on the client machine will `encrypt the data` and the `ssh server` on the server machine will `decrypt the data` before forwaring it to the server application.

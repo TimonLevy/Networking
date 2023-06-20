@@ -70,3 +70,10 @@ diff {
     background-color:rgb(110, 64, 153);
     color:azure;
 }
+
+mark1 {
+    display: inline;
+    color: white;
+    background-color: purple;
+    font-style: italic;
+}
